@@ -7,10 +7,12 @@ This document provides the release notes for the Unified Laboratory Information 
 
 INSTALLATION
 
-Grant read/write permissions by running the following commands:
+FILE PERMISSIONS
 
-    sudo chmod -R 777 ulims/assets
-    sudo chmod -R 777 ulims/protected/runtime
-    sudo chmod -R 777 ulims/config/site-settings.ini
-    sudo chmod -R 777 ulims/config/form-settings.ini
+    Grant read/write permissions by running the following commands:
+
+        sudo chmod -R 777 ulims/assets
+        sudo chmod -R 777 ulims/protected/runtime
+        sudo chmod -R 777 ulims/config/site-settings.ini
+        sudo chmod -R 777 ulims/config/form-settings.ini
 
