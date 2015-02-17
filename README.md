@@ -31,6 +31,11 @@ INSTALLATION
         directory as the main.php file. In this way we will always have the same main.php file. 
         
         Update the usernames and passwords for the different databases specified in the db.php file.
+        
+        Replace the following files in the /ulims/protected/config with the ones you obtained from 
+        the Pre-Installation instruction:
+            site-settings.ini
+            form-settings.ini
 
     4.  Databases
     
@@ -55,13 +60,12 @@ INSTALLATION
         A new database has been added for the Referral Module. Create new database `onelabdb` and import 
         ulims/protected/data/onelabdb.sql. Select onelabdb and execute the four sets of commands in the 
         ulims/protected/data/onelabdb_views.txt
-        
-FILE PERMISSIONS
+    
+    5.  File/Folder Permissions
 
-    Grant read/write permissions by running the following commands:
-
-        sudo chmod -R 777 ulims/assets
-        sudo chmod -R 777 ulims/protected/runtime
-        sudo chmod -R 777 ulims/config/site-settings.ini
-        sudo chmod -R 777 ulims/config/form-settings.ini
+        Grant read/write permissions to several files/folders by running the following commands:
+            sudo chmod -R 777 ulims/assets
+            sudo chmod -R 777 ulims/protected/runtime
+            sudo chmod -R 777 ulims/config/site-settings.ini
+            sudo chmod -R 777 ulims/config/form-settings.ini
 
