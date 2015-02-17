@@ -11,7 +11,7 @@ PRE-INSTALLATION
 
     From your existing ULIMS installation do the following:
         - Secure a copy of the ulims/protected/config directory. You will need information from the files in that directory. 
-        - Export the databases (ulimsaccounting, ulimscashiering, ulimslab, ulimnportal, phaddress).
+        - Export the databases (ulimsaccounting, ulimscashiering, ulimslab, ulimsportal, phaddress).
         
     (Skip this if you are installing from scratch)
 
@@ -23,16 +23,24 @@ INSTALLATION
             X:/xampp/htdocs for xampp on windows environment
             /var/www or /var/www/html for linux
             
-    3.  Modify database configurations:
+    3.  ULIMS Configurations
     
-        Database credentials have been moved to /ulims/protected/config/db.php which resides on the same
+        Database credentials for ULIMS have been moved to /ulims/protected/config/db.php which resides on the same
         directory as the main.php file. In this way we will always have the same main.php file. 
         
         Update the usernames and passwords for the different databases specified in the db.php file.
 
-    4.  Create and import the databases(ulimsaccounting, ulimscashiering, ulimslab, ulimnportal, phaddress) 
-        you obtained from the Pre-Installation instruction or 
+    4.  Databases
+    
+        Create and import the database (ulimsaccounting, ulimscashiering, ulimslab, ulimsportal, phaddress) 
+        you obtained from the Pre-Installation instruction.
         
+        If you are installing from scratch - create and import clean databases from the ulims/protected/data
+        directory.
+        
+        A new database has been added for the Referral Module. Create new database `onelabdb` and import 
+        ulims/protected/data/onelabdb.sql. Select onelabdb and execute the for sets of commands in the 
+        ulims/protected/data/onelabdb_views.txt
         
 FILE PERMISSIONS
 
