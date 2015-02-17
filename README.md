@@ -39,8 +39,8 @@ INSTALLATION
 
     4.  Databases
     
-        Create and import the database (ulimsaccounting, ulimscashiering, ulimslab, ulimsportal, phaddress) 
-        you obtained from the Pre-Installation instruction.
+        A.  Create and import the database (ulimsaccounting, ulimscashiering, ulimslab, ulimsportal, phaddress) 
+            you obtained from the Pre-Installation instruction.
         
             Check the structure of the `ulimslab.request` table. The datatype for field `requestDate` should be 'date'
             and there should be a field `create_time` with a 'TIMESTAMP' datatype. 
@@ -62,9 +62,9 @@ INSTALLATION
             Then, import the AuthItem.sql and AuthItemChild.sql from ulims/protected/data directory to the respective 
             tables in ulimsportal database.
          
-        /**** For new Installation ****/
-        If you are installing from scratch - create and import clean databases from the ulims/protected/data
-        directory.
+            /**** For new Installation ****/
+            If you are installing from scratch - create and import clean databases from the ulims/protected/data
+            directory.
         
         A new database has been added for the Referral Module. Create new database `onelabdb` and import 
         ulims/protected/data/onelabdb.sql. Select onelabdb and separately execute each of the four(4) sets of 
