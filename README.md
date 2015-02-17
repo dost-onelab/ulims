@@ -92,7 +92,7 @@ INSTALLATION
             Select onelabdb and separately execute each of the four(4) sets of commands in the     
             ulims/protected/data/onelabdb_views.txt
             
-    5.  File/Folder Permissions
+    5.  File/Folder Permissions (for linux installation)
 
         Grant read/write permissions to several files/folders by running the following commands:
             sudo chmod -R 777 ulims/assets
