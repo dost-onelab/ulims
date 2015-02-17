@@ -18,12 +18,11 @@ INSTALLATION
             /var/www or /var/www/html for linux
             
     3.  Modify database configurations:
-            Database credential has been moved to the file /ulims/protected/config/db.php which resides on the 
-        same directory as the main.php file. In this way we will always have the same main.php file and may
-        differ in the database credentials.
-            
-        <?php
+            Database credentials has been moved to /ulims/protected/config/db.php which resides on the same 
+        directory as the main.php file. In this way we will always have the same main.php file. 
 
+        /ulims/protected/config/db.php
+        <?php 
             return array(
             	'db'=>array(
             		'connectionString' => 'mysql:host=localhost;dbname=ulimsportal',
@@ -86,8 +85,7 @@ INSTALLATION
             		'class'=>'CDbConnection',
             		'charset' => 'utf8'
             	)
-            );    
-
+            );
 
 FILE PERMISSIONS
 
