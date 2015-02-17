@@ -50,8 +50,8 @@ INSTALLATION
         A.  Create and import the database (ulimsaccounting, ulimscashiering, ulimslab, ulimsportal, phaddress) 
             you obtained from the Pre-Installation instruction.
         
-            Check the structure of the `ulimslab.request` table. The datatype for field `requestDate` should be 'date'
-            and there should be a field `create_time` with a 'TIMESTAMP' datatype. 
+            Check the structure of the `ulimslab.request` table. The datatype for field `requestDate` should 
+            be 'date' and there should be a field `create_time` with a 'TIMESTAMP' datatype. 
             
             If not, execute the following sql commands separately.
                 ALTER TABLE `request` CHANGE `requestDate` `requestDate` DATE NOT NULL
@@ -81,9 +81,6 @@ INSTALLATION
             Select onelabdb and separately execute each of the four(4) sets of commands in the     
             ulims/protected/data/onelabdb_views.txt
             
-    
-
-    
     5.  File/Folder Permissions
 
         Grant read/write permissions to several files/folders by running the following commands:
