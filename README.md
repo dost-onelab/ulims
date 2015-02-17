@@ -39,7 +39,7 @@ INSTALLATION
         directory.
         
         A new database has been added for the Referral Module. Create new database `onelabdb` and import 
-        ulims/protected/data/onelabdb.sql. Select onelabdb and execute the for sets of commands in the 
+        ulims/protected/data/onelabdb.sql. Select onelabdb and execute the four sets of commands in the 
         ulims/protected/data/onelabdb_views.txt
         
 FILE PERMISSIONS
