@@ -5,7 +5,12 @@ RELEASE NOTES
 
 This document provides the release notes for the Unified Laboratory Information System. It describes installation     instructions, configuration changes compared to the previous releases of ULIMS, additional features and etc ...
 
+
 SYSTEM REQUIREMENTS
+
+This release requires at least PHP 5.1 and above. This release has been tested with Apache HTTP server on 
+Windows and Linux. It may also run on other Web servers and platforms, provided PHP 5.1 is supported.
+
 
 PRE-INSTALLATION
 
@@ -16,6 +21,7 @@ PRE-INSTALLATION
         - Export(backup) the databases (ulimsaccounting, ulimscashiering, ulimslab, ulimsportal, phaddress).
         
     (Skip this if you are installing from scratch)
+
 
 INSTALLATION
 
