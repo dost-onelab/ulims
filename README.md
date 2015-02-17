@@ -62,14 +62,16 @@ INSTALLATION
             Then, import the AuthItem.sql and AuthItemChild.sql from ulims/protected/data directory to the respective 
             tables in ulimsportal database.
          
-            /**** For new Installation ****/
+            ### For new Installation ###
             If you are installing from scratch - create and import clean databases from the ulims/protected/data
             directory.
         
         
         B.  A new database has been added for the Referral Module. Create new database `onelabdb` and import 
-            ulims/protected/data/onelabdb.sql. Select onelabdb and separately execute each of the four(4) sets of 
-            commands in the ulims/protected/data/onelabdb_views.txt
+            ulims/protected/data/onelabdb.sql. 
+            
+            Select onelabdb and separately execute each of the four(4) sets of commands in the     
+            ulims/protected/data/onelabdb_views.txt
             
     
 
