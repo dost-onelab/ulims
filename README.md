@@ -12,7 +12,7 @@ PRE-INSTALLATION
     From your existing ULIMS installation do the following:
         - Secure a copy of the ulims/protected/config directory. 
           You will need information from the files in that directory. 
-          
+    
         - Export(backup) the databases (ulimsaccounting, ulimscashiering, ulimslab, ulimsportal, phaddress).
         
     (Skip this if you are installing from scratch)
