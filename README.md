@@ -14,6 +14,17 @@ This release requires at least PHP 5.1 and above. This release has been tested w
 Windows and Linux. It may also run on other Web servers and platforms, provided PHP 5.1 is supported.
 
 
+COMPATIBILITY
+This release has been tested the following:
+
+    | Operating Systems     | Web Server / PHP / MySQL Version                          |
+    | --------------------- |-----------------------------------------------------------|
+    | Windows 7 Pro         | XAMPP 1.7.3 - Apache 2.2.14 / PHP 5.3.1 / MySQL 5.1.41    |
+    |                       | XAMPP 5.6.3 - Apache 2.4.10 / PHP 5.6.3 / MySQL 5.6.21    |
+    |                       |                                                           |
+    | Ubuntu 14.04.1 LTS    | Apache 2.4.7 / PHP 5.5.9 / MySQL 5.5.40                   |
+    
+
 PRE-INSTALLATION
 
     From your existing ULIMS installation do the following:
@@ -88,4 +99,5 @@ INSTALLATION
             sudo chmod -R 777 ulims/protected/runtime
             sudo chmod -R 777 ulims/config/site-settings.ini
             sudo chmod -R 777 ulims/config/form-settings.ini
+
 
