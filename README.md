@@ -10,8 +10,10 @@ SYSTEM REQUIREMENTS
 PRE-INSTALLATION
 
     From your existing ULIMS installation do the following:
-        - Secure a copy of the ulims/protected/config directory. You will need information from the files in that directory. 
-        - Export the databases (ulimsaccounting, ulimscashiering, ulimslab, ulimsportal, phaddress).
+        - Secure a copy of the ulims/protected/config directory. 
+          You will need information from the files in that directory. 
+          
+        - Export(backup) the databases (ulimsaccounting, ulimscashiering, ulimslab, ulimsportal, phaddress).
         
     (Skip this if you are installing from scratch)
 
@@ -35,6 +37,18 @@ INSTALLATION
         Create and import the database (ulimsaccounting, ulimscashiering, ulimslab, ulimsportal, phaddress) 
         you obtained from the Pre-Installation instruction.
         
+            Check the structure of the `ulimslab.request` table. The datatype for field `requestDate` should be 'date'
+            and there should be a field `create_time` with a 'TIMESTAMP' datatype. 
+            
+            If not, execute the following sql commands.
+                ALTER TABLE `request` CHANGE `requestDate` `requestDate` DATE NOT NULL
+                ALTER TABLE `request` ADD `create_time` TIMESTAMP
+                UPDATE `ulimslab`.`request` SET `create_time` = `requestDate`
+                ALTER TABLE `request` CHANGE `create_time` `create_time` TIMESTAMP NOT NULL 
+        
+            This modifications with fix the issue on generating duplicate request reference when creating requests.
+            
+        =====    
         If you are installing from scratch - create and import clean databases from the ulims/protected/data
         directory.
         
