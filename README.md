@@ -100,4 +100,4 @@ INSTALLATION
             sudo chmod -R 777 ulims/config/site-settings.ini
             sudo chmod -R 777 ulims/config/form-settings.ini
 
-
+more info soon...
