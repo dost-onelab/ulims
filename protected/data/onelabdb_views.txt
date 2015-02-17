@@ -1,0 +1,46 @@
+/***** (1) referral_sample_analysis view *****/
+
+CREATE VIEW referral_sample_analysis AS
+SELECT t1.id, t1.sample_id, t1.testName_id, t1.methodReference_id, t1.fee, t2.referral_id, t2.barcode, t2.sampleName, t2. sampleCode, t2.description, t3.testName, t4.method, t4.reference 
+FROM `analysis` t1
+LEFT JOIN (`sample` t2, `testname` t3,`methodreference` t4)
+ON (t1.`sample_id` = t2.`id` AND t1.testName_id = t3.id AND t1.methodReference_id =t4.id) 
+ORDER BY t1.id ASC
+
+
+
+/***** (2) VIEW agency_service_threshold view *****/
+
+CREATE VIEW agency_service_threshold AS
+SELECT t2.id, t3.code, t2.name, t2.region_id, t1.agency_id, t1.method_ref_id, t4.availableSlots
+FROM `service` t1
+LEFT JOIN (`agency` t2, `region` t3, `agencythreshold` t4)
+ON (t1.agency_id = t2.id AND t2.region_id = t3.id AND t1.agency_id = t4.agency_id)
+
+
+
+/***** (3) consolidated_referral view *****/
+
+CREATE VIEW consolidated_referral AS
+SELECT t1.id, t1.referralCode, t1.referralDate, t1.reportDue, l1.id as lab_id, l1.labName, c1.id as customer_id, c1.customerName as customer, c1.barangay_id, c1.municipalityCity_id, CONCAT(b1.name, ', ', m1.name) as address, t1.receivingAgencyId, t1.acceptingAgencyId, a1.name as referredTo, a2.name as receivedBy, s2.id as status_id, s2.name as status FROM `referral` t1 LEFT JOIN (`lab` as l1, `customer` c1, `agency` as a1, `agency` as a2, `referralstatus` as r1, `barangay` as b1, `municipality_city` as m1, `status` as s2) on (t1.lab_id = l1.id AND t1.customer_id = c1.id AND t1.acceptingAgencyId = a1.id AND t1.receivingAgencyId = a2.id AND t1.id = r1.referral_id AND c1.barangay_id = b1.id AND c1.municipalityCity_id = m1.id AND r1.status_id = s2.id)
+
+
+
+/***** (4) lab_service view *****/
+CREATE VIEW lab_service AS
+SELECT testname_method.id AS methodreference_id, lab.id AS lab_id, labName,  `type`, sampletype_testname.sampletype_id as sampleType_id, testname.id as testName_id, testName, method, reference, fee, service.agency_id
+FROM testname_method 
+LEFT JOIN testname
+ON testname_method.testname_id = testname.id
+LEFT JOIN methodreference
+ON testname_method.method_id = methodreference.id
+LEFT JOIN sampletype_testname
+ON sampletype_testname.testname_id = testname.id
+LEFT JOIN sampletype
+ON sampletype_testname.sampletype_id = sampletype.id     
+LEFT JOIN lab_sampletype
+ON lab_sampletype.sampletypeId = sampletype.id
+LEFT JOIN lab
+ON lab_sampletype.lab_id = lab.id
+LEFT JOIN service
+ON testname_method.id = service.method_ref_id 
