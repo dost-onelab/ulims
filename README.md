@@ -7,7 +7,13 @@ This document provides the release notes for the Unified Laboratory Information 
 
 SYSTEM REQUIREMENTS
 
+PRE-INSTALLATION
 
+    From your existing ULIMS installation do the following:
+        - Secure a copy of the ulims/protected/config directory. You will need information from the files in that directory. 
+        - Export the databases (ulimsaccounting, ulimscashiering, ulimslab, ulimnportal, phaddress).
+        
+    (Skip this if you are installing from scratch)
 
 INSTALLATION
 
@@ -18,75 +24,16 @@ INSTALLATION
             /var/www or /var/www/html for linux
             
     3.  Modify database configurations:
-            Database credentials has been moved to /ulims/protected/config/db.php which resides on the same 
+    
+        Database credentials have been moved to /ulims/protected/config/db.php which resides on the same
         directory as the main.php file. In this way we will always have the same main.php file. 
+        
+        Update the usernames and passwords for the different databases specified in the db.php file.
 
-        /ulims/protected/config/db.php
-        <?php 
-            return array(
-            	'db'=>array(
-            		'connectionString' => 'mysql:host=localhost;dbname=ulimsportal',
-            		'emulatePrepare' => true,
-            		'username' => '',
-            		'password' => '',
-            		'charset' => 'utf8',
-            		//'tablePrefix' => '',
-            	),
-            	
-            	'ulimsDb'=>array(
-            		'connectionString'=>'mysql:host=localhost;dbname=ulimslab',
-            		'username' => '',
-            		'password' => '',
-            		'class'=>'CDbConnection',
-            		'charset' => 'utf8',
-            		//'tablePrefix' => '',
-            	),
-            	
-            	'referralDb'=>array(
-            		'connectionString'=>'mysql:host=localhost;dbname=onelabdb',
-            		'username' => '',
-            		'password' => '',
-            		'class'=>'CDbConnection',
-            		'charset' => 'utf8',
-            		//'tablePrefix' => '',
-            	),
-            	
-            	'cashierDb'=>array(
-            		'connectionString'=>'mysql:host=localhost;dbname=ulimscashiering',
-            		'username' => '',
-            		'password' => '',
-            		'class'=>'CDbConnection',
-            		'charset' => 'utf8',
-            		//'tablePrefix' => '',
-            	),
-            	
-            	'accountingDb'=>array(
-            		'connectionString'=>'mysql:host=localhost;dbname=ulimsaccounting',
-            		'username' => '',
-            		'password' => '',
-            		'class'=>'CDbConnection',
-            		'charset' => 'utf8',
-            		//'tablePrefix' => '',
-            	),
-            	
-            	'phAddressDb'=>array(
-            		'connectionString'=>'mysql:host=localhost;dbname=phaddress',
-            		'username' => '',
-            		'password' => '',
-            		'class'=>'CDbConnection',
-            		'charset' => 'utf8',
-            		//'tablePrefix' => '',
-            	),
-            	
-            	'information_schema'=>array(
-            		'connectionString'=>'mysql:host=localhost;dbname=information_schema',
-            		'username' => '',
-            		'password' => '',
-            		'class'=>'CDbConnection',
-            		'charset' => 'utf8'
-            	)
-            );
-
+    4.  Create and import the databases(ulimsaccounting, ulimscashiering, ulimslab, ulimnportal, phaddress) 
+        you obtained from the Pre-Installation instruction or 
+        
+        
 FILE PERMISSIONS
 
     Grant read/write permissions by running the following commands:
