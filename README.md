@@ -18,7 +18,9 @@ INSTALLATION
             /var/www or /var/www/html for linux
             
     3.  Modify database configurations:
-            Database credential has been moved to the file /ulims/protected/config/db.php which resides on the same directory         as the main.php file. In this way we will always have the same main.php file and may differ in the database                  credentials.
+            Database credential has been moved to the file /ulims/protected/config/db.php which resides on the 
+        same directory as the main.php file. In this way we will always have the same main.php file and may
+        differ in the database credentials.
             
         <?php
 
