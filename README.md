@@ -66,9 +66,13 @@ INSTALLATION
             If you are installing from scratch - create and import clean databases from the ulims/protected/data
             directory.
         
-        A new database has been added for the Referral Module. Create new database `onelabdb` and import 
-        ulims/protected/data/onelabdb.sql. Select onelabdb and separately execute each of the four(4) sets of 
-        commands in the ulims/protected/data/onelabdb_views.txt
+        
+        B.  A new database has been added for the Referral Module. Create new database `onelabdb` and import 
+            ulims/protected/data/onelabdb.sql. Select onelabdb and separately execute each of the four(4) sets of 
+            commands in the ulims/protected/data/onelabdb_views.txt
+            
+    
+
     
     5.  File/Folder Permissions
 
