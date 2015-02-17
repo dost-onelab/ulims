@@ -18,7 +18,73 @@ INSTALLATION
             /var/www or /var/www/html for linux
             
     3.  Modify database configurations:
+            Database credential has been moved to the file /ulims/protected/config/db.php which resides on the same directory         as the main.php file. In this way we will always have the same main.php file and may differ in the database                  credentials.
             
+        <?php
+
+            return array(
+            	'db'=>array(
+            		'connectionString' => 'mysql:host=localhost;dbname=ulimsportal',
+            		'emulatePrepare' => true,
+            		'username' => '',
+            		'password' => '',
+            		'charset' => 'utf8',
+            		//'tablePrefix' => '',
+            	),
+            	
+            	'ulimsDb'=>array(
+            		'connectionString'=>'mysql:host=localhost;dbname=ulimslab',
+            		'username' => '',
+            		'password' => '',
+            		'class'=>'CDbConnection',
+            		'charset' => 'utf8',
+            		//'tablePrefix' => '',
+            	),
+            	
+            	'referralDb'=>array(
+            		'connectionString'=>'mysql:host=localhost;dbname=onelabdb',
+            		'username' => '',
+            		'password' => '',
+            		'class'=>'CDbConnection',
+            		'charset' => 'utf8',
+            		//'tablePrefix' => '',
+            	),
+            	
+            	'cashierDb'=>array(
+            		'connectionString'=>'mysql:host=localhost;dbname=ulimscashiering',
+            		'username' => '',
+            		'password' => '',
+            		'class'=>'CDbConnection',
+            		'charset' => 'utf8',
+            		//'tablePrefix' => '',
+            	),
+            	
+            	'accountingDb'=>array(
+            		'connectionString'=>'mysql:host=localhost;dbname=ulimsaccounting',
+            		'username' => '',
+            		'password' => '',
+            		'class'=>'CDbConnection',
+            		'charset' => 'utf8',
+            		//'tablePrefix' => '',
+            	),
+            	
+            	'phAddressDb'=>array(
+            		'connectionString'=>'mysql:host=localhost;dbname=phaddress',
+            		'username' => '',
+            		'password' => '',
+            		'class'=>'CDbConnection',
+            		'charset' => 'utf8',
+            		//'tablePrefix' => '',
+            	),
+            	
+            	'information_schema'=>array(
+            		'connectionString'=>'mysql:host=localhost;dbname=information_schema',
+            		'username' => '',
+            		'password' => '',
+            		'class'=>'CDbConnection',
+            		'charset' => 'utf8'
+            	)
+            );    
 
 
 FILE PERMISSIONS
