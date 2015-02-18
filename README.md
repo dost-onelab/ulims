@@ -109,6 +109,16 @@ From your existing ULIMS installation do the following:
         sudo chmod 777 ulims/config/api-settings.ini
         ```
         
-        create the folder `ulims/assets` if does not exist    
+        create the folder `ulims/assets` if does not exist.
+    
+    - The following tables are case-sensitive:
+    
+        ```
+        ulimsportal.AuthItem
+        ulimsportal.AuthItemChild
+        ulimsportal.Rights
+        ```
         
+        rename these tables as indicated above.
+
 more info soon...
