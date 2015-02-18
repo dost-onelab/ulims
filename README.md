@@ -1,5 +1,4 @@
 ## DOST Unified Laboratory Information Management System ##
-=====
 
 ###RELEASE NOTES###
 
