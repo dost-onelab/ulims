@@ -108,5 +108,7 @@ From your existing ULIMS installation do the following:
         sudo chmod 777 ulims/config/form-settings.ini
         sudo chmod 777 ulims/config/api-settings.ini
         ```
-    
+        
+        create the folder `ulims/assets` if does not exist    
+        
 more info soon...
