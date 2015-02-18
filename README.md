@@ -106,6 +106,7 @@ From your existing ULIMS installation do the following:
         sudo chmod -R 777 ulims/protected/runtime
         sudo chmod 777 ulims/config/site-settings.ini
         sudo chmod 777 ulims/config/form-settings.ini
+        sudo chmod 777 ulims/config/api-settings.ini
         ```
     
 more info soon...
