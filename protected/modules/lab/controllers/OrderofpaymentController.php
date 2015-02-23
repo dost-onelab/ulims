@@ -286,6 +286,7 @@ class OrderofpaymentController extends Controller
 		if($requests){
 			foreach ($requests as $request){
 				//order of payments
+				$orderOfPayment=NULL;
 				if($request->paymentItem){
 					foreach($request->paymentItem as $paymentItem){
 						//in case there are many pending
