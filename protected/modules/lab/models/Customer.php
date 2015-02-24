@@ -145,6 +145,19 @@ class Customer extends CActiveRecord
 		return parent::model($className);
 	}
 	
+	public function beforeSave(){
+	   if(parent::beforeSave())
+	   {
+			if($this->isNewRecord){
+				$this->rstl_id = Yii::app()->getModule('user')->user()->profile->getAttribute('pstc');
+		        return true;
+			}else{
+				return true;
+			}
+	   }
+	   return false;
+	}
+	
 	//address, region_id, province_id, municipalitycity_id, barangay_id, completeAddress,
 	public function getCompleteAddress()
 	{
