@@ -13,7 +13,7 @@ $this->menu=array(
 	array('label'=>'Manage Requests', 'url'=>array('admin')),
 );
 ?>
-
+<h1>Import Data</h1>
 <div class="form">
 <?php $image=Yii::app()->baseUrl.('/images/ajax-loader.gif');?>
 <?php $form=$this->beginWidget('CActiveForm', array(
@@ -22,10 +22,8 @@ $this->menu=array(
 	
 	<div class="row">
 		<?php echo CHtml::fileField('import_path',''); ?>
-	</div>
-	
-	<div class="row buttons">
-		<?php echo CHtml::submitButton('Load File', array('class'=>'btn btn-info')); ?>
+        <?php echo CHtml::submitButton('Load File', array('class'=>'btn btn-info')); ?>
+        <?php echo CHtml::link('<span class="icon-edit icon-white"></span> Create data entry file', $this->createUrl('request/createdataentryfile'), array('class'=>'btn btn-inverse', 'style'=>'margin: 0.2em 0 0.5em 0; float:right;','title'=>'Create data entry file'));?>
 	</div>
 	
 <?php $this->endWidget(); ?>
@@ -78,10 +76,10 @@ $this->menu=array(
 					'type'=>'html',
 					'value'=>'$data["customer"]',
 			),
-			array(
+			/*array(
 					'name'=>'Address',
 					'value'=>'$data["address"]',
-			),
+			),*/
 			array(
 					'name'=>'Received By',
 					'value'=>'$data["receivedBy"]',
@@ -98,17 +96,10 @@ $this->menu=array(
 
 <?php 
 	echo Chtml::link('<span class="icon-white icon-download-alt"></span> Import Requests', '', array(
-			//'id'=>'import-button',
 			'title'=>'Import Requests',
 			'class'=>'btn btn-success',
 			"onclick"=>"if (!confirm('Import all Request?')){return}else{ confirmImport(); $('#dialogConfirmImport').dialog('open'); }",	
 			));
-	/*echo ' '.CHtml::link('Import',$this->createUrl('request/import/'), 
-		array(
-			'class'=>'btn btn-success',
-			"onclick"=>"if (!confirm('Import all ?')){return}else{ generateSampleCode(); $('#dialogConfirmImport').dialog('open'); }",
-		)
-	);*/
 ?>
 
 <!-- Request Details Dialog : Start -->
@@ -199,7 +190,7 @@ function confirmImport()
 		            }",
 					'beforeSend'=>'function(jqXHR, settings){
 		                    $("#dialogConfirmImport").html(
-								\'<div class="loader">'.$image.'<br\><br\>Retrieving record.<br\> Please wait...</div>\'
+								\'<div class="loader">'.$image.'<br\><br\>Import in progress.<br\> Please wait...</div>\'
 							);
 		            }',
 					 'error'=>"function(request, status, error){

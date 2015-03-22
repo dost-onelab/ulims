@@ -11,11 +11,6 @@ Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;
 </span>
 <span class="<?php echo $request->paymentStatus['class']; ?>" style="float:right; min-width:80px; min-height:30px; line-height:30px;text-align:center;display:inline-block;font-weight:bold;"><?php echo $request->paymentStatus['label']; ?></span>
 </div>
-<?php 
-//echo '<pre>';
-//print_r($sum);
-//echo '</pre>';
-?>
 <?php
 		$this->widget('ext.groupgridview.GroupGridView', array(
 			'id'=>'collection-grid',
@@ -72,7 +67,7 @@ Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;
       				'header'=>'References',
 					'name'=>'references',      				
 					'htmlOptions'=>array('style'=>'text-align:left;width:200px;'),
-      				'footer'=>'Total',
+      				'footer'=>'Sub-Total<br/>Discount<br/>Total',
       				'footerHtmlOptions'=>array('style'=>'color:blue;text-align:right;width:150px;'),
       			),
       			array(
@@ -80,7 +75,7 @@ Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;
 					'name'=>'fee',      
       				'value'=>'Yii::app()->format->formatNumber($data["fee"])',				
 					'htmlOptions'=>array('style'=>'text-align:right;width:150px;'),
-      				'footer'=>Yii::app()->format->formatNumber($analyses_sum),
+      				'footer'=>Yii::app()->format->formatNumber($analyses_sum).'<br/>'.Yii::app()->format->formatNumber($discount).'<br/>'.Yii::app()->format->formatNumber($analyses_sum-$discount),
       				'footerHtmlOptions'=>array('style'=>'color:blue;text-align:right;width:150px;'),
       			)
 				/*array(
@@ -106,6 +101,4 @@ Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;
 					),*/
 			),
 		));
-	?>
-	
-	
+	?>	

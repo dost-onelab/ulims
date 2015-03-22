@@ -329,7 +329,7 @@ class RequestController extends Controller
 		if($_FILES['import_path']['tmp_name'])
 		{
 			Yii::import('application.vendors.PHPExcel',true);
-            $objReader = new PHPExcel_Reader_Excel5;
+            $objReader = new PHPExcel_Reader_Excel2007;
             $objPHPExcel = $objReader->load($_FILES['import_path']['tmp_name']);
             //$objPHPExcel = $objReader->load('F:\import.xls');
             $objWorksheet = $objPHPExcel->getActiveSheet();
@@ -342,8 +342,9 @@ class RequestController extends Controller
             for ($row = 8; $row <= $highestRow; ++$row) {
             	$requestCol = $objWorksheet->getCellByColumnAndRow(0, $row)->getValue();
             	$dateCol = $objWorksheet->getCellByColumnAndRow(1, $row)->getValue();
-            	$sampleCol = $objWorksheet->getCellByColumnAndRow(10, $row)->getValue();
-            	$analysisCol = $objWorksheet->getCellByColumnAndRow(13, $row)->getValue();
+            	//$sampleCol = $objWorksheet->getCellByColumnAndRow(10, $row)->getValue();
+            	$sampleCol = $objWorksheet->getCellByColumnAndRow(12, $row)->getValue();
+            	$analysisCol = $objWorksheet->getCellByColumnAndRow(15, $row)->getValue();
             	
             	if($requestCol != ''){
             		$requestRow = $row;
@@ -353,38 +354,39 @@ class RequestController extends Controller
             				'year'=>$year,
             				'requestRefNum' => $this->requestLookup($objWorksheet->getCellByColumnAndRow(0, $row)->getValue()),
             				'requestDate' => $objWorksheet->getCellByColumnAndRow(1, $row)->getValue(),
-            				'customerId' => $this->customerLookup($objWorksheet->getCellByColumnAndRow(8, $row)->getValue(), 'id'),
-            				'customer' => $this->customerLookup($objWorksheet->getCellByColumnAndRow(8, $row)->getValue(), 'customerName'),
-            				'address' => $this->customerLookup($objWorksheet->getCellByColumnAndRow(8, $row)->getValue(), 'address'),
+            				'customerId' => $this->customerLookup($objWorksheet->getCellByColumnAndRow(9, $row)->getCalculatedValue(), 'id'),
+            				'customer' => $this->customerLookup($objWorksheet->getCellByColumnAndRow(9, $row)->getCalculatedValue(), 'customerName'),
+            				//'address' => $this->customerLookup($objWorksheet->getCellByColumnAndRow(8, $row)->getValue(), 'address'),
             				'rstl_id' => Yii::app()->Controller->getRstlId(),
             				'labId' => $objWorksheet->getCellByColumnAndRow(3, $row)->getCalculatedValue(),
             				'paymentType' => $objWorksheet->getCellByColumnAndRow(5, $row)->getCalculatedValue(),
             				'discount' => $objWorksheet->getCellByColumnAndRow(7, $row)->getCalculatedValue(),
             				'total' => '',
-            				'reportDue' => $objWorksheet->getCellByColumnAndRow(18, $row)->getCalculatedValue(),
-            				'conforme' => $objWorksheet->getCellByColumnAndRow(19, $row)->getValue(),
-            				'receivedBy' => $objWorksheet->getCellByColumnAndRow(20, $row)->getValue(),
+            				'reportDue' => $objWorksheet->getCellByColumnAndRow(21, $row)->getCalculatedValue(),
+            				'conforme' => $objWorksheet->getCellByColumnAndRow(22, $row)->getValue(),
+            				'receivedBy' => $objWorksheet->getCellByColumnAndRow(23, $row)->getValue(),
             				'samples' => array(),
             			);
             		$sampleRow = $row;
             		$sample = array(
-            				'sampleName' => $objWorksheet->getCellByColumnAndRow(10, $row)->getValue(),
-            				'sampleCode' => $objWorksheet->getCellByColumnAndRow(12, $row)->getValue(),
-            				'description' => $objWorksheet->getCellByColumnAndRow(11, $row)->getCalculatedValue(),
+            				'sampleName' => $objWorksheet->getCellByColumnAndRow(12, $row)->getValue(),
+            				'sampleCode' => $objWorksheet->getCellByColumnAndRow(14, $row)->getValue(),
+            				'description' => $objWorksheet->getCellByColumnAndRow(13, $row)->getCalculatedValue(),
             				'remarks' => '',
             				'sampleMonth' => date('m', strtotime($objWorksheet->getCellByColumnAndRow(1, $row)->getValue())),
             				'sampleYear' => date('Y', strtotime($objWorksheet->getCellByColumnAndRow(1, $row)->getValue())),
             				'analyses'=> array()
             		);
-            		
+            		$trimText = '(Id: '.$objWorksheet->getCellByColumnAndRow(16, $row)->getCalculatedValue().')';
             		$analysis = array(
             				//'sample_id' => $objWorksheet->getCellByColumnAndRow(10, $row)->getValue(),
-            				'sampleCode' => $objWorksheet->getCellByColumnAndRow(12, $row)->getValue(),
-            				'testName' => $objWorksheet->getCellByColumnAndRow(13, $row)->getValue(),
-            				'method' => $objWorksheet->getCellByColumnAndRow(14, $row)->getValue(),
-            				'references' => $objWorksheet->getCellByColumnAndRow(15, $row)->getValue(),
+            				'sampleCode' => $objWorksheet->getCellByColumnAndRow(14, $row)->getValue(),
+							'testId' => $objWorksheet->getCellByColumnAndRow(16, $row)->getCalculatedValue(),
+            				'testName' =>rtrim($objWorksheet->getCellByColumnAndRow(15, $row)->getValue(), $trimText),
+            				'method' => $objWorksheet->getCellByColumnAndRow(17, $row)->getCalculatedValue(),
+            				'references' => $objWorksheet->getCellByColumnAndRow(18, $row)->getCalculatedValue(),
             				'quantitty' => 1,
-            				'fee' => $objWorksheet->getCellByColumnAndRow(16, $row)->getValue(),
+            				'fee' => $objWorksheet->getCellByColumnAndRow(19, $row)->getCalculatedValue(),
             		);
             		
             		array_push($sample['analyses'], $analysis);
@@ -396,9 +398,9 @@ class RequestController extends Controller
 				if($requestCol == '' AND $sampleCol != ''){
 					$sampleRow = $row; 
             		$sample = array(
-            				'sampleName' => $objWorksheet->getCellByColumnAndRow(10, $row)->getValue(),
-            				'sampleCode' => $objWorksheet->getCellByColumnAndRow(12, $row)->getValue(),
-            				'description' => $objWorksheet->getCellByColumnAndRow(11, $row)->getCalculatedValue(),
+            				'sampleName' => $objWorksheet->getCellByColumnAndRow(12, $row)->getValue(),
+            				'sampleCode' => $objWorksheet->getCellByColumnAndRow(14, $row)->getValue(),
+            				'description' => $objWorksheet->getCellByColumnAndRow(13, $row)->getCalculatedValue(),
             				'remarks' => '',
             				'sampleMonth' => date('m', strtotime($objWorksheet->getCellByColumnAndRow(1, $requestRow)->getValue())),
             				'sampleYear' => date('Y', strtotime($objWorksheet->getCellByColumnAndRow(1, $requestRow)->getValue())),
@@ -409,14 +411,16 @@ class RequestController extends Controller
             	}
             	
             	if($requestCol == '' AND $sampleCol == '' AND $analysisCol != ''){
+            		$trimText = '(Id: '.$objWorksheet->getCellByColumnAndRow(16, $row)->getCalculatedValue().')';
             		$analysis = array(
             				//'sample_id' => $objWorksheet->getCellByColumnAndRow(10, $row)->getValue(),
-            				'sampleCode' => $objWorksheet->getCellByColumnAndRow(12, $sampleRow)->getValue(),
-            				'testName' => $objWorksheet->getCellByColumnAndRow(13, $row)->getValue(),
-            				'method' => $objWorksheet->getCellByColumnAndRow(14, $row)->getValue(),
-            				'references' => $objWorksheet->getCellByColumnAndRow(15, $row)->getValue(),
+            				'sampleCode' => $objWorksheet->getCellByColumnAndRow(14, $sampleRow)->getValue(),
+            				'testId' => $objWorksheet->getCellByColumnAndRow(16, $row)->getCalculatedValue(),
+            				'testName' =>rtrim($objWorksheet->getCellByColumnAndRow(15, $row)->getValue(), $trimText),
+            				'method' => $objWorksheet->getCellByColumnAndRow(17, $row)->getCalculatedValue(),
+            				'references' => $objWorksheet->getCellByColumnAndRow(18, $row)->getCalculatedValue(),
             				'quantity' => 1,
-            				'fee' => $objWorksheet->getCellByColumnAndRow(16, $row)->getValue(),
+            				'fee' => $objWorksheet->getCellByColumnAndRow(19, $row)->getCalculatedValue(),
             		);
             		$requestCount = count($importData) - 1;
             		$sampleCount = count($importData[$requestCount]['samples']) - 1;
@@ -424,14 +428,16 @@ class RequestController extends Controller
             	}
             	
             	if($requestCol == '' AND $sampleCol != '' AND $analysisCol != ''){
+            		$trimText = '(Id: '.$objWorksheet->getCellByColumnAndRow(16, $row)->getCalculatedValue().')';
             		$analysis = array(
             				//'sample_id' => $objWorksheet->getCellByColumnAndRow(10, $row)->getValue(),
-            				'sampleCode' => $objWorksheet->getCellByColumnAndRow(12, $sampleRow)->getValue(),
-            				'testName' => $objWorksheet->getCellByColumnAndRow(13, $row)->getValue(),
-            				'method' => $objWorksheet->getCellByColumnAndRow(14, $row)->getValue(),
-            				'references' => $objWorksheet->getCellByColumnAndRow(15, $row)->getValue(),
+            				'sampleCode' => $objWorksheet->getCellByColumnAndRow(14, $sampleRow)->getValue(),
+            				'testId' => $objWorksheet->getCellByColumnAndRow(16, $row)->getCalculatedValue(),
+            				'testName' =>rtrim($objWorksheet->getCellByColumnAndRow(15, $row)->getValue(), $trimText),
+            				'method' => $objWorksheet->getCellByColumnAndRow(17, $row)->getCalculatedValue(),
+            				'references' => $objWorksheet->getCellByColumnAndRow(18, $row)->getCalculatedValue(),
             				'quantity' => 1,
-            				'fee' => $objWorksheet->getCellByColumnAndRow(16, $row)->getValue(),
+            				'fee' => $objWorksheet->getCellByColumnAndRow(19, $row)->getCalculatedValue(),
             		);
             		$requestCount = count($importData) - 1;
             		$sampleCount = count($importData[$requestCount]['samples']) - 1;
@@ -455,13 +461,15 @@ class RequestController extends Controller
 		));
 	}
 	
-	public function customerLookup($customerName, $field)
+	public function customerLookup($customerId, $field)
 	{
-		$customer = Customer::model()->find(array(
+		/*$customer = Customer::model()->find(array(
    			'select'=>'id, customerName, address', 
     		'condition'=>'customerName = :customerName',
     		'params'=>array(':customerName' => $customerName)
-		));
+		));*/
+		
+		$customer = Customer::model()->findByPk($customerId);
 		
 		switch($field){
 			case 'id':
@@ -518,7 +526,7 @@ class RequestController extends Controller
 			
 			$requestModel->conforme = $request['conforme'];
 			$requestModel->receivedBy = $request['receivedBy'];
-			$requestModel->create_time = '0000-00-00 00:00:00';
+			$requestModel->create_time = $requestModel->requestDate;
 			$requestModel->cancelled = 0;    
 			
 			if($requestModel->save(false))
@@ -549,7 +557,7 @@ class RequestController extends Controller
 							$analysis->references = $test['references'];
 							$analysis->quantity = 1;
 							$analysis->fee = $test['fee'];
-							$analysis->testId = 0;
+							$analysis->testId = $test['testId'];
 							$analysis->analysisMonth = $sampleModel->sampleMonth;
 							$analysis->analysisYear = $sampleModel->sampleYear;
 							$analysis->package = 0;
@@ -586,7 +594,7 @@ class RequestController extends Controller
 			exit;
 		}
 	}
-	
+
 	/*function checkRequestCodes($rstl_id){
 		/*$requestcode = Requestcode::model()->count(
 			array('condition'=>'rstl_id = :rstl_id', 'params'=>array(':rstl_id'=>$rstl_id))
@@ -821,7 +829,7 @@ class RequestController extends Controller
 				$analyses_sum += $analysis['fee'];
 			}
 		}
-		
+		$discount = $analyses_sum * (Discount::model()->findByPk($request['discount'])->rate / 100);
 		$samplesDataProvider = new CArrayDataProvider($samples);	
 		$analysesDataProvider = new CArrayDataProvider($analyses);
 		echo CJSON::encode(array(
@@ -831,8 +839,192 @@ class RequestController extends Controller
 					'samples'=>$samples,
 					'analyses'=>$analyses,
 					'analyses_sum'=>$analyses_sum,
+					'discount'=>$discount,
 					'analysesDataProvider'=>$analysesDataProvider
 				),true,true)
 		));
 	}
+	
+	public function actionCreatedataentryfile(){
+		$labDataProvider=new CActiveDataProvider(Lab, array(
+				'pagination'=>false,
+				'criteria'=>array('condition'=>'status=1')
+		));
+		
+		$labs=Lab::model()->findAll(array('condition'=>'status=1'));
+		if($labs){
+			$labCount=count($labs);
+			$labArray=array();
+			foreach($labs as $lab){
+				$labArray[]=array('labId'=>$lab->id, 'labName'=>$lab->labCode. " - ".$lab->labName);
+			}
+		}
+		
+		$discounts=Discount::model()->findAll(array('condition'=>'status=1'));
+		if($discounts){
+			$discountCount=count($discounts);
+			$discountArray=array();
+			foreach($discounts as $discount){
+				$discountArray[]=array('discountId'=>$discount->id, 'discountType'=>$discount->rate."% - ".$discount->type);
+			}
+		}
+		
+		$paymentTypeArray=array();
+		$paymentTypeArray[0]=array('paymentTypeId'=>1, 'paymentType'=>'Paid');
+		$paymentTypeArray[1]=array('paymentTypeId'=>2, 'paymentType'=>'Fully Subsidized');
+		$paymentTypeCount=2;
+
+		$customers=Customer::model()->findAll(array('order'=>'customerName ASC'));
+		if($customers){
+			$customerCount=count($customers);
+			$customerArray=array();
+			foreach($customers as $customer){
+				$customerArray[]=array('customerId'=>$customer->id, 'customerName'=>$customer->customerName);
+			}
+		}
+		
+		$tests=Test::model()->findAll(array('order'=>'sampleType ASC, testName ASC'));
+		if($tests){
+			$testCount=count($tests);
+			$testArray=array();
+			foreach($tests as $test){
+				$testArray[]=array('testId'=>$test->id,
+					'sampleType_id'=>$test->sampleType, 
+					'testName'=>Chtml::encode($test->testName.' (Id: '.$test->id.')'),
+					'method'=>Chtml::encode($test->method),
+					'references'=>Chtml::encode($test->references),
+					'fee'=>$test->fee
+					);
+			}
+		}
+		
+		$sampleTypes=Sampletype::model()->findAll(array('order'=>'sampleType ASC'));
+		if($sampleTypes){
+			$sampleTypeCount=count($sampleTypes);
+			$sampleTypeArray=array();
+			foreach($sampleTypes as $sampleType){
+				$sampleTypeArray[]=array(
+					'sampleType'=>$sampleType->sampleType.' (Id: ' .$sampleType->id.')' ,
+					'sampleTypeId'=>$sampleType->id,					
+				);
+			}
+		}
+		
+		//using function inside array_map to merge array even when array is NULL
+		//http://stackoverflow.com/questions/16891397/php-merge-array-on-nulls
+		//answer from ExpertSystem (http://stackoverflow.com/users/2341938/expertsystem)
+		//http://ideone.com/an6bH9 
+		
+		$data = array_map(function ($arr1, $arr2) {
+		$new2 = array();
+		foreach ($arr2 as $key => $value) {
+		if (($value !== NULL) || !isset($arr1[$key])) {
+			$new2[$key] = $value;
+			}
+		}
+			if($arr1==NULL){
+				return $new2;
+			}else{
+				return array_merge($arr1, $new2);
+			}
+		}, $labArray, $customerArray);	
+		
+		//merge $data with discount array		
+		$data1 = array_map(function ($arr1, $arr2) {
+		$new2 = array();
+		foreach ($arr2 as $key => $value) {
+		if (($value !== NULL) || !isset($arr1[$key])) {
+			$new2[$key] = $value;
+			}
+		}
+			if($arr1==NULL){
+				return $new2;
+			}else{
+				return array_merge($arr1, $new2);
+			}
+		}, $data, $discountArray);	
+		
+		//merge $data1 with paymentType array
+		$data2 = array_map(function ($arr1, $arr2) {
+		$new2 = array();
+		foreach ($arr2 as $key => $value) {
+		if (($value !== NULL) || !isset($arr1[$key])) {
+			$new2[$key] = $value;
+			}
+		}
+			if($arr1==NULL){
+				return $new2;
+			}else{
+				return array_merge($arr1, $new2);
+			}
+		}, $data1, $paymentTypeArray);	
+		
+		//merge $data2 with testArray
+		$data3 = array_map(function ($arr1, $arr2) {
+		$new2 = array();
+		foreach ($arr2 as $key => $value) {
+		if (($value !== NULL) || !isset($arr1[$key])) {
+			$new2[$key] = $value;
+			}
+		}
+			if($arr1==NULL){
+				return $new2;
+			}else{
+				return array_merge($arr1, $new2);
+			}
+		}, $data2, $testArray);	
+		
+		//merge $data3 with sampleTypeArray
+		$data4=array_map(function ($arr1, $arr2) {
+		$new2 = array();
+		foreach ($arr2 as $key => $value) {
+		if (($value !== NULL) || !isset($arr1[$key])) {
+			$new2[$key] = $value;
+			}
+		}
+			if($arr1==NULL){
+				return $new2;
+			}else{
+				return array_merge($arr1, $new2);
+			}
+		}, $data3, $sampleTypeArray);	
+		
+		$dataProvider=new CArrayDataProvider($data4);
+		
+		$this->widget('ext.eexcelview.EExcelViewCreateDataEntryFile', array(
+			'dataProvider'=>$dataProvider,
+			'columns'=>array(
+				'paymentType',
+				'paymentTypeId',
+				'discountType',
+				'discountId',				
+				'labName',
+				'labId',				
+				'customerName',
+				'customerId',				
+				'testName',
+				'testId',
+				'sampleType_id',
+				'method',
+				'references',
+				'fee',
+				'sampleType',
+				'sampleTypeId'
+			),
+			'title'=>'Data Entry Form for ULIMS',
+			'filename'=>'DataEntryForm',
+			'grid_mode'=>'export',
+			'exportType' => 'Excel2007',
+			'creator' =>'ULIMS',
+			'subject'=>'Data entry form for ULIMS',
+			'labCount'=>$labCount,
+			'discountCount'=>$discountCount,
+			'paymentTypeCount'=>$paymentTypeCount,
+			'customerCount'=>$customerCount,
+			'testCount'=>$testCount,
+			'sampleTypeCount'=>$sampleTypeCount,
+			)
+		);
+
+	}	
 }

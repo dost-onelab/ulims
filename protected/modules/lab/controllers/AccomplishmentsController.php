@@ -1100,13 +1100,12 @@ class AccomplishmentsController extends Controller
 	public function getYear()
 	{
 		$request = Request::model()->find(array(
-					'select' => 'MIN(requestDate) as minDate',
+					'select' => '*',
 					'order' => 'requestDate ASC',
-				    //'params' => array(':minDate' => date('Y')),
 				));
 		
 		$listYear = array();
-		for ($year = date('Y'); $year >= 2013; $year = $year - 1) {
+		for ($year = date('Y'); $year >= date('Y', strtotime($request->requestDate)); $year = $year - 1) {
 			$y = array("index" => $year , "year" => $year);
 			array_push($listYear, $y);
 		}
