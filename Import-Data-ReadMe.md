@@ -14,7 +14,7 @@ The following are the files added/updated on this feature:
         ulims/protected/modules/lab/controllers/RequestController.php
         ulims/protected/modules/lab/controllers/AccomplishmentsController.php
         ulims/protected/modules/lab/views/request/importData.php
-        ulims/protected/modules/lab/views/request/importRequestDetail.php
+        ulims/protected/modules/lab/views/request/_importRequestDetail.php
         ulims/upload/import.txt
         ```
 
