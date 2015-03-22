@@ -28,11 +28,14 @@ After updating local ULIMS grant read/write permissions on the file `ulims/uploa
 
 ####DATA ENTRY FORM ver.1####
 
-Generate the `DataEntryForm.xlsx` file from the ULIMS Laboratory Module (navigate to http://{server Hostname or IP}/ulims/lab/request/importData). Data for `lab`, `customer`, `discount`, `sampletype` and `test` will be available for lookup in the generated file.
+Generate (using Chrome) the `DataEntryForm.xlsx` file from the ULIMS Laboratory Module (navigate to http://{server Hostname or IP}/ulims/lab/request/importData). Data for `lab`, `customer`, `discount`, `sampletype` and `test` will be available for lookup in the generated file.
 
 Using the generated file, create monthly data entry files (e.g. Jan2010.xlsx, Feb2010.xlsx, Mar2010.xlsx ...) for easy management.
 
 ####LOADING THE DATA ENTRY FORM ON ULIMS####
 
-Use the monthly data entry files and try loading them to verify that all entries on the file are
+Browse and load each monthly data entry files to verify that all entries. Take some time to navigate and check each entry. View the samples and tests for each request by clicking of the Request Reference.
 
+####IMPORTING DATA####
+
+After thoroughly checking each request, Click on the green Import Requests button. If you dont see the button, your data entry file may have requests(requestRefNum) already in ULIMS database which will be in red text. Check the data entry file again for the duplicates. Then try loading the file again.
