@@ -8,7 +8,7 @@ This document aims to provide instructions on how to use the Import Data feature
 
 The following are the files added/updated on this feature:
 
-        ```
+
         ulims/protected/data/DataEntryForm.xlsx
         ulims/protected/extensions/eexcelview/EExcelViewCreateDataEntryFile.php
         ulims/protected/modules/lab/controllers/RequestController.php
@@ -16,7 +16,7 @@ The following are the files added/updated on this feature:
         ulims/protected/modules/lab/views/request/importData.php
         ulims/protected/modules/lab/views/request/_importRequestDetail.php
         ulims/upload/import.txt
-        ```
+
 
 Download the each file manually and update your existing ULIMS installation or use the synch from this repository.
 
@@ -24,7 +24,7 @@ Download the each file manually and update your existing ULIMS installation or u
 
 After updating local ULIMS grant read/write permissions on the file `ulims/upload/import.txt` by running:
   
-    `sudo chmod -R 777 ulims/upload/import.txt`
+        sudo chmod -R 777 ulims/upload/import.txt
 
 ####DATA ENTRY FORM ver.1####
 
