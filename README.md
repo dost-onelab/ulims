@@ -77,7 +77,7 @@ From your existing ULIMS installation do the following:
         UPDATE `ulimslab`.`request` SET `create_time` = `requestDate`
         ALTER TABLE `request` CHANGE `create_time` `create_time` TIMESTAMP NOT NULL
         ALTER TABLE `request` CHANGE `create_time` `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-        ```    chm
+        ```
     This modifications with fix the issue on generating duplicate request reference when creating requests.
             
             
