@@ -342,7 +342,6 @@ class RequestController extends Controller
             for ($row = 8; $row <= $highestRow; ++$row) {
             	$requestCol = $objWorksheet->getCellByColumnAndRow(0, $row)->getValue();
             	$dateCol = $objWorksheet->getCellByColumnAndRow(1, $row)->getValue();
-            	//$sampleCol = $objWorksheet->getCellByColumnAndRow(10, $row)->getValue();
             	$sampleCol = $objWorksheet->getCellByColumnAndRow(12, $row)->getValue();
             	$analysisCol = $objWorksheet->getCellByColumnAndRow(15, $row)->getValue();
             	
@@ -353,10 +352,10 @@ class RequestController extends Controller
             				'id'=>$count,
             				'year'=>$year,
             				'requestRefNum' => $this->requestLookup($objWorksheet->getCellByColumnAndRow(0, $row)->getValue()),
+            				'requestReference' => $objWorksheet->getCellByColumnAndRow(0, $row)->getValue(),
             				'requestDate' => $objWorksheet->getCellByColumnAndRow(1, $row)->getValue(),
             				'customerId' => $this->customerLookup($objWorksheet->getCellByColumnAndRow(9, $row)->getCalculatedValue(), 'id'),
             				'customer' => $this->customerLookup($objWorksheet->getCellByColumnAndRow(9, $row)->getCalculatedValue(), 'customerName'),
-            				//'address' => $this->customerLookup($objWorksheet->getCellByColumnAndRow(8, $row)->getValue(), 'address'),
             				'rstl_id' => Yii::app()->Controller->getRstlId(),
             				'labId' => $objWorksheet->getCellByColumnAndRow(3, $row)->getCalculatedValue(),
             				'paymentType' => $objWorksheet->getCellByColumnAndRow(5, $row)->getCalculatedValue(),
@@ -452,23 +451,19 @@ class RequestController extends Controller
 		$data = file_get_contents($file);
 		$arr = unserialize($data);
 		$importDataProvider = new CArrayDataProvider($arr);
+		//$has_duplicate = true;
 		
 		$this->render('importData',array(
 			'file_path'=>$file_path,
 			'importDataProvider'=>$importDataProvider, 
 			'importData'=>$arr,
-			'data'=>$data
+			'data'=>$data,
+			'has_duplicate'=>$this->checkExistingRequests($arr)
 		));
 	}
 	
 	public function customerLookup($customerId, $field)
 	{
-		/*$customer = Customer::model()->find(array(
-   			'select'=>'id, customerName, address', 
-    		'condition'=>'customerName = :customerName',
-    		'params'=>array(':customerName' => $customerName)
-		));*/
-		
 		$customer = Customer::model()->findByPk($customerId);
 		
 		switch($field){
@@ -494,6 +489,23 @@ class RequestController extends Controller
     		'params'=>array(':requestRefNum' => $requestRefNum)
 		));
 		return $request ? '<b>Request: "<i style="color:red">'.$requestRefNum.'</i>" already exist in the database</b>' : $requestRefNum;
+	}
+	
+	public function checkExistingRequests($requests)
+	{
+		$has_duplicate = false;
+		foreach($requests as $request){
+			$data = Request::model()->find(array(
+	   			'select'=>'requestRefNum', 
+	    		'condition'=>'requestRefNum = :requestRefNum',
+	    		'params'=>array(':requestRefNum' => $request['requestReference'])
+			));
+			$has_duplicate = $data ? true : false;
+			if($has_duplicate){
+				return true;
+			}		
+		}
+		return false;
 	}
 	
 	public function actionImport()

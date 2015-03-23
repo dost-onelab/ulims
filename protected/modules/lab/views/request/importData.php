@@ -95,11 +95,13 @@ $this->menu=array(
 </div>	
 
 <?php 
-	echo Chtml::link('<span class="icon-white icon-download-alt"></span> Import Requests', '', array(
+	$importLink = Chtml::link('<span class="icon-white icon-download-alt"></span> Import Requests', '', array(
 			'title'=>'Import Requests',
 			'class'=>'btn btn-success',
 			"onclick"=>"if (!confirm('Import all Request?')){return}else{ confirmImport(); $('#dialogConfirmImport').dialog('open'); }",	
 			));
+			
+	echo $has_duplicate ? '' : $importLink;
 ?>
 
 <!-- Request Details Dialog : Start -->
