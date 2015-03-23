@@ -39,3 +39,5 @@ Browse and load each monthly data entry files to verify that all entries. Take s
 ####IMPORTING DATA####
 
 After thoroughly checking each request, Click on the green Import Requests button. If you dont see the button, your data entry file may have requests(requestRefNum) already in ULIMS database which will be in red text. Check the data entry file again for the duplicates. Then try loading the file again.
+
+`Note: Use this feature ONLY to import Requests from previous years/months. Ensure that all entries are checked and verified especially the Request Reference Numbers and Request Dates.`
