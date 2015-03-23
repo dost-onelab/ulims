@@ -34,7 +34,7 @@ Using the generated file, create monthly data entry files (e.g. Jan2010-CHE.xlsx
 
 ####LOADING THE DATA ENTRY FORM ON ULIMS####
 
-Browse and load each monthly data entry files to verify that all entries. Take some time to navigate and check each entry. View the samples and tests for each request by clicking of the Request Reference.
+Browse and load each monthly data entry files to verify that all entries. Take some time to navigate and check each entry. View the samples and tests for each request by clicking of the Request Reference(verify that sample codes are in order).
 
 ####IMPORTING DATA####
 
