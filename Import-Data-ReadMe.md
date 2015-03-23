@@ -6,7 +6,7 @@ This document aims to provide instructions on how to use the Import Data feature
 
 ####UPDATE FILES####
 
-The following are the files added/updated on this feature:
+The following are the files added/updated for this feature:
 
 
         ulims/protected/data/DataEntryForm.xlsx
@@ -28,9 +28,9 @@ After updating local ULIMS grant read/write permissions on the file `ulims/uploa
 
 ####DATA ENTRY FORM ver.1####
 
-Generate (using Chrome) the `DataEntryForm.xlsx` file from the ULIMS Laboratory Module (navigate to http://{server Hostname or IP}/ulims/lab/request/importData). Data for `lab`, `customer`, `discount`, `sampletype` and `test` will be available for lookup in the generated file.
+Generate (using Chrome) the `DataEntryForm.xlsx` file from the ULIMS Laboratory Module (navigate to `http://{server Hostname or IP}/ulims/lab/request/importData`). Data for `lab`, `customer`, `discount`, `sampletype` and `test` will be available for lookup in the generated file.
 
-Using the generated file, create monthly data entry files (e.g. Jan2010.xlsx, Feb2010.xlsx, Mar2010.xlsx ...) for easy management.
+Using the generated file, create monthly data entry files (e.g. Jan2010-CHE.xlsx, Feb2010-CHE.xlsx, Mar2010-CHE.xlsx ...) for easy management.
 
 ####LOADING THE DATA ENTRY FORM ON ULIMS####
 
