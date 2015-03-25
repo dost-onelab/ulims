@@ -25,7 +25,25 @@ Download the each file manually and update your existing ULIMS installation or u
 After updating local ULIMS grant read/write permissions on the file `ulims/upload/import.txt` by running:
   
         sudo chmod -R 777 ulims/upload/import.txt
+        
+####UPDATE ULIMS RIGHTS####
 
+        View `ulimsportal.AuthItemChild` table and query for the string "Import" under the `child` column.
+        
+        Results should show as follows. Insert any entries below not found in your table.
+        
+        | parent                | child                                 |
+        | --------------------- |---------------------------------------|
+        | Lab - System Manager 	| Lab.Request.ImportData                |
+        | Lab - System Manager 	| Lab.Request.ImportRequest             |
+        | Lab - System Manager 	| Lab.Request.ImportRequestDetails      |
+        | Lab - System Manager 	| Lab.Request.Import                    |
+        | Lab - User            | Lab.Request.ImportData                |
+        | Lab - User            | Lab.Request.ImportRequest             |
+        | Lab - User            | Lab.Request.ImportRequestDetails      |
+        | Lab - User            | Lab.Request.Import                    |
+
+        
 ####DATA ENTRY FORM ver.1####
 
 Generate (using Chrome) the `DataEntryForm.xlsx` file from the ULIMS Laboratory Module (navigate to `http://{server Hostname or IP}/ulims/lab/request/importData`). Data for `lab`, `customer`, `discount`, `sampletype` and `test` will be available for lookup in the generated file.
