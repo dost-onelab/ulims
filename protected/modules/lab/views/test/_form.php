@@ -71,11 +71,11 @@
 		<?php 
 		echo $model->isNewRecord ? 
 			$form->dropDownList($model,'sampleType',CHtml::listData(
-								SampleType::model()->findAllByAttributes(array('testCategoryId'=>1)),
+								Sampletype::model()->findAllByAttributes(array('testCategoryId'=>1)),
 								'id', 'sampleType')) //for default create new record*/
 		:
 			$form->dropDownList($model,'sampleType',CHtml::listData(
-								SampleType::model()->findAllByAttributes(array('testCategoryId'=>$model->categoryId)),
+								Sampletype::model()->findAllByAttributes(array('testCategoryId'=>$model->categoryId)),
 								'id', 'sampleType'));
 		
 		
