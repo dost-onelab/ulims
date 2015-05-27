@@ -175,7 +175,7 @@ class TestController extends Controller
 	public function actionSampleType()
 	{
 	//please enter current controller name because yii send multi dim array 
-		$data=SampleType::model()->findAll('testCategoryId=:testCategoryId', 
+		$data=Sampletype::model()->findAll('testCategoryId=:testCategoryId', 
 					  array(':testCategoryId'=>$_POST['Test']['categoryId']));
 	 
 		$data=CHtml::listData($data,'id','sampleType');
