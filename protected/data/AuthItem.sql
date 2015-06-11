@@ -3,12 +3,18 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 17, 2015 at 01:27 PM
+-- Generation Time: Jun 11, 2015 at 08:24 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `ulimsportal`
@@ -364,7 +370,20 @@ INSERT INTO `AuthItem` (`name`, `type`, `description`, `bizrule`, `data`) VALUES
 ('Ref.Result.Create', 0, NULL, NULL, 'N;'),
 ('Ref.Result.Update', 0, NULL, NULL, 'N;'),
 ('Ref.Result.Index', 0, NULL, NULL, 'N;'),
-('Ref.Result.Admin', 0, NULL, NULL, 'N;');
+('Ref.Result.Admin', 0, NULL, NULL, 'N;'),
+('Ref.Referral.UploadResult', 0, NULL, NULL, 'N;'),
+('Ref.Result.Download', 0, NULL, NULL, 'N;'),
+('Ref.Referral.ValidateReferral', 0, NULL, NULL, 'N;'),
+('Lab.Request.Createdataentryfile', 0, NULL, NULL, 'N;'),
+('Ref.Referral.NotifyAgency', 0, NULL, NULL, 'N;'),
+('Ref.Referral.Read', 0, NULL, NULL, 'N;'),
+('Ref.Referral.ReadNotice', 0, NULL, NULL, 'N;'),
+('Ref.Referral.Markread', 0, NULL, NULL, 'N;'),
+('Ref.Labservice.Update', 0, NULL, NULL, 'N;'),
+('Ref.Labservice.GetSampleType', 0, NULL, NULL, 'N;'),
+('Ref.Labservice.GetTestName', 0, NULL, NULL, 'N;'),
+('Ref.Referral.Authenticate', 0, NULL, NULL, 'N;'),
+('Ref.Labservice.GetMethodReference', 0, NULL, NULL, 'N;');
 
 --
 -- Indexes for dumped tables
@@ -375,3 +394,7 @@ INSERT INTO `AuthItem` (`name`, `type`, `description`, `bizrule`, `data`) VALUES
 --
 ALTER TABLE `AuthItem`
  ADD PRIMARY KEY (`name`);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

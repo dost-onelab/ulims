@@ -3,12 +3,18 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 17, 2015 at 01:30 PM
+-- Generation Time: Jun 11, 2015 at 08:24 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `ulimsportal`
@@ -170,6 +176,7 @@ INSERT INTO `AuthItemChild` (`parent`, `child`) VALUES
 ('Lab - System Manager', 'Lab.Request.Admin'),
 ('Lab - System Manager', 'Lab.Request.Cancel'),
 ('Lab - System Manager', 'Lab.Request.Create'),
+('Lab - System Manager', 'Lab.Request.Createdataentryfile'),
 ('Lab - System Manager', 'Lab.Request.CreateOP'),
 ('Lab - System Manager', 'Lab.Request.genRequestExcel'),
 ('Lab - System Manager', 'Lab.Request.Import'),
@@ -247,6 +254,10 @@ INSERT INTO `AuthItemChild` (`parent`, `child`) VALUES
 ('Lab - System Manager', 'Ref.LabService.ActivateService'),
 ('Lab - System Manager', 'Ref.LabService.Admin'),
 ('Lab - System Manager', 'Ref.LabService.DeactivateService'),
+('Lab - System Manager', 'Ref.Labservice.GetMethodReference'),
+('Lab - System Manager', 'Ref.Labservice.GetSampleType'),
+('Lab - System Manager', 'Ref.Labservice.GetTestName'),
+('Lab - System Manager', 'Ref.Labservice.Update'),
 ('Lab - System Manager', 'Ref.Orderofpayment.Admin'),
 ('Lab - System Manager', 'Ref.Orderofpayment.Create'),
 ('Lab - System Manager', 'Ref.Orderofpayment.SearchReferrals'),
@@ -254,16 +265,24 @@ INSERT INTO `AuthItemChild` (`parent`, `child`) VALUES
 ('Lab - System Manager', 'Ref.Orderofpayment.UpdateAmount'),
 ('Lab - System Manager', 'Ref.Orderofpayment.View'),
 ('Lab - System Manager', 'Ref.Referral.Admin'),
+('Lab - System Manager', 'Ref.Referral.Authenticate'),
 ('Lab - System Manager', 'Ref.Referral.Create'),
+('Lab - System Manager', 'Ref.Referral.Markread'),
+('Lab - System Manager', 'Ref.Referral.NotifyAgency'),
+('Lab - System Manager', 'Ref.Referral.Read'),
+('Lab - System Manager', 'Ref.Referral.ReadNotice'),
 ('Lab - System Manager', 'Ref.Referral.SearchAgency'),
 ('Lab - System Manager', 'Ref.Referral.Send'),
 ('Lab - System Manager', 'Ref.Referral.Update'),
+('Lab - System Manager', 'Ref.Referral.UploadResult'),
+('Lab - System Manager', 'Ref.Referral.ValidateReferral'),
 ('Lab - System Manager', 'Ref.Referral.View'),
 ('Lab - System Manager', 'Ref.Referralstatus.Create'),
 ('Lab - System Manager', 'Ref.Referralstatus.Update'),
 ('Lab - System Manager', 'Ref.Referralstatus.UpdateStatus'),
 ('Lab - System Manager', 'Ref.Result.Admin'),
 ('Lab - System Manager', 'Ref.Result.Create'),
+('Lab - System Manager', 'Ref.Result.Download'),
 ('Lab - System Manager', 'Ref.Result.Index'),
 ('Lab - System Manager', 'Ref.Result.Update'),
 ('Lab - System Manager', 'Ref.Result.View'),
@@ -331,8 +350,10 @@ INSERT INTO `AuthItemChild` (`parent`, `child`) VALUES
 ('Lab - User', 'Lab.Referral.View'),
 ('Lab - User', 'Lab.Request.Admin'),
 ('Lab - User', 'Lab.Request.Create'),
+('Lab - User', 'Lab.Request.Createdataentryfile'),
 ('Lab - User', 'Lab.Request.CreateOP'),
 ('Lab - User', 'Lab.Request.genRequestExcel'),
+('Lab - User', 'Lab.Request.Import'),
 ('Lab - User', 'Lab.Request.ImportData'),
 ('Lab - User', 'Lab.Request.ImportRequest'),
 ('Lab - User', 'Lab.Request.ImportRequestDetail'),
@@ -396,6 +417,10 @@ INSERT INTO `AuthItemChild` (`parent`, `child`) VALUES
 ('Lab - User', 'Ref.LabService.ActivateService'),
 ('Lab - User', 'Ref.LabService.Admin'),
 ('Lab - User', 'Ref.LabService.DeactivateService'),
+('Lab - User', 'Ref.Labservice.GetMethodReference'),
+('Lab - User', 'Ref.Labservice.GetSampleType'),
+('Lab - User', 'Ref.Labservice.GetTestName'),
+('Lab - User', 'Ref.Labservice.Update'),
 ('Lab - User', 'Ref.Orderofpayment.Admin'),
 ('Lab - User', 'Ref.Orderofpayment.Create'),
 ('Lab - User', 'Ref.Orderofpayment.SearchReferrals'),
@@ -403,16 +428,24 @@ INSERT INTO `AuthItemChild` (`parent`, `child`) VALUES
 ('Lab - User', 'Ref.Orderofpayment.UpdateAmount'),
 ('Lab - User', 'Ref.Orderofpayment.View'),
 ('Lab - User', 'Ref.Referral.Admin'),
+('Lab - User', 'Ref.Referral.Authenticate'),
 ('Lab - User', 'Ref.Referral.Create'),
+('Lab - User', 'Ref.Referral.Markread'),
+('Lab - User', 'Ref.Referral.NotifyAgency'),
+('Lab - User', 'Ref.Referral.Read'),
+('Lab - User', 'Ref.Referral.ReadNotice'),
 ('Lab - User', 'Ref.Referral.SearchAgency'),
 ('Lab - User', 'Ref.Referral.Send'),
 ('Lab - User', 'Ref.Referral.Update'),
+('Lab - User', 'Ref.Referral.UploadResult'),
+('Lab - User', 'Ref.Referral.ValidateReferral'),
 ('Lab - User', 'Ref.Referral.View'),
 ('Lab - User', 'Ref.Referralstatus.Create'),
 ('Lab - User', 'Ref.Referralstatus.Update'),
 ('Lab - User', 'Ref.Referralstatus.UpdateStatus'),
 ('Lab - User', 'Ref.Result.Admin'),
 ('Lab - User', 'Ref.Result.Create'),
+('Lab - User', 'Ref.Result.Download'),
 ('Lab - User', 'Ref.Result.Index'),
 ('Lab - User', 'Ref.Result.Update'),
 ('Lab - User', 'Ref.Result.View'),
@@ -438,3 +471,7 @@ INSERT INTO `AuthItemChild` (`parent`, `child`) VALUES
 --
 ALTER TABLE `AuthItemChild`
  ADD PRIMARY KEY (`parent`,`child`), ADD KEY `child` (`child`);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
