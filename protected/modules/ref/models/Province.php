@@ -9,15 +9,16 @@
  * @property string $name
  * @property string $code
  */
-class Province extends CActiveRecord
+class Province extends CFormModel
 {
+	public $id, $regionId, $name, $code;
 	/**
 	 * @return string the associated database table name
 	 */
-	public function tableName()
+	/*public function tableName()
 	{
 		return 'province';
-	}
+	}*/
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -92,10 +93,10 @@ class Province extends CActiveRecord
 	/**
 	 * @return CDbConnection the database connection used for this class
 	 */
-	public function getDbConnection()
+	/*public function getDbConnection()
 	{
 		return Yii::app()->referralDb;
-	}
+	}*/
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -115,8 +116,12 @@ class Province extends CActiveRecord
 	
 	public static function listDataByRegion($id)
 	{
-		return CHtml::listData(Province::model()->findAll(
+		/*return CHtml::listData(Province::model()->findAll(
 			array('condition'=>'regionId = :region_id', 'params'=>array(':region_id'=>$id))
-		), 'id', 'name');
+		), 'id', 'name');*/
+		//$provinces = RestController::getAdminData('provinces');
+		$provinces = RestController::searchResource('provinces', 'regionId', $id);
+		
+		return CHtml::listData($provinces, 'id', 'name');
 	}
 }

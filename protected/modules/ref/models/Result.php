@@ -8,16 +8,18 @@
  * @property integer $referral_id
  * @property string $filename
  */
-class Result extends CActiveRecord
+class Result extends CFormModel
 {
 	public $uploadFile;
+	
+	public $id, $referral_id, $filename, $uploadFile;
 	/**
 	 * @return string the associated database table name
 	 */
-	public function tableName()
+	/*public function tableName()
 	{
 		return 'result';
-	}
+	}*/
 
 	/**
 	 * @return array validation rules for model attributes.

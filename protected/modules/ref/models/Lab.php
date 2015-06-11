@@ -10,13 +10,14 @@
  */
 class Lab extends CActiveRecord
 {
+	public $id, $name, $rstl;
 	/**
 	 * @return string the associated database table name
 	 */
-	public function tableName()
+	/*public function tableName()
 	{
 		return 'lab';
-	}
+	}*/
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -90,10 +91,10 @@ class Lab extends CActiveRecord
 	/**
 	 * @return CDbConnection the database connection used for this class
 	 */
-	public function getDbConnection()
+	/*public function getDbConnection()
 	{
 		return Yii::app()->referralDb;
-	}
+	}*/
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -108,14 +109,7 @@ class Lab extends CActiveRecord
 	
 	public static function listData()
 	{	
-		$url = Yii::app()->Controller->getServer().'/labs';
-		$client = curl_init();
-	    curl_setopt($client, CURLOPT_URL, $url);
-		curl_setopt($client, CURLOPT_RETURNTRANSFER, 1);
-		$response = curl_exec($client);
-		curl_close($client);
-		
-		$labs = json_decode($response, true);
+		$labs = RestController::getAdminData('labs');
 		
 		return CHtml::listData($labs, 'id', 'labName');
 	}

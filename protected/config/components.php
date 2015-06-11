@@ -32,6 +32,18 @@ return array(
 		        ),*/
         	)
         ),
+        
+        /*'mailer' => array(
+	        // for smtp
+	        //'class' => 'ext.mailer.SmtpMailer',
+	        //'server' => 'smtp.163.com',
+	        //'port' => '25',
+	        //'username' => 'your username',
+	        //'password' => 'your password',
+	
+	        // for php mail
+	        'class' => 'ext.mailer.PhpMailer',
+	    ),*/
 
 		//Start: Original Code
 		//'user'=>array(
@@ -83,6 +95,15 @@ return array(
 			// use 'site/error' action to display errors
 			'errorAction'=>'site/error',
 		),
+		
+		/* yii-nfy : added 4/14/2015 - Start */
+		'queue' => array(
+	        'class' => 'nfy.components.NfyDbQueue',
+	        'name' => 'Notifications',
+	        'timeout' => 30,
+	    ),
+		/* yii-nfy : added 4/14/2015 - End */
+	    
 		'log'=>array(
 			'class'=>'CLogRouter',
 			'routes'=>array(
@@ -143,5 +164,11 @@ return array(
             'defaults'  => array(              //default settings for all editable elements
                'emptytext' => 'Click to edit'
             )
-        )
+        ),
+        
+        'securityManager'=>array(
+            //'cryptAlgorithm' => 'rijndael-128',
+            'cryptAlgorithm' => 'rijndael-192',
+            'encryptionKey' => '"'.file_get_contents(Yii::app()->params['keyPath']).'"',
+        ),
 );

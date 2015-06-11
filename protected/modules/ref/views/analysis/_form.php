@@ -4,7 +4,8 @@
 /* @var $form CActiveForm */
 Yii::app()->clientscript->scriptMap['jquery.js'] = false;
 Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;
-//print_r($model);
+$iconLoading = '<img src=\"/ulims/images/loading.gif\"/>';
+$iconOk = '<i class=\"icon icon-ok\"></i>';
 ?>
 
 <div class="form wide">
@@ -26,16 +27,33 @@ Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;
 		<?php echo $form->hiddenField($model,'id'); ?>
 		<?php //echo $form->error($model,'id'); ?>
 	</div>
-
+	<div id="hahaha"></div>
 	<div class="row">
 		<?php echo $form->labelEx($model,'sample_id'); ?>
 		<?php //echo $form->dropDownList($model,'sample_id', Referral::getSamples($referralId), array('style'=>'width: 350px;')); ?>
 		<?php echo $form->dropDownList($model, 'sample_id',
 						Referral::getSamples($referralId), 
-						array('ajax'=>array( 
+						array(
+							'style'=>'width: 350px;',
+							'ajax'=>array( 
 										'type'=>'POST',
 								 		'url'=>$this->createUrl('analysis/getTestName'),
-								 		'update'=>'#Analysis_testName_id',
+								 		//'update'=>'#Analysis_testName_id',
+								 		'beforeSend'=>'function(){
+								 				$("#testName").html("'.$iconLoading.'");
+								 				
+								 				$("#methodReference").html("");
+								 				$("#ref").html("");
+								 				$("#fee").html("");
+        									}', 
+										'success'=>'function(response){
+												$("#Analysis_testName_id").html(response);
+												$("#Analysis_methodReference_id").html("");
+												$("#reference").val("");
+									 			$("#Analysis_fee").val("");
+									 			
+												$("#testName").html("'.$iconOk.'");
+											}'
 								    ),
 						'empty'=>''
 								    ));?>
@@ -46,13 +64,29 @@ Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;
 		<?php echo $form->labelEx($model,'testName_id'); ?>
 		<?php echo $form->dropDownList($model, 'testName_id', 
 						Sampletypetestname::listDataBySampleType(), 
-						array('ajax'=>array( 
+						array(
+							'style'=>'width: 350px;',
+							'ajax'=>array( 
 										'type'=>'POST',
 								 		'url'=>$this->createUrl('analysis/getMethodReference'),
-								 		'update'=>'#Analysis_methodReference_id',
+								 		//'update'=>'#Analysis_methodReference_id',
+								 		'beforeSend'=>'function(){
+								 				$("#methodReference").html("'.$iconLoading.'");
+								 				
+								 				$("#ref").html("");
+								 				$("#fee").html("");
+        									}', 
+										'success'=>'function(response){
+												$("#Analysis_methodReference_id").html(response);
+												$("#reference").val("");
+									 			$("#Analysis_fee").val("");
+									 			
+												$("#methodReference").html("'.$iconOk.'");
+											}'
 								    ),
 						'empty'=>''
 								    ));?>
+		<span id="testName"></span>
 		<?php echo $form->error($model,'testName_id'); ?>
 	</div>
 	
@@ -60,46 +94,50 @@ Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;
 		<?php echo $form->labelEx($model,'methodReference_id'); ?>
 		<?php echo $form->dropDownList($model, 'methodReference_id',
 						Testnamemethod::listDataByTestName(0), 
-						array('ajax'=>array( 
+						array(
+							'style'=>'width: 350px;',
+							'ajax'=>array( 
 									 	'type'=>'POST',
 										'dataType'=>'JSON',
 									 	'url'=>$this->createUrl('analysis/getAnalysisDetails'),
-									 	'success'=>'js:function(data){
+									 	/*'success'=>'js:function(data){
 									 			  $("#reference").val(data.reference);
 									 			  $("#Analysis_fee").val(data.fee);
-									 			  }',
+									 			  }',*/
+										'beforeSend'=>'function(){
+								 				$("#ref").html("'.$iconLoading.'");
+								 				$("#fee").html("'.$iconLoading.'");
+        									}', 
+										'success'=>'function(data){
+												$("#reference").val(data.reference);
+									 			$("#Analysis_fee").val(data.fee);
+									 			
+												$("#ref").html("'.$iconOk.'");
+								 				$("#fee").html("'.$iconOk.'");
+											}'
 							    	),
 						'empty'=>''
 								    ));?>
+		<span id="methodReference"></span>
 		<?php echo $form->error($model,'methodReference_id'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'reference'); ?>
-		<?php echo CHtml::textField('reference','', array('readonly'=>'readonly')); ?>
+		<?php echo CHtml::textField('reference','', array('readonly'=>'readonly', 'style'=>'width: 335px;')); ?>
+		<span id="ref"></span>
 		<?php echo $form->error($model,'reference'); ?>
 	</div>
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'fee'); ?>
-		<?php echo $form->textField($model,'fee', array('readonly'=>'readonly')); ?>
+		<?php echo $form->textField($model,'fee', array('readonly'=>'readonly', 'style'=>'width: 335px;')); ?>
+		<span id="fee"></span>
 		<?php echo $form->error($model,'fee'); ?>
 	</div>
 
-	<div class="row">
-		<?php //echo $form->labelEx($model,'create_time'); ?>
-		<?php //echo $form->textField($model,'create_time'); ?>
-		<?php //echo $form->error($model,'create_time'); ?>
-	</div>
-
-	<div class="row">
-		<?php //echo $form->labelEx($model,'update_time'); ?>
-		<?php //echo $form->textField($model,'update_time'); ?>
-		<?php //echo $form->error($model,'update_time'); ?>
-	</div>
-
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save', array('class'=>'btn btn-info')); ?>
+		<?php echo CHtml::submitButton(!isset($model->id) ? 'Create' : 'Update', array('class'=>'btn btn-info')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

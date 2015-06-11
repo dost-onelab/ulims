@@ -25,9 +25,30 @@
  * The followings are the available model relations:
  * @property Sample[] $samples
  */
-class Referral extends CActiveRecord
+class Referral extends CFormModel
 {
-	//public $id; 
+	public $id;
+	public $referralCode;
+	public $referralDate;
+	public $referralTime;
+	public $receivingAgencyId;
+	public $acceptingAgencyId;
+	public $lab_id;
+	public $customer_id;
+	public $paymentType_id;
+	public $discount_id;
+	public $sampleArrivalDate;
+	public $reportDue;
+	public $conforme;
+	public $receivedBy;
+	public $cancelled;
+	public $status;
+	public $create_time;
+	public $update_time;
+	
+	public $referralId;
+	public $technicalManager;
+	public $managerPassword; 
 	
 	const STATUS_RECEIVED = 1;
 	const STATUS_SHIPPED = 2;
@@ -37,14 +58,6 @@ class Referral extends CActiveRecord
 	const STATUS_COMPLETED = 6;
 	const STATUS_RELEASED = 7;
 	
-	/**
-	 * @return string the associated database table name
-	 */
-	public function tableName()
-	{
-		return 'referral';
-	}
-
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -93,7 +106,7 @@ class Referral extends CActiveRecord
 			'paymentType_id' => 'Payment Type',
 			'discount_id' => 'Discount',
 			'sampleArrivalDate' => 'Sample Arrival',
-		 	'reportDue' => 'Report Due',
+		 	'reportDue' => 'Estimated Due Date',
 			'conforme' => 'Conforme',
 			'receivedBy' => 'Received By',
 			'cancelled' => 'Cancelled',
@@ -195,10 +208,10 @@ class Referral extends CActiveRecord
 	/**
 	 * @return CDbConnection the database connection used for this class
 	 */
-	public function getDbConnection()
+	/*public function getDbConnection()
 	{
 		return Yii::app()->referralDb;
-	}
+	}*/
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -314,5 +327,29 @@ class Referral extends CActiveRecord
 		}else{
 			return 0;
 		}
+	}
+	
+	public static function getReceipts($collections)
+	{
+		$receipts = '';
+		$count = 0;
+		foreach ($collections as $collection)
+		{
+			if($count > 0)
+				$receipt .= ', ';
+			$receipts .= $collection['receiptNumber'];
+			$count += 1;
+		}
+		return $receipts;
+	}
+	
+	public static function getCollection($collections)
+	{
+		$totalCollection = 0;
+		foreach ($collections as $collection)
+		{
+			$totalCollection += $collection['amount'];
+		}
+		return Yii::app()->format->formatNumber($totalCollection);
 	}
 }

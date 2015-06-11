@@ -5,28 +5,17 @@
  *
  * The followings are the available columns in table 'orderofpayment':
  * @property integer $id
- * @property integer $agency_id
  * @property string $transactionNum
  * @property integer $collectiontype_id
- * @property string $transactionDate
+ * @property string $date
  * @property integer $customer_id
+ * @property string $customerName
  * @property double $amount
  * @property string $purpose
- * @property integer $createdReceipt
- *
- * The followings are the available model relations:
- * @property Collectiontype $collectiontype
- * @property Customer $customer
- * @property Agency $agency
- * @property Paymentitem[] $paymentitems
  */
 class Orderofpayment extends CActiveRecord
 {
-	public $customerName;
-	public $address;
-	public $collectiontype;
-	public $paymentitems;
-	public $total;
+	public $natureOfCollection;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -43,13 +32,16 @@ class Orderofpayment extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('collectiontype_id, transactionDate, customer_id, purpose', 'required'),
-			array('id, agency_id, collectiontype_id, customer_id, createdReceipt', 'numerical', 'integerOnly'=>true),
+			//array('transactionNum, collectiontype_id, date, customer_id, customerName, amount, purpose', 'required'),
+			array('collectiontype_id, date, purpose', 'required'),
+			array('rstl_id, collectiontype_id, customer_id', 'numerical', 'integerOnly'=>true),
 			array('amount', 'numerical'),
 			array('transactionNum', 'length', 'max'=>50),
+			array('customerName', 'length', 'max'=>250),
+			array('address', 'length', 'max'=>250),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, agency_id, transactionNum, collectiontype_id, transactionDate, customer_id, customerName, collectiontype, address, amount, purpose, createdReceipt, paymentitems, total', 'safe', 'on'=>'search'),
+			array('id, transactionNum, collectiontype_id, date, customer_id, customerName, address, amount, purpose, natureOfCollection', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -61,10 +53,9 @@ class Orderofpayment extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			//'collectiontype' => array(self::BELONGS_TO, 'Collectiontype', 'collectiontype_id'),
-			//'customer' => array(self::BELONGS_TO, 'Customer', 'customer_id'),
-			//'agency' => array(self::BELONGS_TO, 'Agency', 'agency_id'),
-			//'paymentitems' => array(self::HAS_MANY, 'Paymentitem', 'orderofpayment_id'),
+			'paymentitems' => array(self::HAS_MANY, 'Paymentitem', 'orderofpayment_id'),
+			'collectiontype'	=> array(self::BELONGS_TO, 'Collectiontype', 'collectiontype_id'),
+			'totalPayment' => array(self::STAT, 'Paymentitem', 'orderofpayment_id', 'select'=> 'SUM(amount)', 'condition'=>'cancelled=0'),
 		);
 	}
 
@@ -75,15 +66,14 @@ class Orderofpayment extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'agency_id' => 'Agency',
 			'transactionNum' => 'Transaction Num',
-			'collectiontype_id' => 'Collection Type',
-			'collectiontype' => 'Collection Type',
-			'transactionDate' => 'Transaction Date',
+			'collectiontype_id' => 'Collectiontype',
+			'date' => 'Date',
 			'customer_id' => 'Customer',
-			'amount' => 'Total Amount',
-			'purpose' => 'Purpose',
-			'createdReceipt' => 'Created Receipt',
+			'customerName' => 'Customer Name',
+			'address' => 'Address',
+			'amount' => 'Amount',
+			'purpose' => 'Purpose/For payment of',
 		);
 	}
 
@@ -104,16 +94,20 @@ class Orderofpayment extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-
+		
+		$criteria->with=array('collectiontype');
 		$criteria->compare('id',$this->id);
-		$criteria->compare('agency_id',$this->agency_id);
+		$criteria->order = 't.id DESC';
+		$criteria->compare('t.rstl_id', Yii::app()->Controller->getRstlId());
 		$criteria->compare('transactionNum',$this->transactionNum,true);
 		$criteria->compare('collectiontype_id',$this->collectiontype_id);
-		$criteria->compare('transactionDate',$this->transactionDate,true);
+		$criteria->compare('date',$this->date,true);
 		$criteria->compare('customer_id',$this->customer_id);
+		$criteria->compare('customerName',$this->customerName,true);
+		$criteria->compare('address',$this->address,true);
 		$criteria->compare('amount',$this->amount);
 		$criteria->compare('purpose',$this->purpose,true);
-		$criteria->compare('createdReceipt',$this->createdReceipt);
+		$criteria->compare('natureOfCollection', $this->natureOfCollection, true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -125,7 +119,7 @@ class Orderofpayment extends CActiveRecord
 	 */
 	public function getDbConnection()
 	{
-		return Yii::app()->referralDb;
+		return Yii::app()->accountingDb;
 	}
 
 	/**
@@ -137,5 +131,107 @@ class Orderofpayment extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+	
+	public function beforeSave(){
+	   if(parent::beforeSave())
+	   {
+			if($this->isNewRecord){
+				$customer = RestController::getViewData('customers', $this->customer_id);
+				
+				$this->transactionNum = $this->getTransactionNum();
+				$this->rstl_id = Yii::app()->Controller->getRstlId();
+				$this->date = date('Y-m-d', strtotime($_POST['Orderofpayment']['date']));
+				//$this->customerName = Customer::model()->findByPk($this->customer_id)->customerName;
+				$this->customerName = $customer['customerName'];
+				$this->address = $customer['customerName'];
+		        return true;
+			}else{
+				$this->date = date('Y-m-d', strtotime($_POST['Orderofpayment']['date']));
+				return true;
+			}
+	   }
+	   return false;
+	}
+	
+	protected function afterSave(){
+		parent::afterSave();
+		if($this->isNewRecord){		
+			/*
+			 * $postFields = "agency_id=".$this->rstl_id
+					."&collectiontype_id=".$this->collectiontype_id
+					."&customer_id=".$_POST['Orderofpayment']['customer_id']
+					."&transactionDate=".$this->date
+					."&purpose=".$this->purpose
+					."&referralIds=".serialize($_POST['referralIds']);
+					
+				$orderofpayment = RestController::postData('orderofpayments', $postFields);
+			 */	
+			return true;
+		}else{
+			return true;
+		}
+	}
+	
+	function getTransactionNum()
+	{
+		$criteria=new CDbCriteria;
+		$criteria->condition = 'rstl_id ='.Yii::app()->Controller->getRstlId(); 
+		$criteria->order = 'id DESC';  
+		$lastOP = Orderofpayment::model()->find($criteria);
+
+		if($lastOP){
+			$temp = explode('-', $lastOP->transactionNum);
+			$count = $temp[2] + 1;
+		}else{
+			$count = 1;
+		}
+		
+		return date('Y').'-'.date('m').'-'.$this->addZeros($count);
+	}
+	
+	function addZeros($count){
+		if($count < 10)
+			return '000'.$count;
+		elseif ($count < 100)
+			return '00'.$count;
+		elseif ($count < 1000)
+			return '0'.$count;
+		elseif ($count >= 1000)
+			return $count;
+	}
+	
+	function getReferences($OP){
+		
+		//$OP = Orderofpayment::model()->findByPk($id);
+		$references = '';
+		$count = count($OP->paymentitems);
+		foreach($OP->paymentitems as $item){
+			$references .= $item->details;
+			$references .= ($count > 1) ? ', ' : '';
+		}
+		
+		return $references;
+	}
+	
+	function getSamples($OP){
+		$samples = "";
+		$countSamples = count($OP->paymentitems);
+		foreach ($OP->paymentitems as $item){
+			$request = Request::model()->findByPk($item->request_id);
+			foreach($request->samps as $sample){
+				$samples .= $sample->sampleName;
+				$samples .= '(';
+				$countAnalyses = count($sample->analyses);
+				
+				foreach($sample->analyses as $analysis){
+					$samples .= $analysis->testName;
+					$samples .= ($countAnalyses > 1) ? ', ' : '';
+				}
+				$samples .= ')';
+				$samples .= ($countSamples > 1) ? ', ' : '';
+			}
+		}
+		return $samples;
 	}
 }

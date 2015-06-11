@@ -129,7 +129,32 @@ class ReceiptController extends Controller
 			$model->attributes=$_POST['Receipt'];
 			
 			if($model->save()){
-				//$this->redirect(array('view','id'=>$model->id));
+				
+				$items = array();
+				foreach($model->collection as $collection){
+					$row = array(
+						'agency_id' => $collection->rstl_id,
+			            'referral_id' => $collection->referral_id,
+			            'receipt_id' => $collection->receipt_id,
+			            'nature' => $collection->nature,
+			            'amount' => $collection->amount,
+			            'receiptNumber' => $collection->receiptid,
+					);
+					array_push($items, $row);
+				}
+				
+				$postFields = "agency_id=".Yii::app()->Controller->getRstlId()
+					."&receiptNumber=".$model->receiptId
+					."&receiptDate=".$model->receiptDate
+					."&paymentmode_id=".$model->paymentModeId
+					."&payor=".$model->payor
+					."&collectiontype_id=".$model->collectionType
+					."&orseries_id=".$model->orseries_id
+					."&orderofpayment_id=".$model->orderofpayment_id
+					."&transactionNum=".Rstl::model()->findByPk(Yii::app()->Controller->getRstlId())->code.'-'.$model->orderofpayment->transactionNum;
+				
+				$receipt = RestController::postData('receipts', $postFields);
+				
 				if (Yii::app()->request->isAjaxRequest)
                 {
                     echo CJSON::encode(array(
@@ -203,7 +228,7 @@ class ReceiptController extends Controller
 		));
 	}
 
-public function actionCancel($id)
+	public function actionCancel($id)
 	{
 		
 		$model=new Cancelledor;

@@ -87,19 +87,34 @@ class OrderofpaymentController extends Controller
 		if(isset($_POST['Orderofpayment']))
 		{
 			$model->attributes=$_POST['Orderofpayment'];
-			$model->agency_id =  Yii::app()->Controller->getRstlId();
+			$model->rstl_id =  Yii::app()->Controller->getRstlId();
 			
-			if($model->validate()){
+			if($model->save()){
 				
-				$postFields = "agency_id=".$model->agency_id
+				foreach($_POST['referralIds'] as $id){
+					$referral = RestController::getViewData('referrals', $id);
+					
+					$paymentitem = new Paymentitem;
+					$paymentitem->rstl_id = Yii::app()->Controller->getRstlId();
+					$paymentitem->request_id = 0;
+					$paymentitem->referral_id = $id;
+					$paymentitem->orderofpayment_id = $model->id;
+					$paymentitem->details = $referral['referralCode'];
+					$paymentitem->amount = $referral['balance'];
+					$paymentitem->cancelled = 0;
+					$paymentitem->save();
+				}
+				
+				$postFields = "agency_id=".Yii::app()->Controller->getRstlId()
+					."&transactionNum=".Rstl::model()->findByPk(Yii::app()->Controller->getRstlId())->code.'-'.$model->transactionNum
 					."&collectiontype_id=".$_POST['Orderofpayment']['collectiontype_id']
 					."&customer_id=".$_POST['Orderofpayment']['customer_id']
-					."&transactionDate=".$_POST['Orderofpayment']['transactionDate']
+					."&transactionDate=".$_POST['Orderofpayment']['date']
 					."&purpose=".$_POST['Orderofpayment']['purpose']
 					."&referralIds=".serialize($_POST['referralIds']);
 					
 				$orderofpayment = RestController::postData('orderofpayments', $postFields);
-				
+				/*
 				if(isset($orderofpayment["id"])){
 					$this->redirect(array('view','id'=>$orderofpayment["id"]));                	
                	}else{
@@ -107,6 +122,8 @@ class OrderofpaymentController extends Controller
 					Yii::app()->user->setFlash('errormessage', $orderofpayment[0]['message']);
     				$this->refresh();
                	}
+               	*/
+				$this->redirect(array('view','id'=>$model->id));
 			}
 		}
 
@@ -172,19 +189,13 @@ class OrderofpaymentController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		//$model=new Orderofpayment('search');
-		/*$model->unsetAttributes();  // clear any default values
+		$model=new Orderofpayment('search');
+		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Orderofpayment']))
-			$model->attributes=$_GET['Orderofpayment'];*/
-		
-		$orderofpayments = RestController::getAdminData('orderofpayments');
+			$model->attributes=$_GET['Orderofpayment'];
 
 		$this->render('admin',array(
-			//'model'=>$model,
-			'orderofpayments'=>new CArrayDataProvider($orderofpayments, 
-						array('pagination'=>$pagination)
-					),
-			//'customers'=>$customers
+			'model'=>$model,
 		));
 	}
 
@@ -197,6 +208,7 @@ class OrderofpaymentController extends Controller
 	 */
 	public function loadModel($id)
 	{
+		/*
 		$orderofpayment = RestController::getViewData('orderofpayments', $id);
 		
 		$model = New Orderofpayment;
@@ -207,7 +219,8 @@ class OrderofpaymentController extends Controller
 		$model->collectiontype = $orderofpayment['collectiontype'];
 		$model->total = $orderofpayment['total'];
 		$model->paymentitems = $orderofpayment['paymentitems'];
-		
+		*/
+		$model=Orderofpayment::model()->findByPk($id);
 		
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
@@ -288,15 +301,8 @@ class OrderofpaymentController extends Controller
 	
 	public function listReferral($customerId){
 
-		/*$requests = Request::model()->findAll(
-			array(	
-				'with'=>'paymentItem',
-				'condition'=>'t.rstl_id = :rstl_id AND customerId = :customerId',
-				'order'=>'t.id DESC', 
-				'params'=>array(':rstl_id'=>Yii::app()->Controller->getRstlId(), ':customerId'=>$customerId))
-		);*/
-		
 		$referrals = RestController::searchResource('referrals', 'customer_id', $customerId);
+		
 		$list=array();
 		if($referrals){
 			foreach ($referrals as $referral){
@@ -305,28 +311,20 @@ class OrderofpaymentController extends Controller
 				$orderOfPayment = NULL;
 				if($referral['paymentitems']){
 					foreach($referral['paymentitems'] as $paymentItem){
-						//in case there are many pending
-					/*$orderOfPayment=Orderofpayment::model()->findByPk($paymentItem->orderofpayment_id, 
-							array('condition'=>'createdReceipt=0')
-							)->transactionNum;*/
-					//$orderOfPayment = RestController::searchResource('orderofpayments', 'createdReceipt', 0);
-					//print_r($orderOfPayment);
-					$orderOfPayment = RestController::searchResourceMultifields('orderofpayments', 
-						array(
-							'0'=> array('field'=>'id', 'value'=>$paymentItem['orderofpayment_id']),
-							'1'=> array('field'=>'createdReceipt', 'value'=>0)
-						));
-						//print_r($paymentItem['orderofpayment_id']); echo '<br/>';
-						$orderOfPaymentsLink=CHtml::link($orderOfPayment[0]['transactionNum'], 
+
+						$orderOfPayment = RestController::searchResourceMultifields('orderofpayments', 
+							array(
+								'0'=> array('field'=>'id', 'value'=>$paymentItem['orderofpayment_id']),
+								'1'=> array('field'=>'createdReceipt', 'value'=>0)
+							));
+						$orderOfPaymentsLink=CHtml::link($paymentItem['orderofpayment'], 
 						$this->createUrl('view',array('id'=>$paymentItem['orderofpayment_id'])),
 							array('title'=>'Click to view PENDING O.P. for payment.')
 						);
 						}
 				}
-				$balance= $referral['paymentitems'] ? ($referral['balance'] - $paymentItem['amount']) : $referral['balance'];
-				//echo $balance; echo '<br/>';
-				//if($balance>0){
-				if($balance>0 OR ($model->referral_id == $referral->id)){ //$model->request_id==$request->id --> needed on update
+				$balance= $referral['balance'];
+				if($balance>0){
 					$list[] = array(
 						'id'=>$referral['id'],
 						'referralCode'=>$referral['referralCode'],
@@ -334,7 +332,7 @@ class OrderofpaymentController extends Controller
 						'referralDate'=>date('Y-m-d', strtotime($referral['referralDate'])),
 						'balance'=>Yii::app()->format->formatNumber($balance),
 						'paymentItem'=>$orderOfPayment?"<font color='#B30000' style='font-weight:bold'>PENDING</font> ".$orderOfPaymentsLink : "<font color='#006600' style='font-weight:bold'>FOR ORDER OF PAYMENT</font> ",
-						//'orderOfPayment'=>$orderOfPayment
+						'createdReceipt'=>$referral['orderofpayment']['createdReceipt'],
 					);
 				}
 	    	}
@@ -342,32 +340,32 @@ class OrderofpaymentController extends Controller
 				$list=array();
 			
 		}
-		
 		return $list;
 	}
-
+	
 	public function actionUpdateAmount()
 	{
 		$es = new EditableSaver('Paymentitem');
 		$pk = yii::app()->request->getParam('pk');
 		try {
-			//$es->onBeforeUpdate = function($event) {
-				//$event->sender->setAttribute('amount', Yii::app()->format->unformatNumber($es->amount));
-			//};
+			/*$es->onBeforeUpdate = function($event) {
+				$event->sender->setAttribute('amount', Yii::app()->format->unformatNumber($es->amount));
+			};*/
 			/*$es->onBeforeUpdate = function($event) {
 				if(Yii::app()->user->isGuest) {
 					$event->sender->error('You are not allowed to update data');
 				}
 			};*/
+			$es->update();
 			$es->updatePaymentitem();
 		} catch(CException $e) {
 			echo CJSON::encode(array('success' => false, 'msg' => $e->getMessage()));
 			return;
 		}
-		$paymentitem = RestController::getViewData('paymentitems', $pk);
-		$orderofpayment = $this->loadModel($paymentitem['orderofpayment_id']);
-		echo CJSON::encode(array('success' => true,'total'=>Yii::app()->format->formatNumber($orderofpayment->total)));
 		
+		$orderofpaymentId=Paymentitem::model()->findByPk($pk)->orderofpayment_id;
+		$total=$this->loadModel($orderofpaymentId)->totalPayment;
+		echo CJSON::encode(array('success' => true,'total'=>$total));
 		
 	}
 	

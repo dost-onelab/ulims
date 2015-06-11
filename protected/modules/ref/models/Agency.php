@@ -9,15 +9,16 @@
  * @property string $name
  * @property string $code
  */
-class Agency extends CActiveRecord
+class Agency extends CFormModel
 {
+	public $id, $region_id, $name, $code;
 	/**
 	 * @return string the associated database table name
 	 */
-	public function tableName()
+	/*public function tableName()
 	{
 		return 'agency';
-	}
+	}*/
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -92,10 +93,10 @@ class Agency extends CActiveRecord
 	/**
 	 * @return CDbConnection the database connection used for this class
 	 */
-	public function getDbConnection()
+	/*public function getDbConnection()
 	{
 		return Yii::app()->referralDb;
-	}
+	}*/
 
 	/**
 	 * Returns the static model of the specified AR class.

@@ -131,7 +131,7 @@
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'receivedBy'); ?>
-		<?php echo $form->textField($model,'receivedBy',array('size'=>50,'maxlength'=>50)); ?>
+		<?php echo $form->textField($model,'receivedBy',array('size'=>50,'maxlength'=>50, 'value'=>Yii::app()->getModule('user')->user()->getFullName())); ?>
 		<?php echo $form->error($model,'receivedBy'); ?>
 	</div>
 	

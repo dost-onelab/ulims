@@ -145,7 +145,8 @@ class Customer extends CActiveRecord
 		return parent::model($className);
 	}
 	
-	public function beforeSave(){
+	public function beforeSave()
+	{
 	   if(parent::beforeSave())
 	   {
 			if($this->isNewRecord){

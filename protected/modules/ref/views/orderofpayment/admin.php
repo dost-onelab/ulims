@@ -40,9 +40,9 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 </fieldset>
 <?php //echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
-<?php /*$this->renderPartial('_search',array(
+<?php $this->renderPartial('_search',array(
 	'model'=>$model,
-));*/ ?>
+)); ?>
 </div><!-- search-form -->
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
@@ -52,46 +52,25 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 	'rowHtmlOptionsExpression' => 'array("title" => "Click to view OP", "class"=>"link-hand")',
 	'selectableRows'=>1,
 	'selectionChanged'=>'function(id){location.href = "'.$this->createUrl('orderofpayment/view/id').'/"+$.fn.yiiGridView.getSelection(id);}',
-	//'dataProvider'=>$model->search(),
-	'dataProvider'=>$orderofpayments,
-	//'filter'=>$model,
+	'dataProvider'=>$model->search(),
+	'filter'=>$model,
 	'columns'=>array(
 		//'id',
+		'transactionNum',
 		array(
-			'header'=>'Transaction Number',
-			'name'=>'transactionNum',
-			'htmlOptions'=>array('style'=>'text-align: center;')
-		),
-		array(
-			'header'=>'Customer Name',
-			'name'=>'customerName',
-			'htmlOptions'=>array('style'=>'text-align: left; padding-left: 20px;')
-		),		
-		array(
-			'header'=>'Collection Type',
-			'name'=>'collectiontype',
-			'htmlOptions'=>array('style'=>'text-align: center;')
-		),
-		array(
-			'header'=>'Date',
-			'name'=>'transactionDate',
-			'htmlOptions'=>array('style'=>'text-align: center;')
-		),
-		array(
-			'header'=>'Amount',
-			'name'=>'total',
-			'value'=>'Yii::app()->format->formatNumber($data["total"])',
-			'htmlOptions'=>array('style'=>'text-align: right; padding-right: 20px;')
-		),
+			'name'=>'natureOfCollection',
+			'value'=>'$data->collectiontype->natureOfCollection'
+			),
+		'date',
+		'customerName',
 		array(
 			//'class'=>'CButtonColumn',
 			'class'=>'bootstrap.widgets.TbButtonColumn',
-			'header'=>'Status',
 			'template'=>'{created}',
 			'buttons'=>array(
 				'created'=>array(
 					'label'=>'<span class="icon-check"></span>',						
-					'visible'=>'$data["createdReceipt"]',
+					'visible'=>'$data->createdReceipt',
 					'options'=>array('title'=>''),
 				)
 			)

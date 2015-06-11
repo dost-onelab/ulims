@@ -74,7 +74,7 @@
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Send' : 'Save', array('class'=>'btn btn-info')); ?>
+		<?php echo CHtml::submitButton(!isset($model->id) ? 'Send' : 'Save', array('class'=>'btn btn-info')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

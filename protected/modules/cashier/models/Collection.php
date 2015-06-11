@@ -32,7 +32,7 @@ class Collection extends CActiveRecord
 		return array(
 			//array('request_id, receipt_id, nature, amount, receiptid, cancelled', 'required'),
 			array('receipt_id, nature, amount', 'required'),
-			array('request_id, receipt_id, receiptid, cancelled', 'numerical', 'integerOnly'=>true),
+			array('request_id, referral_id, receipt_id, receiptid, cancelled', 'numerical', 'integerOnly'=>true),
 			array('receiptid', 'numerical', 'integerOnly'=>false),
 			//array('amount', 'numerical'),
 			array('amount', 'match' ,'pattern' => '/^\s*[-+]?[0-9]*[.,]?[0-9]+([eE][-+]?[0-9]+)?\s*$/'),
@@ -65,6 +65,7 @@ class Collection extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'request_id' => 'Request',
+			'referral_id' => 'Referral',
 			'receipt_id' => 'Receipt',
 			'nature' => $this->scenario=='labCollection'?'Request Reference Number':'Nature',
 			'amount' => 'Amount',
@@ -93,6 +94,7 @@ class Collection extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('request_id',$this->request_id);
+		$criteria->compare('referral_id',$this->request_id);
 		$criteria->compare('receipt_id',$this->receipt_id);
 		$criteria->compare('nature',$this->nature,true);
 		$criteria->compare('amount',$this->amount);

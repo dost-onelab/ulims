@@ -8,15 +8,16 @@
  * @property string $code
  * @property string $name
  */
-class Region extends CActiveRecord
+class Region extends CFormModel
 {
+	public $id, $code, $name;
 	/**
 	 * @return string the associated database table name
 	 */
-	public function tableName()
+	/*public function tableName()
 	{
 		return 'region';
-	}
+	}*/
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -88,10 +89,10 @@ class Region extends CActiveRecord
 	/**
 	 * @return CDbConnection the database connection used for this class
 	 */
-	public function getDbConnection()
+	/*public function getDbConnection()
 	{
 		return Yii::app()->referralDb;
-	}
+	}*/
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -106,6 +107,9 @@ class Region extends CActiveRecord
 	
 	public static function listData()
 	{
-		return CHtml::listData(Region::model()->findAll(), 'id', 'code');
+		//return CHtml::listData(Region::model()->findAll(), 'id', 'code');
+		$regions = RestController::getAdminData('regions');
+		
+		return CHtml::listData($regions, 'id', 'code');
 	}
 }

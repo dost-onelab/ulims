@@ -5,15 +5,11 @@
  *
  * The followings are the available columns in table 'paymentitem':
  * @property integer $id
- * @property integer $referral_id
+ * @property integer $rstl_id
  * @property integer $orderofpayment_id
  * @property string $details
  * @property double $amount
  * @property integer $cancelled
- *
- * The followings are the available model relations:
- * @property Referral $referral
- * @property Orderofpayment $orderofpayment
  */
 class Paymentitem extends CActiveRecord
 {
@@ -22,7 +18,7 @@ class Paymentitem extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'onelab.paymentitem';
+		return 'ulimsaccounting.paymentitem';
 	}
 
 	/**
@@ -33,18 +29,16 @@ class Paymentitem extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('referral_id, orderofpayment_id, details, amount', 'required'),
-			array('referral_id, orderofpayment_id, cancelled', 'numerical', 'integerOnly'=>true),
+			array('orderofpayment_id, details, amount', 'required'),
+			array('request_id, rstl_id, orderofpayment_id, cancelled', 'numerical', 'integerOnly'=>true),
 			//array('amount', 'numerical'),
-			
 			array('amount', 'match' ,'pattern' => '/^-?(?:\d+|\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/'),
 			array('amount', 'maxValueValidation', 'maxValue'=>$this->maxValue()),
 			array('amount', 'minValueValidation', 'minValue'=>1),
-			
 			array('details', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, referral_id, orderofpayment_id, details, amount, cancelled', 'safe', 'on'=>'search'),
+			array('id, request_id, rstl_id, orderofpayment_id, details, amount, cancelled', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -56,8 +50,7 @@ class Paymentitem extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'referral' => array(self::BELONGS_TO, 'Referral', 'referral_id'),
-			'orderofpayment' => array(self::BELONGS_TO, 'Orderofpayment', 'orderofpayment_id'),
+			'orderofpayment'	=> array(self::BELONGS_TO, 'Orderofpayment', 'orderofpayment_id'),
 		);
 	}
 
@@ -68,9 +61,11 @@ class Paymentitem extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'referral_id' => 'Referral',
+			'rstl_id' => 'Rstl',
+			'request_id' => 'Request ID',
 			'orderofpayment_id' => 'Orderofpayment',
 			'details' => 'Details',
+			'requestRefNum' => 'Request Reference',
 			'amount' => 'Amount',
 			'cancelled' => 'Cancelled',
 		);
@@ -95,7 +90,8 @@ class Paymentitem extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('referral_id',$this->referral_id);
+		$criteria->compare('rstl_id',$this->rstl_id);
+		$criteria->compare('request_id',$this->request_id);
 		$criteria->compare('orderofpayment_id',$this->orderofpayment_id);
 		$criteria->compare('details',$this->details,true);
 		$criteria->compare('amount',$this->amount);
@@ -111,7 +107,7 @@ class Paymentitem extends CActiveRecord
 	 */
 	public function getDbConnection()
 	{
-		return Yii::app()->referralDb;
+		return Yii::app()->accountingDb;
 	}
 
 	/**
@@ -125,6 +121,48 @@ class Paymentitem extends CActiveRecord
 		return parent::model($className);
 	}
 	
+	public function beforeSave(){
+	   if(parent::beforeSave())
+	   {
+			if($this->isNewRecord){
+				$this->rstl_id = Yii::app()->Controller->getRstlId();
+		        return true;
+			}else{
+				$this->amount=Yii::app()->format->unformatNumber($this->amount);
+				return true;
+			}
+	   }
+	   return false;
+	}
+	
+	protected function afterSave(){
+		parent::afterSave();
+		if($this->isNewRecord){		
+			/*
+			 * $postFields = "agency_id=".$this->rstl_id
+					."&collectiontype_id=".$this->collectiontype_id
+					."&customer_id=".$_POST['Orderofpayment']['customer_id']
+					."&transactionDate=".$this->date
+					."&purpose=".$this->purpose
+					."&referralIds=".serialize($_POST['referralIds']);
+					
+				$orderofpayment = RestController::postData('orderofpayments', $postFields);
+			 */	
+			return true;
+		}else{
+			/*$postFields = "agency_id=".$this->rstl_id
+					."&collectiontype_id=".$this->collectiontype_id
+					."&customer_id=".$_POST['Orderofpayment']['customer_id']
+					."&transactionDate=".$this->date
+					."&purpose=".$this->purpose
+					."&referralIds=".serialize($_POST['referralIds']);
+			
+			$paymentitems = RestController::putData('paymentitems', $postFields);*/
+			//$paymentitem = RestController::searchResource('paymentitems', 'details', $this->details);
+			return true;
+		}
+	}
+
 	public function minValueValidation($attribute, $params)
 	{
 		if(Yii::app()->format->unformatNumber($this->amount) < 1)
@@ -164,5 +202,5 @@ class Paymentitem extends CActiveRecord
 		}else{
 			return 0;
 		}
-	}
+	}	
 }

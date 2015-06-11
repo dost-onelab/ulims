@@ -1,6 +1,6 @@
 <?php
     $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'referral-grid',
+	'id'=>'referralout-grid',
 	'itemsCssClass'=>'table table-hover table-striped table-bordered table-condensed',
 	//'rowHtmlOptionsExpression' => 'array("title" => "Click to view", "class"=>"link-hand")',
 	'dataProvider'=>$referralOut,

@@ -118,10 +118,10 @@ if(Yii::app()->request->isAjaxRequest){
     	<legend class="legend-border" style="font-size: 16px;">Address</legend>
 		<div class="row">
 			<?php echo $form->labelEx($model,'region_id'); ?>
-			<?php $region = Region::listData();?>
 			<?php echo $form->dropDownList($model, 'region_id', 
-							$region, 
+							$regions, 
 							array(
+								'options' => array($region_id=>array('selected'=>true)),
 								'ajax'=>array( 
 									'type'=>'POST',
 									'url'=>$this->createUrl('customer/getProvince'),
@@ -144,10 +144,11 @@ if(Yii::app()->request->isAjaxRequest){
 		<div class="row">
 			<?php echo $form->labelEx($model,'province_id'); ?>
 			<?php 
-				$provinces = Province::listDataByRegion($model->region_id);
+				//$provinces = Province::listDataByRegion($model->region_id);
 				echo $form->dropDownList($model, 'province_id',
 							$provinces,
 							array(
+								//'options' => array($region_id=>array('selected'=>true)),
 								'ajax'=>array( 
 									'type'=>'POST',
 							 		'url'=>$this->createUrl('customer/getMunicipalityCity'),
@@ -164,17 +165,17 @@ if(Yii::app()->request->isAjaxRequest){
 							)	
 						);
 			?>
-			<?php echo $form->error($model,'province_id'); ?>
+			<?php //echo $form->error($model,'province_id'); ?>
 		</div>
 	
 		<div class="row">
 			<?php echo $form->labelEx($model,'municipalityCity_id'); ?>
 			<?php
 			//echo $model->province_id;
-			$provinceId=MunicipalityCity::model()->findByPk($model->municipalityCity_id)->provinceId;
-			if($model->province_id)
-				$provinceId = $model->province_id;
-				$municipality = MunicipalityCity::listDataByProvince($provinceId);
+			//$provinceId=MunicipalityCity::model()->findByPk($model->municipalityCity_id)->provinceId;
+			//if($model->province_id)
+				//$provinceId = $model->province_id;
+				//$municipality = MunicipalityCity::listDataByProvince($provinceId);
 						//$municipality=array(''=>'');
 						echo $form->dropDownList($model, 'municipalityCity_id', 
 									$municipality,
@@ -196,19 +197,19 @@ if(Yii::app()->request->isAjaxRequest){
 		</div>
 	
 		<div class="row">
-			<?php echo $form->labelEx($model,'barangay_id'); ?>
+			<?php //echo $form->labelEx($model,'barangay_id'); ?>
 			<?php //echo $form->textField($model,'barangay_id'); ?>
 			<?php 
-				$municipalityCityId = $model->municipalityCity_id;
+				/*$municipalityCityId = $model->municipalityCity_id;
 				$barangay = Barangay::listDataByMunicipalityCity($municipalityCityId);
-				echo $form->dropDownList($model, barangay_id, $barangay);
+				echo $form->dropDownList($model, barangay_id, $barangay);*/
 			?>
-			<?php echo $form->error($model,'barangay_id'); ?>
+			<?php //echo $form->error($model,'barangay_id'); ?>
 		</div>
 	
 		<div class="row">
 			<?php echo $form->labelEx($model,'houseNumber'); ?>
-			<?php echo $form->textField($model,'houseNumber',array('size'=>60,'maxlength'=>200)); ?>
+			<?php echo $form->textArea($model,'houseNumber',array('rows'=>3,'maxlength'=>200)); ?>
 			<?php echo $form->error($model,'houseNumber'); ?>
 		</div>
 	</fieldset>

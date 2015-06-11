@@ -110,6 +110,7 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 				},
 			'htmlOptions'=>array('style'=>'text-align:center','title'=>'Click to view payment details'),
 		),
+		'cancelled',
 		array(
 			//'class'=>'CButtonColumn',
 			'class'=>'bootstrap.widgets.TbButtonColumn',
@@ -166,3 +167,39 @@ function viewPaymentDetail(id)
     return false; 
 }
 </script>
+
+<?php
+	/*
+	echo '<table border="1">';
+	foreach($requests as $request){
+		echo '<tr>';
+			echo '<td>'.$request->id.'</td>';
+			echo '<td>';
+			echo $request->requestRefNum;
+			echo '</td>';
+					$sampleCount = count($request->samps);
+					$s = 1;
+					foreach($request->samps as $sample){
+						echo ($s == 1) ? '<td>' : '<td></td><td></td><td>';
+						echo $sample->sampleCode;
+						echo '</td>';
+						
+						$analysisCount = count($sample->analyses);
+						$a = 1;
+						foreach($sample->analyses as $analysis){
+							//echo '<td>';
+							echo ($a == 1) ? '<td>' : '<td></td><td></td><td></td><td>';
+							echo $analysis->testName;
+							echo '</td>';
+							$a += 1;
+							
+							echo '</tr>';
+						}
+						
+						
+						$s += 1;
+					}
+	}
+	echo '</table>';
+	*/
+?>

@@ -2,11 +2,6 @@
 /* @var $this OrderofpaymentController */
 /* @var $model Orderofpayment */
 /* @var $form CActiveForm */
-//echo '<br/><br/><br/><br/><br/><br/><br/><br/>';
-//print_r(json_decode(["7","8"]));
-//$text = ["7","8"];
-//$test = explode(',', '["7","8"]');
-//print_r($text);
 ?>
 
 <div class="form wide">
@@ -45,10 +40,10 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'transactionDate'); ?>
+		<?php echo $form->labelEx($model,'date'); ?>
 		<?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
-						'name'=>'Orderofpayment[transactionDate]',
-						'value'=>$model->transactionDate ? date('Y-m-d',strtotime($model->transactionDate)) : date('Y-m-d'),						
+						'name'=>'Orderofpayment[date]',
+						'value'=>$model->date ? date('Y-m-d',strtotime($model->date)) : date('Y-m-d'),						
 						
 						// additional javascript options for the date picker plugin						
 						'options'=>array(
@@ -61,7 +56,7 @@
 							)
 					));
 				?>	
-		<?php echo $form->error($model,'transactionDate'); ?>
+		<?php echo $form->error($model,'date'); ?>
 	</div>
 	
 	<div class="row">
@@ -87,22 +82,10 @@
 		<?php echo $form->error($model,'customer_id'); ?>
 	</div>
 
-	<div class="row buttons" id="referrals">    	
+	<div id="referrals">    	
 		<?php $this->renderPartial('_referrals', array('gridDataProvider'=>$gridDataProvider)); ?>
 	</div>
-
-	<div class="row">
-		<?php //echo $form->labelEx($model,'address'); ?>
-		<?php //echo $form->textField($model,'address',array('size'=>60,'maxlength'=>200)); ?>
-		<?php //echo $form->error($model,'address'); ?>
-	</div>
-
-	<!--div class="row">
-		<?php //echo $form->labelEx($model,'amount'); ?>
-		<?php //echo $form->textField($model,'amount'); ?>
-		<?php //echo $form->error($model,'amount'); ?>
-	</div-->
-
+	
 	<div class="row">
 		<?php echo $form->labelEx($model,'purpose'); ?>
 		<?php //echo $form->textArea($model,'purpose',array('rows'=>6, 'cols'=>50)); ?>

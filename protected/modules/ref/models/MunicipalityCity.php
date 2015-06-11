@@ -12,13 +12,14 @@
  */
 class MunicipalityCity extends CActiveRecord
 {
+	public $id, $regionId, $provinceId, $name, $district;
 	/**
 	 * @return string the associated database table name
 	 */
-	public function tableName()
+	/*public function tableName()
 	{
 		return 'municipality_city';
-	}
+	}*/
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -94,10 +95,10 @@ class MunicipalityCity extends CActiveRecord
 	/**
 	 * @return CDbConnection the database connection used for this class
 	 */
-	public function getDbConnection()
+	/*public function getDbConnection()
 	{
 		return Yii::app()->referralDb;
-	}
+	}*/
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -117,10 +118,14 @@ class MunicipalityCity extends CActiveRecord
 	
 	public static function listDataByProvince($id)
 	{
-		return CHtml::listData(MunicipalityCity::model()->findAll(
+		/*return CHtml::listData(MunicipalityCity::model()->findAll(
 			array('condition'=>'provinceId = :provinceId', 
 					'order'=>'name',
 					'params'=>array(':provinceId'=>$id))
-		), 'id', 'name');
+		), 'id', 'name');*/
+		
+		$municipalitycities = RestController::searchResource('municipalitycities', 'provinceId', $id);
+		
+		return CHtml::listData($municipalitycities, 'id', 'name');
 	}
 }

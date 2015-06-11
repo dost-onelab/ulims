@@ -80,18 +80,25 @@ class SampleController extends Controller
 			
 			if($model->validate()){
 				
-				$postFields = "referral_id=".$_POST['Sample']['referral_id']
+				/*$postFields = "referral_id=".$_POST['Sample']['referral_id']
 					."&sampleType_id=".$_POST['Sample']['sampleType_id']
 					."&sampleName=".$_POST['Sample']['sampleName']
-					."&description=".$_POST['Sample']['description'];
+					."&description=".$_POST['Sample']['description'];*/
 				
+				$postFields = array(
+					'referral_id' => $_POST['Sample']['referral_id'],
+					'sampleType_id' => $_POST['Sample']['sampleType_id'],
+					'sampleName' => $_POST['Sample']['sampleName'],
+					'description' => $_POST['Sample']['description']
+					);
+					
 				$referral = RestController::postData('samples', $postFields);
 				
 				if (Yii::app()->request->isAjaxRequest)
                 {
                     echo CJSON::encode(array(
                         'status'=>'success', 
-                        'div'=>"Sample successfully added"
+                        'div'=>'Sample successfully added'
                         ));
                     exit;               
                 }

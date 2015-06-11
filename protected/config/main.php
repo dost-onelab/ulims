@@ -4,6 +4,7 @@
 // Yii::setPathOfAlias('local','path/to/local-folder');
 Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/../extensions/bootstrap');
 Yii::setPathOfAlias('editable', dirname(__FILE__).'/../extensions/x-editable');
+Yii::setPathOfAlias('mailer', dirname(__FILE__).'/../extensions/YiiMailer');
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 
@@ -40,7 +41,12 @@ return array(
 
 		'ext.giix-components.*', // giix components
 
-		'editable.*'
+		'editable.*',
+		
+		'application.modules.nfy.components.Nfy', 
+		'application.modules.nfy.models.*',
+
+		//'ext.mailer.PhpMailer'
 	),
 
 	'aliases' => array(
@@ -81,6 +87,10 @@ return array(
 			'defaultController' => 'equipment/admin',
 		),
 
+		'nfy' => array(
+			'defaultController' => 'nfy/admin',
+		),
+		
 		'phAddress' => array(
 			'defaultController' => 'region/admin',
 		),

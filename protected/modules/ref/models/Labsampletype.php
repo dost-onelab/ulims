@@ -117,6 +117,13 @@ class Labsampletype extends CActiveRecord
 	{
 		$sampleType = RestController::searchResource('labsampletypes', 'lab_id', $lab_id);
 		
-		return CHtml::listData($sampleType, 'sampletypeId', 'sampletype');
+		return CHtml::listData($sampleType, 'sampletypeId', 'sampletype.type');
+	}
+	
+	public static function listData()
+	{	
+		$labs = RestController::getAdminData('labsampletypes');
+		
+		return CHtml::listData($labs, 'sampletypeId', 'sampletype.type');
 	}
 }

@@ -35,7 +35,7 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 
 <?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
-<?php print_r($customers);?>
+<?php //print_r($customers);?>
 </div><!-- search-form -->
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
@@ -44,14 +44,48 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 	'rowHtmlOptionsExpression' => 'array("title" => "Click to view", "class"=>"link-hand")',
 	'dataProvider'=>$customers,
 	//'dataProvider'=>$model->search(),
-	//'filter'=>$model,
+	'filter'=>$model,
 	'columns'=>array(
-		'id',
-		'customerName',
-		'agencyHead',
-		'region_id',
-		'province_id',
-		'municipalityCity_id',
+		//'id',
+		//'customerName',
+		array(
+			'name'=>'customerName',
+			'header'=>'Customer',
+			'htmlOptions'=>array('style'=>'text-align: left;'),
+			'value'=>'$data["customerName"]'
+		),
+		//'agencyHead',
+		array(
+			'name'=>'agencyHead',
+			'header'=>'Head of Agency',
+			'htmlOptions'=>array('style'=>'text-align: left;'),
+			'value'=>'$data["agencyHead"]'
+		),
+		//'tel',
+		array(
+			'name'=>'tel',
+			'header'=>'Landline',
+			'htmlOptions'=>array('style'=>'text-align: left;'),
+			'value'=>'$data["tel"]'
+		),
+		//'fax',
+		array(
+			'name'=>'fax',
+			'header'=>'Fax',
+			'htmlOptions'=>array('style'=>'text-align: left;'),
+			'value'=>'$data["fax"]'
+		),
+		//'email',
+		array(
+			'name'=>'email',
+			'header'=>'Email',
+			'htmlOptions'=>array('style'=>'text-align: left;'),
+			'value'=>'$data["email"]'
+		),
+		//'region_id',
+		//'province_id',
+		//'municipalityCity_id',
+		//'type_id',
 		/*
 		'barangay_id',
 		'houseNumber',

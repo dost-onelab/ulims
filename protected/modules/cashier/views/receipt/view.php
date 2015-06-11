@@ -1,4 +1,5 @@
 <div style="position:relative">
+<pre><?php print_r($model->collection);?></pre>
 <?php
 /* @var $this ReceiptController */
 /* @var $model Receipt */

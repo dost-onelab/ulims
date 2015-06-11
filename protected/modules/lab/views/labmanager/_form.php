@@ -18,7 +18,7 @@
 	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model); ?>
-	<?php echo $form->textField($model,'id'); ?>
+	<?php echo $form->hiddenField($model,'id'); ?>
 	<div class="row">
 		<?php echo $form->labelEx($model,'lab_id'); ?>
 		<?php //echo $form->textField($model,'lab_id'); ?>
@@ -28,9 +28,8 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'user_id'); ?>
-		<?php //echo $form->textField($model,'user_id'); ?>
 		<?php echo $form->dropDownList($model,'user_id', Users::listData(), array('style'=>'width: 300px;')); ?>
-		<?php ///echo $form->dropDownList($model,'lab_id', CHtml::listData(Profile::model()->active()->findAll(), 'user_id', 'fullName'), array('style'=>'width: 300px;')); ?>
+		<?php //echo $form->dropDownList($model,'lab_id', CHtml::listData(Profile::model()->active()->findAll(), 'user_id', 'fullName'), array('style'=>'width: 300px;')); ?>
 		<?php echo $form->error($model,'user_id'); ?>
 	</div>
 

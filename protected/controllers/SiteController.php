@@ -125,4 +125,59 @@ class SiteController extends Controller
          $age = (date("md", date("U", mktime(0, 0, 0, $dateOfBirth[0], $dateOfBirth[1], $dateOfBirth[2]))) > date("md") ? ((date("Y")-$dateOfBirth[2])-1):(date("Y")-$dateOfBirth[2]));
          return $age;
 	}
+	
+	function actionNotify()
+	{
+		$fields = array(
+			'0'=>array('field'=>'recipient_id', 'value'=>Yii::app()->Controller->getRstlId()),
+			'1'=>array('field'=>'read', 'value'=>0), 
+			);
+		$notifications = RestController::searchResourceMultifields('notifications', $fields);
+		
+		if (Yii::app()->request->isAjaxRequest)
+		{
+			$new = count($notifications);
+			if($new == 0){
+				/*$notice = '
+					<div class="alert alert-info" style="width:375px; margin: 10px 5px 10px 65px">
+			        <strong>'.$new.'</strong> 
+					</div>';*/
+				echo CJSON::encode(array(
+					'status'=>'failure', 
+					'referralUpdates'=>($notifications['name'] == 'Not Found') ? 0 : count($notifications),
+					'systemUpdates'=>0,
+				));
+			}else{
+				echo CJSON::encode(array(
+					'status'=>'success',
+				 	'referralUpdates'=>($notifications['name'] == 'Not Found') ? 0 : count($notifications), 
+					'systemUpdates'=>0,
+				));
+			}
+			
+			exit;               
+		}
+	}
+	
+	function actionNotifications()
+	{
+		$fields = array(
+			'0'=>array('field'=>'recipient_id', 'value'=>Yii::app()->Controller->getRstlId()),
+			//'1'=>array('field'=>'read', 'value'=>0), 
+			);
+		$notifications = RestController::searchResourceMultifields('notifications', $fields);
+		
+		$notifications = new CArrayDataProvider(($notifications['name'] == 'Not Found') ? array() : $notifications, 
+				array('pagination'=>$pagination));
+	
+		if (Yii::app()->request->isAjaxRequest)
+        {
+            echo CJSON::encode(array(
+                'status'=>'failure',
+                'div'=>$this->renderPartial('notifications', array('notifications'=>$notifications) ,true , true)));
+            exit;               
+        }else{
+            $this->render('notifications',array('model'=>$model,));
+        }
+	}
 }

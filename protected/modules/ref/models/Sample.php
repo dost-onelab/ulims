@@ -19,16 +19,27 @@
  * @property Analysis[] $analysises
  * @property Referral $referral
  */
-class Sample extends CActiveRecord
+class Sample extends CFormModel
 {
+	public $id;
+	public $referral_id;
+	public $sampleType_id;
+	public $barcode;
+	public $sampleName;
+	public $sampleCode;
+	public $description;
+	public $status_id;
+	public $create_time;
+	public $update_time;
+	
 	public $sampleTemplate;
 	/**
 	 * @return string the associated database table name
 	 */
-	public function tableName()
+	/*public function tableName()
 	{
 		return 'sample';
-	}
+	}*/
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -96,7 +107,6 @@ class Sample extends CActiveRecord
 	public function search()
 	{
 		// @todo Please modify the following code to remove attributes that should not be searched.
-
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
@@ -118,10 +128,10 @@ class Sample extends CActiveRecord
 	/**
 	 * @return CDbConnection the database connection used for this class
 	 */
-	public function getDbConnection()
+	/*public function getDbConnection()
 	{
 		return Yii::app()->referralDb;
-	}
+	}*/
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -136,7 +146,6 @@ class Sample extends CActiveRecord
 	
 	public static function listDataByReferral($samples)
 	{	
-		//$url = 'http://'.Yii::app()->Controller->getServer().'/API/ulimsLabAPIReadAll.php';
 		$url = 'http://'.Yii::app()->Controller->getServer().'/labs';
 		$client = curl_init();
 	    curl_setopt($client, CURLOPT_URL, $url);

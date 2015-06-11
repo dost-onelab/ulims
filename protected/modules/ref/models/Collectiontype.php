@@ -14,7 +14,7 @@ class Collectiontype extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'collectiontype';
+		return 'ulimscashiering.collectiontype';
 	}
 
 	/**
@@ -86,7 +86,7 @@ class Collectiontype extends CActiveRecord
 	 */
 	public function getDbConnection()
 	{
-		return Yii::app()->referralDb;
+		return Yii::app()->cashierDb;
 	}
 
 	/**
@@ -102,8 +102,7 @@ class Collectiontype extends CActiveRecord
 	
 	public static function listData()
 	{
-		$response = RestController::getAdminData('collectiontypes');
-		
-		return CHtml::listData($response, 'id', 'natureOfCollection');
+		return CHtml::listData(Collectiontype::model()->findAll(array('order'=>'id ASC')), 
+							'id', 'natureOfCollection');
 	}
 }

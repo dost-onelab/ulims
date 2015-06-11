@@ -12,34 +12,23 @@ $this->menu=array(
 	array('label'=>'Create LabService', 'url'=>array('create')),
 );
 
-Yii::app()->clientScript->registerScript('search', "
-$('.search-button').click(function(){
-	$('.search-form').toggle();
-	return false;
-});
-$('.search-form form').submit(function(){
-	$('#lab-service-grid').yiiGridView('update', {
-		data: $(this).serialize()
-	});
-	return false;
-});
-");
-
 ?>
 
 <h1>Manage Services Offered</h1>
 
-<p>
-You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
-</p>
+<?php //echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
 
-<?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
-<div class="search-form" style="display:none">
-<?php $this->renderPartial('_search',array(
-	'model'=>$model,
-)); ?>
-</div><!-- search-form -->
+<?php 
+	$image = CHtml::image(Yii::app()->request->baseUrl . '/images/ajax-loader.gif');
+	echo CHtml::link('<span class="icon-white icon-plus-sign"></span> Add / Remove Services', '',
+		array(
+			'style'=>'cursor:pointer;',
+			'class'=>'btn btn-info',
+			'onClick'=>'js:{updateServices(); $("#dialogUpdateServices").dialog("open");}',
+		)
+	);
+?>
+
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'lab-service-grid',
 	'itemsCssClass'=>'table table-hover table-striped table-bordered table-condensed',
@@ -57,7 +46,7 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		'method',
 		'reference',
 		'fee',
-		array(
+		/*array(
 			'header'=>'Offered',
            	'htmlOptions'=>array('class'=>'btn-group btn-group-yesno'),
 			'class'=>'bootstrap.widgets.TbButtonColumn',
@@ -91,6 +80,62 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 									),
 								),
 						),
-			),
+			),*/
 	),
 )); ?>
+
+<!-- Referral Dialog : Start -->
+<?php
+	$this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+		    'id'=>'dialogUpdateServices',
+		    // additional javascript options for the dialog plugin
+		    'options'=>array(
+		        'title'=>'Add / Remove Services',
+				'show'=>'scale',
+				'hide'=>'scale',				
+				'width'=>960,
+				'modal'=>true,
+				'resizable'=>false,
+				'autoOpen'=>false,
+			    ),
+		));
+	$this->endWidget('zii.widgets.jui.CJuiDialog');
+?>
+<!-- Referral Dialog : End -->  
+
+<script>
+function updateServices()
+{
+    <?php echo CHtml::ajax(array(
+    		'url'=>$this->createUrl('labservice/update'),
+    		'data'=> "js:$(this).serialize()",
+            'type'=>'post',
+            'dataType'=>'json',
+            'success'=>"function(data)
+            {
+                if (data.status == 'failure')
+                {
+                    $('#dialogUpdateServices').html(data.div);
+                    // Here is the trick: on submit-> once again this function!
+                    $('#dialogUpdateServices form').submit(updateServices);
+                }
+                else
+                {
+                    $.fn.yiiGridView.update('lab-service-grid');
+					$('#dialogUpdateServices').html(data.div);
+                    setTimeout(\"$('#dialogUpdateServices').dialog('close') \",1000);
+                }
+            }",
+			'beforeSend'=>'function(jqXHR, settings){
+                    $("#dialogUpdateServices").html(
+						\'<div class="loader">'.$image.'<br\><br\>Generating form.<br\> Please wait...</div>\'
+					);
+             }',
+			 'error'=>"function(request, status, error){
+				 	$('#dialogUpdateServices').html(status+'('+error+')'+': '+ request.responseText );
+					}",
+			
+            ))?>;
+    return false; 
+}
+</script>

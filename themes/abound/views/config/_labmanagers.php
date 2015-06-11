@@ -17,12 +17,6 @@
             	'name'=>'Manager', 
 				'value'=>'$data->manager->user->profile->firstname." ".$data->manager->user->profile->mi.". ".$data->manager->user->profile->lastname',
 				'htmlOptions' => array('style' => 'width: 300px; text-align: left; ')
-            ),
-            /*array(
-            	'name'=>'manager_id',
-            	'header'=>'Manager ID',
-            	'value'=>'$data->manager->id'
-            )*/
-            ),
-)); ?>
+            )
+))); ?>
 <?php //$this->endWidget(); //End Portlet ?>

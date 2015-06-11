@@ -9,18 +9,20 @@
  * @property string $shipmentDetails
  * @property integer $status_id
  */
-class Referralstatus extends CActiveRecord
+class Referralstatus extends CFormModel
 {
 	public $agencyName;
 	public $referralCode;
 	
+	public $id, $referral_id, $acceptingAgencyId, $sampleArrivalDate, $shipmentDetails, $status_id;
+	
 	/**
 	 * @return string the associated database table name
 	 */
-	public function tableName()
+	/*public function tableName()
 	{
 		return 'referralstatus';
-	}
+	}*/
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -98,10 +100,10 @@ class Referralstatus extends CActiveRecord
 	/**
 	 * @return CDbConnection the database connection used for this class
 	 */
-	public function getDbConnection()
+	/*public function getDbConnection()
 	{
 		return Yii::app()->referralDb;
-	}
+	}*/
 
 	/**
 	 * Returns the static model of the specified AR class.

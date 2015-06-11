@@ -9,15 +9,16 @@
  * @property integer $district
  * @property string $name
  */
-class Barangay extends CActiveRecord
+class Barangay extends CFormModel
 {
+	public $id, $municipalityCityId, $district, $name;
 	/**
 	 * @return string the associated database table name
 	 */
-	public function tableName()
+	/*public function tableName()
 	{
 		return 'barangay';
-	}
+	}*/
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -91,10 +92,10 @@ class Barangay extends CActiveRecord
 	/**
 	 * @return CDbConnection the database connection used for this class
 	 */
-	public function getDbConnection()
+	/*public function getDbConnection()
 	{
 		return Yii::app()->referralDb;
-	}
+	}*/
 
 	/**
 	 * Returns the static model of the specified AR class.

@@ -74,7 +74,7 @@ Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton(!isset($model->id) ? 'Create' : 'Save', array('class'=>'btn btn-info')); ?>
+		<?php echo CHtml::submitButton(!isset($model->id) ? 'Create' : 'Update', array('class'=>'btn btn-info')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

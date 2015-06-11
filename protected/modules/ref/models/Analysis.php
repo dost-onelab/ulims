@@ -14,15 +14,24 @@
  * The followings are the available model relations:
  * @property Sample $sample
  */
-class Analysis extends CActiveRecord
+class Analysis extends CFormModel
 {
+	public $id;
+	public $sample_id;
+	public $testName_id;
+	public $methodReference_id;
+	public $fee; 
+	public $status_id; 
+	public $create_time; 
+	public $update_time;
+	
 	/**
 	 * @return string the associated database table name
 	 */
-	public function tableName()
+	/*public function tableName()
 	{
 		return 'analysis';
-	}
+	}*/
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -104,10 +113,10 @@ class Analysis extends CActiveRecord
 	/**
 	 * @return CDbConnection the database connection used for this class
 	 */
-	public function getDbConnection()
+	/*public function getDbConnection()
 	{
 		return Yii::app()->referralDb;
-	}
+	}*/
 
 	/**
 	 * Returns the static model of the specified AR class.

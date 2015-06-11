@@ -1,8 +1,9 @@
 <font style="font-weight:bold;font-size:0.9em">Select Referrals : </font>
-<?php 
+
+<?php 	
 		$this->widget('zii.widgets.grid.CGridView', array(
 		   'id'=>'referrals-grid', // the containerID for getChecked
-		   'emptyText'=>'No request.',
+		   'emptyText'=>'No referrals.',
 		   'summaryText'=>false,
 		   'htmlOptions'=>array('class'=>'grid-view padding0', 'style'=>'width:560px;'),
 		   'dataProvider'=>$gridDataProvider,
@@ -14,7 +15,7 @@
 					'id'=>'referralIds', // the columnID for getChecked
 					'class'=>'CCheckBoxColumn',
 					'selectableRows'=>2,
-					'disabled'=>'($data["balance"] == 0)?TRUE:FALSE'
+					'disabled'=>'(($data["balance"] == 0) OR ($data["createdReceipt"] == 1))  ? TRUE : FALSE  '
 		       ),
 		       //'customer.customerName',
 		       array(
@@ -36,7 +37,7 @@
 			   	'header'=>'Status/ O.P. #',
 				'type'=>'raw',
 				'name'=>'paymentItem',
-				'htmlOptions' => array('style' => 'width: 180px; text-align: center; ')
+				'htmlOptions' => array('style' => 'width: 220px; text-align: center; ')
 			   )
 		   ),
 		));

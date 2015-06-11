@@ -276,19 +276,51 @@ class Controller extends RController
 	
 	function getServer()
 	{
-		//return 'http://localhost/onelab/api/web/v1';
-		
 		return Yii::app()->params['API']['url'].Yii::app()->params['API']['version'];
-		
-		//return 'http://192.168.1.15:82/onelab/api/web/v1';
-		
-		// DOST IX API
-		//return 'http://119.93.23.123:82/onelab/api/web/v1';
-		
-		// ONELAB API
-		//return 'http://202.90.154.201/onelab/api/web/v1';
-		
-		//
-		//return 'http://dost-onelab.com/onelab/api/web/v1';
 	}
+	
+	function getNotifications($agency_id)
+	{	
+		//$notifications = RestController::getCustomData('notifications/search?recipient_id=', 11);
+		$notifications = RestController::searchResource('notifications', 'recipient_id', 11);
+        
+        if(isset($notifications)){
+        	//print_r($notifications);
+        	//header('Content-Type: text/event-stream');
+	        //header('Cache-Control: no-cache');
+    	    //echo "retry: 10000\n"; // Optional. We tell the browser to retry after 10 seconds
+    	    //flush();
+        }
+	}
+	
+    function generateAgencySecret($countLetters = NULL, $countNumbers = NULL)
+    {
+        //$referral = Referral::find($referral_id)->one();
+        //$lab = Lab::find($referral->id)->one();
+        if(is_null($countLetters))
+        	$countNumbers = 16;
+    	
+        if(is_null($countNumbers))
+        	$countNumbers = 16;
+        		
+		$agency_code = '';
+        $character_set_array = array();
+        $character_set_array[] = array('count' => $countLetters, 'characters' => 'abcdefghijklmnopqrstuvwxyz');
+        $character_set_array[] = array('count' => $countNumbers, 'characters' => '0123456789');
+        $temp_array = array($agency_code);
+        foreach ($character_set_array as $character_set) {
+            for ($i = 0; $i < $character_set['count']; $i++) {
+                $temp_array[] = $character_set['characters'][rand(0, strlen($character_set['characters']) - 1)];
+            }
+        }
+        shuffle($temp_array);
+        return strtolower(implode('', $temp_array));
+    }
+    
+    /*function getExternalIP()
+    {
+	    $externalContent = file_get_contents('http://checkip.dyndns.com/');
+		preg_match('/\b(?:\d{1,3}\.){3}\d{1,3}\b/', $externalContent, $m);
+		return $m[0];
+    }*/
 }

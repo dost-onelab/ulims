@@ -63,6 +63,8 @@ class CustomerController extends Controller
 	 */
 	public function actionCreate()
 	{
+		RestController::checkApiAccess();
+		
 		$model=new Customer;
 
 		// Uncomment the following line if AJAX validation is needed
@@ -119,12 +121,26 @@ class CustomerController extends Controller
 		
 		if (Yii::app()->request->isAjaxRequest)
         {
+        	$rstl = Rstl::model()->findByPk(Yii::app()->Controller->getRstlId());
             echo CJSON::encode(array(
                 'status'=>'failure',
-                'div'=>$this->renderPartial('_form', array('model'=>$model) ,true , true)));
+                'div'=>$this->renderPartial('_form', 
+            		array(
+            			'model'=>$model,
+            			'region_id'=>$rstl->region_id,
+	            		'regions'=>Region::listData(), 
+	            		'provinces'=>Province::listDataByRegion($rstl->region_id),
+            		) ,true , true)));
             exit;               
         }else{
-            $this->render('create',array('model'=>$model,));
+        	$rstl = Rstl::model()->findByPk(Yii::app()->Controller->getRstlId());
+            $this->render('create',
+            	array(
+            		'model'=>$model,
+            		'region_id'=>$rstl->region_id,
+            		'regions'=>Region::listData(), 
+            		'provinces'=>Province::listDataByRegion($rstl->region_id), 
+            ));
         }
 	}
 
@@ -135,6 +151,8 @@ class CustomerController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
+		RestController::checkApiAccess();
+		
 		$model=$this->loadModel($id);
 
 		// Uncomment the following line if AJAX validation is needed
@@ -230,8 +248,10 @@ class CustomerController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$customers = RestController::getAdminData('customers');
+		RestController::checkApiAccess();
 		
+		//$customers = RestController::getAdminData('customers');
+		$customers = RestController::searchResource('customers', 'created_by', Yii::app()->Controller->getRstlId());
 		$this->render('admin',array(
 			'model'=>$model,
 			'customers'=>new CArrayDataProvider($customers, 
@@ -277,10 +297,11 @@ class CustomerController extends Controller
 		if(isset($_POST['Customer']['region_id']))
 			$region_id = $_POST['Customer']['region_id'];
 			 
-		$province = Province::model()->findAll('regionId = :regionId ORDER BY regionId', 
-					  array(':regionId'=>$region_id));
+		/*$province = Province::model()->findAll('regionId = :regionId ORDER BY regionId', 
+					  array(':regionId'=>$region_id));*/
 	 
-		$province=CHtml::listData($province,'id','name');
+		//$province=CHtml::listData($province,'id','name');
+		$province = Province::listDataByRegion($region_id);
 		//append blank
 		$dropDownProvince = CHtml::tag('option', array('value'=>''),CHtml::encode($name),true);
 		
@@ -301,13 +322,14 @@ class CustomerController extends Controller
 		if(isset($_POST['Customer']['province_id']))
 			$province_id = $_POST['Customer']['province_id'];
 			 
-		$municipalityCity = MunicipalityCity::model()->findAll(array(
+		/*$municipalityCity = MunicipalityCity::model()->findAll(array(
 				'condition'=>'provinceId=:provinceId',
 				'order'=>'name ASC',
 				'params'=>array(':provinceId'=>$province_id),
 			));
 	 
-		$municipalityCity = CHtml::listData($municipalityCity,'id','name');
+		$municipalityCity = CHtml::listData($municipalityCity,'id','name');*/
+		$municipalityCity = MunicipalityCity::listDataByProvince($province_id);
 		//append blank
 		$dropDownMunicipalityCity = CHtml::tag('option', array('value'=>''),CHtml::encode($name),true);
 		

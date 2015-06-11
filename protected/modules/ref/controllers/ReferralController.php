@@ -25,7 +25,7 @@ class ReferralController extends Controller
 	 * This method is used by the 'accessControl' filter.
 	 * @return array access control rules
 	 */
-	public function accessRules()
+	/*public function accessRules()
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
@@ -44,14 +44,60 @@ class ReferralController extends Controller
 				'users'=>array('*'),
 			),
 		);
+	}*/
+	
+	public function actionAuthenticate()
+	{
+		$apiLogin = RestController::verifyAgencyKey(Yii::app()->Controller->RstlId);
+		
+		if($apiLogin){
+			Yii::app()->user->setFlash('apiLogin','Agency signature verification successful. <br/>Connect to Server.');
+			$btnClass = 'btn btn-success';
+			$alertClass = 'alert alert-success';
+		}else{
+			Yii::app()->user->setFlash('apiLogin','Agency signature verification failed. <br/>Please contact you ULIMS Administrator.');
+			$btnClass = 'btn btn-warning';
+			$alertClass = 'alert alert-warning';
+		}
+		
+		if(isset($_POST['agency_id']))
+		{
+			$user = User::model()->notsafe()->findByAttributes(array('username'=>Yii::app()->user->name));
+			$username = $user->username;
+			$password = $user->password;
+			
+			$id = Yii::app()->Controller->getRstlId();
+			$apiHost = Yii::app()->Controller->getServer().'/users/accesstoken?id='.$id;
+			
+			$auth = array(
+				'Authorization: Basic '.base64_encode($username . ':' . $password),
+				'auth_key: '.SHA1(rand(1,999999999)),
+				'email: '.$user->email,
+				//'role: '.$user->role
+			);
+			$response = Yii::app()->curl->setOptions(array(CURLOPT_HTTPHEADER => $auth))->get($apiHost);
+				
+			Yii::app()->user->setState('accessToken', json_decode($response));
+			//$RestController::requestForAccessToken2();
+			$this->redirect(array('referral/admin'));
+		}
+		
+		$this->render('authenticate',array(
+			'model'=>array(), 
+			'apiLogin'=>$apiLogin,
+			'btnClass'=>$btnClass,
+			'alertClass'=>$alertClass
+		));
 	}
-
+	
 	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
 	public function actionView($id)
 	{
+		RestController::checkApiAccess();
+		
 		$model=$this->loadModel($id);
 		
 		$referral = RestController::getViewData('referrals', $id);
@@ -76,6 +122,9 @@ class ReferralController extends Controller
 						array('pagination'=>$pagination)
 					),
 			'modelStatus'=>$modelStatus,
+			'results'=>new CArrayDataProvider((count($referral['results']) == 0 ? array() : $referral['results']), 
+						array('pagination'=>$pagination)
+					),
 			'acceptingAgencyLookup'=>$agencies,
 		));
 	}
@@ -85,7 +134,9 @@ class ReferralController extends Controller
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
 	public function actionCreate()
-	{
+	{		
+		RestController::checkApiAccess();
+		
 		$model=new Referral;
 
 		// Uncomment the following line if AJAX validation is needed
@@ -98,7 +149,7 @@ class ReferralController extends Controller
 			
 			if($model->validate())
 			{
-				$postFields = "referralDate=".$_POST['Referral']['referralDate']
+				/*$postFields = "referralDate=".$_POST['Referral']['referralDate']
 					."&receivingAgencyId=".$model->receivingAgencyId
 					."&lab_id=".$_POST['Referral']['lab_id']
 					."&customer_id=".$_POST['Referral']['customer_id']
@@ -106,7 +157,19 @@ class ReferralController extends Controller
 					."&discount_id=".$_POST['Referral']['discount_id']
 					."&reportDue=".$_POST['Referral']['reportDue']
 					."&conforme=".$_POST['Referral']['conforme']
-					."&receivedBy=".$_POST['Referral']['receivedBy'];
+					."&receivedBy=".$_POST['Referral']['receivedBy'];*/
+				
+				$postFields = array(
+					'referralDate' => $_POST['Referral']['referralDate'],
+					'receivingAgencyId' => $model->receivingAgencyId,
+					'lab_id' => $_POST['Referral']['lab_id'],
+					'customer_id' => $_POST['Referral']['customer_id'],
+					'paymentType_id' => $_POST['Referral']['paymentType_id'],
+					'discount_id' => $_POST['Referral']['discount_id'],
+					'reportDue' => $_POST['Referral']['reportDue'],
+					'conforme' => $_POST['Referral']['conforme'],
+					'receivedBy' => $_POST['Referral']['receivedBy'],
+					);
 				
 				$referral = RestController::postData('referrals', $postFields);
 				
@@ -138,6 +201,8 @@ class ReferralController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
+		RestController::checkApiAccess();
+		
 		$model=$this->loadModel($id);
 
 		// Uncomment the following line if AJAX validation is needed
@@ -148,7 +213,7 @@ class ReferralController extends Controller
 			$model->attributes=$_POST['Referral'];
 			if($model->validate())
 			{
-				$postFields = "referralDate=".$_POST['Referral']['referralDate']
+				/*$postFields = "referralDate=".$_POST['Referral']['referralDate']
 					."&receivingAgencyId=".$model->receivingAgencyId
 					."&lab_id=".$_POST['Referral']['lab_id']
 					."&customer_id=".$_POST['Referral']['customer_id']
@@ -157,7 +222,19 @@ class ReferralController extends Controller
 					."&reportDue=".$_POST['Referral']['reportDue']
 					."&conforme=".$_POST['Referral']['conforme']
 					."&receivedBy=".$_POST['Referral']['receivedBy']
-					."&status=".$_POST['Referral']['status'];
+					."&status=".$_POST['Referral']['status'];*/
+				
+				$postFields = array(
+					'referralDate' => $_POST['Referral']['referralDate'],
+					'receivingAgencyId' => $model->receivingAgencyId,
+					'lab_id' => $_POST['Referral']['lab_id'],
+					'customer_id' => $_POST['Referral']['customer_id'],
+					'paymentType_id' => $_POST['Referral']['paymentType_id'],
+					'discount_id' => $_POST['Referral']['discount_id'],
+					'reportDue' => $_POST['Referral']['reportDue'],
+					'conforme' => $_POST['Referral']['conforme'],
+					'receivedBy' => $_POST['Referral']['receivedBy'],
+					);
 				
 				$referral = RestController::putData('referrals', $postFields, $id);
 				
@@ -182,7 +259,7 @@ class ReferralController extends Controller
 	{
 		$this->loadModel($id)->delete();
 
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+		// if AJAX (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
@@ -203,8 +280,10 @@ class ReferralController extends Controller
 	 */
 	public function actionAdmin()
 	{
+		RestController::checkApiAccess();
+		
 		//$referrals = RestController::getAdminData('consolidatedreferrals');
-		$referrals = RestController::getAdminData('referrals');
+		$referrals = RestController::getAdminData('referrals?sort=-create_time');
 		$results = $this->segregateResults($referrals);
 		
 		$this->render('admin',array(
@@ -215,9 +294,9 @@ class ReferralController extends Controller
 			'referralOut'=>new CArrayDataProvider((count($results['referralOut']) == 0) ? array() : $results['referralOut'], 
 						array('pagination'=>$pagination)
 					),
-			//'results'=>$results,
 			'referrals'=>$referrals,
-			'newReferrals'=>Referral::countNewReferrals()
+			'newReferrals'=>Referral::countNewReferrals(),
+			'res'=>$res
 		));
 	}
 
@@ -241,22 +320,106 @@ class ReferralController extends Controller
 		}
 		return $results;
 	}
+	
+	public function actionValidateReferral()
+	{
+		RestController::checkApiAccess();
+		
+		if(isset($_POST['id'])){
+			$referralId = $_POST['id'];
+		}
+		if(isset($_POST['Referral']['referralId'])){
+			$referralId = $_POST['Referral']['referralId'];
+		}
+		
+		$model=$this->loadModel($referralId);
+		
+		if(isset($_POST['Referral']))
+		{
+			$authenticateTechnicalManager = Users::validateTechnicalManager($_POST['Referral']['technicalManager'], $_POST['Referral']['managerPassword']);
+			
+			if($authenticateTechnicalManager){
+				$referral = RestController::getCustomData('referrals/validate?id=', $referralId);
+				if(isset($referral)){
+					echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>'Referral Validated'
+                        ));
+                	exit;                	
+               	}else{
+					Yii::app()->user->setFlash('error','Validation error!');
+					Yii::app()->user->setFlash('errormessage', $referral);
+    				echo CJSON::encode(array(
+                        'status'=>'failure', 
+                        'div'=>$this->renderPartial('_validateReferral', 
+									array(
+										'model'=>$model,
+										'referralId'=>$_POST['Referral']['referralId'],
+										'message'
+									), true, true)
+					));
+	                exit;
+               	}
+			}else{
+				Yii::app()->user->setFlash('error','Authentication unsuccessful!');
+				Yii::app()->user->setFlash('errormessage', 'Password does not match with the selected Technical Manager.');
+				echo CJSON::encode(array(
+                        'status'=>'failure', 
+                        'div'=>$this->renderPartial('_validateReferral', 
+									array(
+										'model'=>$model,
+										'referralId'=>$_POST['Referral']['referralId'],
+									), true, true)
+				));
+                exit;
+			}
+		}
+		
+		if(Yii::app()->request->isAjaxRequest)
+        {
+			echo CJSON::encode(array(
+                'status'=>'failure',
+                'div'=>$this->renderPartial('_validateReferral', 
+						array(
+							'model'=>$model,
+							'referralId'=>$referralId,
+				), true, true)));
+            exit;               
+        }
+	}
+	
 	public function actionSearchAgency()
 	{
-		/*$ch = curl_init();
-		$url = Yii::app()->Controller->getServer().'/referrals/agency?id='.$_POST['id'];
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		
-		$data = curl_exec($ch);
-		curl_close($ch);
-		
-		$results = json_decode($data, true);*/
+		RestController::checkApiAccess();
 		
 		$results = RestController::getCustomData('referrals/agency?id=', $_POST['id']);
 				
 		return $results;
+	}
+	
+	public function actionNotifyAgency()
+	{
+		RestController::checkApiAccess();
+		
+		$postFields = "type_id=1"
+					."&sender_id=".Yii::app()->Controller->getRstlId()
+					."&recipient_id=".$_POST['recipient_id']
+					."&controller=referral"
+					."&action=view"
+					."&resource_id=".$_POST['resource_id']
+					."&read=0";
+					
+		$notify = RestController::postData('notifications', $postFields);
+		return $notify;		
+		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+		//if(!isset($_GET['ajax']))
+			//$this->redirect($_POST['returnUrl']);
+	}
+	
+	public function actionMarkread()
+	{
+		$notification = RestController::getCustomData('notifications/markread?id=', $_POST['resource_id']);
+		return $notification;
 	}
 	
 	public function actionSend($id=NULL)
@@ -311,7 +474,6 @@ class ReferralController extends Controller
         {
 			echo CJSON::encode(array(
                 'status'=>'failure',
-                //'div'=>$this->renderPartial('_sendReferral', array('model'=>$model,'referralId'=>$referralId,
                 'div'=>$this->renderPartial('_sendReferral', 
 						array(
 							'model'=>$model,
@@ -354,5 +516,26 @@ class ReferralController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+	
+	public function actionUploadResult()
+	{
+		$model = New Result;
+		
+		$model->attributes=$_POST['Result'];
+		
+		$uploadFile = CUploadedFile::getInstance($model,'uploadFile');
+
+		$cfile = new CURLFile($uploadFile->tempName, $uploadFile->type, $uploadFile->name);
+				
+		$postFields = array(
+					'referral_id' => $_POST['Result']['referral_id'],
+					'filename' => $uploadFile->name, 
+					'file' => $cfile
+		);
+					
+		$referral = RestController::postData('results', $postFields);
+		
+		$this->redirect(array('view','id'=>$_POST['Result']['referral_id']));
 	}
 }

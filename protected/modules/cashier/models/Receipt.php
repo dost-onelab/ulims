@@ -194,6 +194,7 @@ class Receipt extends CActiveRecord
 					$collection->rstl_id = Yii::app()->Controller->getRstlId();
 					$collection->receipt_id = $this->id;
 					$collection->request_id = $item->request_id;
+					$collection->referral_id = $item->referral_id;
 					$collection->nature = $item->details;
 					$collection->amount = $item->amount;
 					$collection->receiptid = $this->receiptId;

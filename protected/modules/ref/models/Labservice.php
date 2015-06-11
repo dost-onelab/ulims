@@ -17,9 +17,21 @@
  * @property integer $agency_id
  */
 //class LabSampletypeTestnameMethodService extends CActiveRecord
-class Labservice extends CActiveRecord
+class Labservice extends CFormModel
 {
 	public $offered;
+	public $method;
+	public $reference;
+	public $fee;
+	
+	public $lab_id;
+	public $labName;
+	public $sampleType_id;
+	public $testName_id;
+	public $testName;
+	public $methodreference_id;
+	public $agency_id;
+	public $type;
 	
 	public function primaryKey(){
             return 'lab_id';
@@ -28,11 +40,11 @@ class Labservice extends CActiveRecord
 	/**
 	 * @return string the associated database table name
 	 */
-	public function tableName()
+	/*public function tableName()
 	{
 		//return 'lab_sampletype_testname_method_service';
 		return 'lab_service';
-	}
+	}*/
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -74,7 +86,7 @@ class Labservice extends CActiveRecord
 			'lab_id' => 'Lab',
 			'labName' => 'Lab Name',
 			'sampleType_id' => 'Sample Type',
-			'type' => 'Type',
+			'type' => 'Sample Type',
 			'testName_id' => 'Test Name',
 			'testName' => 'Test Name',
 			'methodreference_id' => 'Methodreference',
@@ -82,7 +94,7 @@ class Labservice extends CActiveRecord
 			'reference' => 'Reference',
 			'fee' => 'Fee',
 			'agency_id' => 'Agency',
-			'offered' => 'Offered',
+			'offered' => 'Available Labs',
 		);
 	}
 
@@ -169,10 +181,10 @@ class Labservice extends CActiveRecord
 	/**
 	 * @return CDbConnection the database connection used for this class
 	 */
-	public function getDbConnection()
+	/*public function getDbConnection()
 	{
 		return Yii::app()->referralDb;
-	}
+	}*/
 
 	/**
 	 * Returns the static model of the specified AR class.

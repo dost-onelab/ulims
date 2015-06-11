@@ -63,6 +63,8 @@ class AnalysisController extends Controller
 	 */
 	public function actionCreate()
 	{
+		RestController::checkApiAccess();
+		
 		$model=new Analysis;
 
 		// Uncomment the following line if AJAX validation is needed
@@ -116,6 +118,8 @@ class AnalysisController extends Controller
 	 */
 	public function actionUpdate($id=NULL)
 	{
+		RestController::checkApiAccess();
+		
 		if(isset($_POST['Analysis']['id'])){
 			$id=$_POST['Analysis']['id'];
 		}else{
@@ -240,9 +244,7 @@ class AnalysisController extends Controller
 	
 	public function actionGetTestName(){
 		$sample = RestController::getViewData('samples', $_POST['Analysis']['sample_id']);
-		
 		$testNames = Sampletypetestname::listDataBySampleType($sample['sampleType_id']);
-		
 		// Append Blank
 		echo CHtml::tag('option', array('value'=>''),CHtml::encode($name),true);
 		

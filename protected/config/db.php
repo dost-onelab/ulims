@@ -4,16 +4,16 @@ return array(
 	'db'=>array(
 		'connectionString' => 'mysql:host=localhost;dbname=ulimsportal',
 		'emulatePrepare' => true,
-		'username' => '',
-		'password' => '',
+		'username' => 'adm-0808',
+		'password' => 'DostRegion9',
 		'charset' => 'utf8',
 		//'tablePrefix' => '',
 	),
 	
 	'ulimsDb'=>array(
 		'connectionString'=>'mysql:host=localhost;dbname=ulimslab',
-		'username' => '',
-		'password' => '',
+		'username' => 'adm-0808',
+		'password' => 'DostRegion9',
 		'class'=>'CDbConnection',
 		'charset' => 'utf8',
 		//'tablePrefix' => '',
@@ -21,8 +21,8 @@ return array(
 	
 	'referralDb'=>array(
 		'connectionString'=>'mysql:host=localhost;dbname=onelabdb',
-		'username' => '',
-		'password' => '',
+		'username' => 'adm-0808',
+		'password' => 'DostRegion9',
 		'class'=>'CDbConnection',
 		'charset' => 'utf8',
 		//'tablePrefix' => '',
@@ -30,8 +30,8 @@ return array(
 	
 	'cashierDb'=>array(
 		'connectionString'=>'mysql:host=localhost;dbname=ulimscashiering',
-		'username' => '',
-		'password' => '',
+		'username' => 'adm-0808',
+		'password' => 'DostRegion9',
 		'class'=>'CDbConnection',
 		'charset' => 'utf8',
 		//'tablePrefix' => '',
@@ -39,8 +39,8 @@ return array(
 	
 	'accountingDb'=>array(
 		'connectionString'=>'mysql:host=localhost;dbname=ulimsaccounting',
-		'username' => '',
-		'password' => '',
+		'username' => 'adm-0808',
+		'password' => 'DostRegion9',
 		'class'=>'CDbConnection',
 		'charset' => 'utf8',
 		//'tablePrefix' => '',
@@ -48,8 +48,8 @@ return array(
 	
 	'phAddressDb'=>array(
 		'connectionString'=>'mysql:host=localhost;dbname=phaddress',
-		'username' => '',
-		'password' => '',
+		'username' => 'adm-0808',
+		'password' => 'DostRegion9',
 		'class'=>'CDbConnection',
 		'charset' => 'utf8',
 		//'tablePrefix' => '',
@@ -57,7 +57,7 @@ return array(
 	
 	'information_schema'=>array(
 		'connectionString'=>'mysql:host=localhost;dbname=information_schema',
-		'username' => '',
+		'username' => 'root',
 		'password' => '',
 		'class'=>'CDbConnection',
 		'charset' => 'utf8'

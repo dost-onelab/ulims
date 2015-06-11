@@ -65,6 +65,13 @@ class ResultController extends Controller
 	{
 		$model=new Result;
 
+		if(isset($_POST['referralId']))
+		{
+			$referralId = $_POST['referralId'];
+		}else{
+			$referralId = $_POST['Result']['referralId'];
+			//$_POST['Result']['filename'] = $_POST['Result']['uploadFile'];		
+		}
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 		
@@ -75,86 +82,17 @@ class ResultController extends Controller
 			
 			if($model->validate()){
 				
-				
 				$uploadFile = CUploadedFile::getInstance($model,'uploadFile');
-
-				//$filePath = base64_encode($uploadFile->tempName);
-				$postFields = "referral_id=".$_POST['Result']['referral_id']
-					//."&filename=".$uploadFile->tempName
-					."&filename=".$uploadFile->tempName
-					."&file=@".$uploadFile->tempName;
 				
-				//$referral = RestController::postData('results', $postFields);
-				
-				$header = array('Content-Type: multipart/form-data');
-				$fields = array('file' => '@' . $_FILES['file']['tmp_name'][0]);
-				$token = 'NfxoS9oGjA6MiArPtwg4aR3Cp4ygAbNA2uv6Gg4m';
-				
-				$ch  = curl_init();
-				//$url = 'http://localhost/curl_upload/uploads.php';
-				$url = 'http://web-server/curl_upload/uploads.php';
-				
-				//$cfile = new CURLFile($_FILES['image']['tmp_name'], $_FILES['image']['type'], $_FILES['image']['name']);
 				$cfile = new CURLFile($uploadFile->tempName, $uploadFile->type, $uploadFile->name);
-				$data = array('myimage' => $cfile);
-			
-				curl_setopt($ch, CURLOPT_URL, $url);
-				curl_setopt($ch, CURLOPT_POST, true);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-			
-				$response = curl_exec($ch);
 				
-				/*$resource = curl_init();
-				curl_setopt($resource, CURLOPT_URL, $url);
-				curl_setopt($resource, CURLOPT_HTTPHEADER, $header);
-				curl_setopt($resource, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($resource, CURLOPT_POST, 1);
-				curl_setopt($resource, CURLOPT_POSTFIELDS, $postFields);
-				//curl_setopt($resource, CURLOPT_COOKIE, 'apiToken=' . $token);
-				$result = json_decode(curl_exec($resource));
-				curl_close($resource);*/
-				
-				/*$ch = curl_init();
-				
-				$url = 'http://localhost/onelab/api/web/v1/results';
-				
-				curl_setopt($ch, CURLOPT_URL, $url);
-				curl_setopt($resource, CURLOPT_HTTPHEADER, $header);
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				
-				//Add data
-				curl_setopt($ch, CURLOPT_POST, 1);
-				curl_setopt($ch, CURLOPT_POSTFIELDS,
-					//$postFields
-					array(
-					  'referral_id' => $_POST['Result']['referral_id'],
-					  'filename' => $_POST['Result']['filename'],
-				      'file' =>
-				          '@'.$_FILES['file']['tmp_name']
-				    )
+				$postFields = array('referral_id' => $_POST['Result']['referral_id'],
+					'filename' => $uploadFile->name, 
+					'file' => $cfile
 				);
-				
-				$data = curl_exec($ch);
-				curl_close($ch);
-				
-				$json = json_decode($data, true);*/
-				
-				/*$ch  = curl_init();
-				$url = 'http://localhost/curl_upload/upload.php';
-				
-				$cfile = new CURLFile($uploadFile->tempName, $uploadFile->type, $uploadFile->name);
-				$data = array('uploadFile' => $cfile);
-				
-				curl_setopt($ch, CURLOPT_URL, $url);
-				curl_setopt($ch, CURLOPT_POST, true);
-				curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-
-				$response = curl_exec($ch);
-				
-				echo $uploadFile->tempName;
-				echo '<br/>'.$uploadFile->type;
-				echo '<br/>'. $uploadFile->name;
-				
+					
+				$referral = RestController::postData('results', $postFields);
+				/*		
 				if($response == true)
 					echo "File uploaded";
 				else 	
@@ -166,6 +104,7 @@ class ResultController extends Controller
                     echo CJSON::encode(array(
                         'status'=>'success', 
                         'div'=>"Result successfully added"
+                        //'div'=>$referral
                         ));
                     exit;               
                 }
@@ -173,8 +112,8 @@ class ResultController extends Controller
                 	//echo "<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>";
                 	//print_r($uploadFile->tempName);
                 	//print_r($uploadFile);
-                	//print_r($json);
-                    $this->redirect(array('view','id'=>$model->id));
+                	//print_r($referral);
+                    //$this->redirect(array('view','id'=>$model->id));
                 }
 			}
 		}
@@ -183,30 +122,12 @@ class ResultController extends Controller
         {
             echo CJSON::encode(array(
                 'status'=>'failure',
-                'div'=>$this->renderPartial('_form', array('model'=>$model) ,true , true)));
+                'div'=>$this->renderPartial('_form', array('model'=>$model, 'referralId' => $referralId) ,true , true)));
             exit;               
         }else{
             $this->render('create',array('model'=>$model));
         }
 	}
-	/*public function actionCreate()
-	{
-		$model=new Result;
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Result']))
-		{
-			$model->attributes=$_POST['Result'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
-
-		$this->render('create',array(
-			'model'=>$model,
-		));
-	}*/
 
 	/**
 	 * Updates a particular model.
@@ -272,6 +193,21 @@ class ResultController extends Controller
 		));
 	}
 
+	public function actionDownload($id)
+	{
+		$result = RestController::getViewData('results', $id);
+		if(isset($result)){
+			//$tmp_file = explode("\\", $result);
+			header("Content-disposition: attachment; filename=".$result["filename"]);
+			header("Content-type: application/pdf");
+			readfile(Yii::app()->Controller->getServer().'/results/download?id='.$id);
+		}else{
+			Yii::app()->user->setFlash('error','File not found.');
+			Yii::app()->user->setFlash('errormessage', $result);
+    		$this->refresh();
+		}
+	}
+	
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.

@@ -21,15 +21,30 @@
  * @property string $create_time
  * @property string $update_time
  */
-class Customer extends CActiveRecord
+class Customer extends CFormModel
 {
+	public $id;
+	public $customerName;
+	public $agencyHead;
+	public $region_id;
+	public $province_id;
+	public $municipalityCity_id;
+	public $barangay_id;
+	public $houseNumber;
+	public $tel;
+	public $fax;
+	public $email;
+	public $type_id;
+	public $nature_id;
+	public $industry_id;
+	public $created_by, $create_time, $update_time;
 	/**
 	 * @return string the associated database table name
 	 */
-	public function tableName()
+	/*public function tableName()
 	{
 		return 'customer';
-	}
+	}*/
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -39,7 +54,8 @@ class Customer extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('customerName, agencyHead, region_id, province_id, municipalityCity_id, houseNumber, tel, fax, email, type_id, nature_id, industry_id', 'required'),
+			//array('customerName, agencyHead, region_id, province_id, municipalityCity_id, tel, fax, email, type_id, nature_id, industry_id', 'required'),
+			array('customerName, agencyHead, region_id, province_id, municipalityCity_id, type_id, nature_id, industry_id', 'required'),
 			array('region_id, province_id, municipalityCity_id, barangay_id, type_id, nature_id, industry_id', 'numerical', 'integerOnly'=>true),
 			array('customerName, agencyHead, tel, fax, email', 'length', 'max'=>50),
 			array('houseNumber', 'length', 'max'=>200),
@@ -73,7 +89,7 @@ class Customer extends CActiveRecord
 			'province_id' => 'Province',
 			'municipalityCity_id' => 'Municipality City',
 			'barangay_id' => 'Barangay',
-			'houseNumber' => 'House Number',
+			'houseNumber' => 'House/Room # | Bldg/Street | Barangay',
 			'tel' => 'Tel',
 			'fax' => 'Fax',
 			'email' => 'Email',
@@ -130,10 +146,10 @@ class Customer extends CActiveRecord
 	/**
 	 * @return CDbConnection the database connection used for this class
 	 */
-	public function getDbConnection()
+	/*public function getDbConnection()
 	{
 		return Yii::app()->referralDb;
-	}
+	}*/
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -148,15 +164,17 @@ class Customer extends CActiveRecord
 	
 	public static function listData()
 	{	
-		$url = Yii::app()->Controller->getServer().'/customers';
+		/*$url = Yii::app()->Controller->getServer().'/customers';
 		$client = curl_init();
 	    curl_setopt($client, CURLOPT_URL, $url);
 		curl_setopt($client, CURLOPT_RETURNTRANSFER, 1);
 		$response = curl_exec($client);
 		curl_close($client);
 		
-		$labs = json_decode($response, true);
+		$labs = json_decode($response, true);*/
 		
-		return CHtml::listData($labs, 'id', 'customerName');
+		$customers = RestController::getAdminData('customers');
+		
+		return CHtml::listData($customers, 'id', 'customerName');
 	}
 }

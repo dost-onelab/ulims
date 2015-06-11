@@ -13,20 +13,24 @@ $this->menu=array(
 
 <h3>Order of Payment : <?php echo $model->transactionNum; ?></h3>
 
-<?php
+<?php //$this->widget('ext.widgets.DetailView4Col', array(
+	//$this->widget('ext.bootstrap.widgets.TbDetailView', array(
 	$this->widget('ext.bootstrap.widgets.TbDetailView', array(
 	//'cssFile'=>false,
 	//'htmlOptions'=>array('class'=>'detail-view table table-striped table-condensed'),
 	'data'=>$model,
 	'attributes'=>array(
 		'transactionNum',
-		'transactionDate',
 		'customerName',
+		'date',
 		'address',
-		'collectiontype',
+		array(
+			'name'=>'collectiontype',
+			'value'=>$model->collectiontype->natureOfCollection
+		),
 		array(
 			'name'=>'amount',
-			'value'=>Yii::app()->format->formatNumber($model["total"]),
+			'value'=>Yii::app()->format->formatNumber($model->totalPayment),
 			'cssClass'=>'totalAmount'
 		),
 	),
@@ -56,25 +60,32 @@ $this->menu=array(
         //define the CArrayDataProvider's "keyField" with the Primary Key label of that Table/Model.
         'dataProvider' => $paymentitemDataProvider,
         'columns' => array(
-			array(
+    		array(
 				'header'=>'Details',
 				'name'=>'details',
-				'value'=>'$data["details"]',
+				'value'=>'$data->details',
 				'type'=>'raw',
     			'htmlOptions' => array('style' => 'width: 250px; padding-left: 10px; text-align: left;'),
 			),
-    		
+			/*array(
+				'header'=>'Amount Due',
+				'name'=>'amount',
+				'value'=>'Yii::app()->format->formatNumber($data->amount)',
+    			'htmlOptions' => array(
+					'style' => 'width: 250px; padding-right: 50px; text-align: right;',
+				),
+			),*/
     		array(
 				'header'=>'Amount'			,
 				'class'=>'editable.EditableColumn',
 				'name'=>'amount',
-				'value'=>'Yii::app()->format->formatNumber($data["amount"])',
+				'value'=>'Yii::app()->format->formatNumber($data->amount)',
 				'type'=>'raw',
     			'htmlOptions' => array(
 					'style' => 'width: 250px; padding-right: 50px; text-align: right;',
 				),
     			'footer'=>"<strong>TOTAL &nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;".
-							Yii::app()->format->formatNumber($model->total),
+							Yii::app()->format->formatNumber($model->totalPayment),
     			'footerHtmlOptions' => array('style' => 'width: 250px; padding-right: 50px; text-align: right; font-weight:bold;'),
 				'editable' => array(
 					'url' => $this->createUrl('updateAmount'),

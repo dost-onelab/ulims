@@ -85,7 +85,7 @@ class LabserviceController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	/*public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
 
@@ -102,6 +102,67 @@ class LabserviceController extends Controller
 		$this->render('update',array(
 			'model'=>$model,
 		));
+	}*/
+	
+	public function actionUpdate($id=NULL)
+	{
+		/*if(isset($_POST['Analysis']['id'])){
+			$id=$_POST['Analysis']['id'];
+		}else{
+			if(isset($_POST['id']))
+			$id=$_POST['id'];
+		}
+		
+		$model=$this->loadModel($id);
+		*/
+		$model= new Labservice;
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['Labservice']))
+		{
+			$model->attributes=$_POST['Labservice'];
+			//$model->referral_id = $referralId;
+			/*if($model->validate()){
+				$postFields = "sample_id=".$_POST['Analysis']['sample_id']
+					."&testName_id=".$_POST['Analysis']['testName_id']
+					."&methodReference_id=".$_POST['Analysis']['methodReference_id']
+					."&fee=".$_POST['Analysis']['fee'];
+				
+				$analysis = RestController::putData('analyses', $postFields, $id);
+				
+				if (Yii::app()->request->isAjaxRequest)
+				{
+					echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>"Services updated"
+                        ));
+                    exit;    
+				}
+			}*/
+		}
+
+		if (Yii::app()->request->isAjaxRequest)
+        {
+        	$labservices = RestController::getAdminData('labservices');
+			echo CJSON::encode(array(
+                'status'=>'failure',
+				'div'=>$this->renderPartial('_formUpdateServices', 
+					array(	'model'=>$model,
+							'labs'=>Lab::listData(),
+							'types'=>Labsampletype::listData(),
+							//'labservices'=>RestController::getAdminData('labservices'),
+							'labservices'=>new CArrayDataProvider($labservices, 
+								array('pagination'=>$pagination)
+							),
+							'gridDataProvider'=>new CArrayDataProvider(array(), 
+								array('pagination'=>$pagination)
+							),
+							'referralId'=>1) ,true , true)));
+            exit;               
+        }else{
+			$this->render('update',array('model'=>$model));
+        }
 	}
 
 	/**
@@ -151,7 +212,7 @@ class LabserviceController extends Controller
 			
 		//$labservices = json_decode($response, true);
 		
-		$labservices = RestController::getAdminData('labservices');
+		$labservices = RestController::getAdminData('testnamemethods');
 		
 		$processedServices = Labservice::processResult($labservices); 
 		
@@ -161,7 +222,7 @@ class LabserviceController extends Controller
 			'labservices'=>$labservices,
 			'labservices'=>new CArrayDataProvider($processedServices, 
 						array('pagination'=>$pagination)
-					)
+					),
 		));
 	}
 
@@ -216,7 +277,7 @@ class LabserviceController extends Controller
 				'0'=>array('field'=>'agency_id', 'value'=>$agency_id),
 				'1'=>array('field'=>'method_ref_id', 'value'=>$methodReference_id) 
 			));
-		print_r($service);
+		//print_r($service);
 		if($service['status'] == 404)
 		{
 			//print_r($service['status']);
@@ -277,7 +338,45 @@ class LabserviceController extends Controller
 			
 			$json = json_decode($data, true);
 			//print_r($json);
-			print_r($service);
+			//print_r($service);
 		}
+	}
+	
+	public function actionGetSampleType(){
+		$sampletypes = RestController::searchResource('labsampletypes', 'lab_id', $_POST['Labservice']['lab_id']);
+		
+		// Append Blank
+		echo CHtml::tag('option', array('value'=>''),CHtml::encode($name),true);
+		
+		if(!isset($sampletypes['name'])){
+			foreach($sampletypes as $sampletype)
+			{
+				echo CHtml::tag('option',
+						   array('value'=>$sampletype['sampletype']['id']), CHtml::encode($sampletype['sampletype']['type']),true);
+			}
+		}
+	}
+	
+	public function actionGetTestName(){
+		$testnames = RestController::searchResource('sampletypetestnames', 'sampletype_id', $_POST['Labservice']['type']);
+		
+		// Append Blank
+		echo CHtml::tag('option', array('value'=>''),CHtml::encode($name),true);
+		
+		if(!isset($testnames['name'])){
+			foreach($testnames as $testname)
+			{
+				echo CHtml::tag('option',
+						   array('value'=>$testname['testname_id']), CHtml::encode($testname['testName']),true);
+			}
+		}
+	}
+	
+	public function actionGetMethodReference(){
+		$methodrefs = RestController::searchResource('testnamemethods', 'testname_id', $_POST['Labservice']['testName_id']);
+		
+		$gridDataProvider = new CArrayDataProvider($methodrefs, array('pagination'=>false));
+		
+		$this->renderPartial('_methodReferences', array('gridDataProvider'=>$gridDataProvider));
 	}
 }

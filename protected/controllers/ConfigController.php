@@ -193,7 +193,8 @@ class ConfigController extends Controller
 								'proxy_url'=>$_POST['API']['proxy_url'],
 								'proxy_port'=>$_POST['API']['proxy_port'],
 								'proxy_user'=>$_POST['API']['proxy_user'],
-								'proxy_pass'=>$_POST['API']['proxy_pass']);
+								'proxy_pass'=>$_POST['API']['proxy_pass'],
+								'api_secret'=>$_POST['API']['api_secret']);
 		
 		if($this->write_ini_file($apisettingsarr, $apisettings, TRUE)){
 			$this->redirect('admin');

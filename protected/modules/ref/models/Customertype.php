@@ -9,13 +9,14 @@
  */
 class Customertype extends CActiveRecord
 {
+	public $id, $type;
 	/**
 	 * @return string the associated database table name
 	 */
-	public function tableName()
+	/*public function tableName()
 	{
 		return 'customertype';
-	}
+	}*/
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -84,10 +85,10 @@ class Customertype extends CActiveRecord
 	/**
 	 * @return CDbConnection the database connection used for this class
 	 */
-	public function getDbConnection()
+	/*public function getDbConnection()
 	{
 		return Yii::app()->referralDb;
-	}
+	}*/
 
 	/**
 	 * Returns the static model of the specified AR class.

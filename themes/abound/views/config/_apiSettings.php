@@ -55,7 +55,15 @@ $noImage='<span class="no-image">NO IMAGE</span>';
             <input type="password" name="API[proxy_pass]" value="<?php echo Yii::app()->params['API']['proxy_pass'];?>" style="width:70%;"/> <!--span style="color:#999;"><i>used in receipt</i></span-->
         	</div>
         </td>
-    </tr>     
+    </tr>
+    <tr>
+        <td>
+            <div class="row">
+            <label style="width:180px; line-height:35px;">API: Secret</label>
+            <input type="text" name="API[api_secret]" value="<?php echo Yii::app()->params['API']['api_secret'];?>" disabled="disabled" style="width:70%;"/> <!--span style="color:#999;"><i>used in receipt</i></span-->
+        	</div>
+        </td>
+    </tr>
     </table>
         	
 			<?php
