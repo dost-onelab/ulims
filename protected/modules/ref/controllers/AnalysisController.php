@@ -271,19 +271,7 @@ class AnalysisController extends Controller
 	public function actionGetAnalysisDetails(){
 		$id = $_POST['Analysis']['methodReference_id'];
 		
-		/*$ch = curl_init();
-		$url = 'http://'.Yii::app()->Controller->getServer().'/methodreferences/'.$id;
-		
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		
-		$data = curl_exec($ch);
-		curl_close($ch);
-		
-		$data = json_decode($data, true);*/
-		
-		$analysis = RestController::getViewData('methodreferences', $id);
+		$analysis = RestController::getViewData('testnamemethods', $id);
 			
 		echo CJSON::encode($analysis); 
 		exit;

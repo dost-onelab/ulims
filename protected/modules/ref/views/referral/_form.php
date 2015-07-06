@@ -28,7 +28,7 @@
 		<?php echo $form->dropDownList($model,'lab_id', $labs, array('style'=>'width: 350px; display:'.$display)) ?>
 		<?php echo $form->error($model,'lab_id'); ?>
 	</div>
-	
+
 	<div class="row">
 		<?php echo $form->labelEx($model,'customer_id'); ?>
 		<?php //echo $form->textField($model,'customer_id',array('size'=>50,'maxlength'=>50)); ?>
@@ -41,7 +41,7 @@
                 'width'=>'350px',
                 'allowClear'=>true,
 				'minimumInputLength'=>3,
-                'placeholder'=>'Search sample template here...',
+                'placeholder'=>'Search customer here...',
             ),
           'events' =>array('change'=>'js:function(e) 
                     { 
