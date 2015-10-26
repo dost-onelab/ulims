@@ -101,4 +101,5 @@ Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;
 					),*/
 			),
 		));
-	?>	
+	?>
+	

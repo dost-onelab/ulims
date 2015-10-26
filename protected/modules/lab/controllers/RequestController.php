@@ -1038,5 +1038,57 @@ class RequestController extends Controller
 			)
 		);
 
-	}	
+	}
+	
+	public function actionPrintPDF($id)
+	{
+		$request = Request::model()->findByPk($id);
+
+		$pdf = Yii::createComponent('application.extensions.tcpdf.requestPdf', 
+		                            'P', 'cm', 'A4', true, 'UTF-8');
+
+		$pdf = new requestPdf(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+        spl_autoload_register(array('YiiBase','autoload'));
+ 
+ 		$pdf->setRequest($request);
+        // set document information
+        $pdf->SetCreator(PDF_CREATOR);  
+ 
+        $pdf->SetTitle($request->requestRefNum);               
+        //$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, "Selling Report -2013", "selling report for Jun- 2013");
+        //$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+        //$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+        //$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+        //$pdf->SetMargins(0, 287.15, 150);
+        //$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+        $pdf->SetMargins(0,87.15,0);
+        $pdf->SetAutoPageBreak(TRUE, 60);
+        
+        $pdf->AddPage();
+ 
+        $pdf->printRows();
+        
+        // reset pointer to the last page
+        $pdf->lastPage();
+ 
+        //Close and output PDF document
+        $pdf->Output($request->requestRefNum, 'I');
+        //Yii::app()->end();
+	}
+	
+	function actionPrint($id)
+	{
+		switch(Yii::app()->params['FormRequest']['printFormat']){
+			case 1:
+				$this->redirect(array('genRequestExcel','id'=>$id));
+				break;
+			
+			case 2:
+				$this->redirect(array('printPDF','id'=>$id));
+				break;
+			
+			default:
+				$this->redirect(array('genRequestExcel','id'=>$id));
+		}
+	}
 }

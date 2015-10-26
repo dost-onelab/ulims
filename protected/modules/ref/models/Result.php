@@ -8,18 +8,23 @@
  * @property integer $referral_id
  * @property string $filename
  */
-class Result extends CFormModel
+class Result extends CActiveRecord //CFormModel
 {
+	/*public $id;
+	public $referral_id;
+	public $filename;
+	public $uploadFile;
+	public $test;*/
 	public $uploadFile;
 	
-	public $id, $referral_id, $filename, $uploadFile;
+	//public $id, $referral_id, $filename, $uploadFile;
 	/**
 	 * @return string the associated database table name
 	 */
-	/*public function tableName()
+	public function tableName()
 	{
 		return 'result';
-	}*/
+	}
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -32,11 +37,10 @@ class Result extends CFormModel
 			array('referral_id', 'required'),
 			array('referral_id', 'numerical', 'integerOnly'=>true),
 			array('filename', 'length', 'max'=>500),
-			//array('uploadFile', 'file', 'types'=>'jpg, pdf, png'),
-			array('uploadFile', 'file'),
+			array('uploadFile', 'file', 'types'=>'jpg, pdf, png', 'allowEmpty'=>FALSE,'maxSize' => 1024 * 1024 * 2),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, referral_id, filename, uploadFile', 'safe', 'on'=>'search'),
+			array('id, referral_id, filename, uploadFile, test', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -60,7 +64,7 @@ class Result extends CFormModel
 			'id' => 'ID',
 			'referral_id' => 'Referral',
 			'filename' => 'Filename',
-			'uploadFile' => 'Filename',
+			'uploadFile' => 'File',
 		);
 	}
 

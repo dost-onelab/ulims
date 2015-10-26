@@ -110,7 +110,15 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 				},
 			'htmlOptions'=>array('style'=>'text-align:center','title'=>'Click to view payment details'),
 		),
-		'cancelled',
+		array(
+				'name'=>'cancelled',
+				'filter'=>CHtml::listData(array(
+								array('index'=>'0', 'name'=>'No'),
+								array('index'=>'1', 'name'=>'Yes'),
+							), 
+							'index', 'name'),
+    			'htmlOptions' => array('style' => 'text-align: center;'),
+			),
 		array(
 			//'class'=>'CButtonColumn',
 			'class'=>'bootstrap.widgets.TbButtonColumn',
@@ -168,38 +176,40 @@ function viewPaymentDetail(id)
 }
 </script>
 
-<?php
-	/*
-	echo '<table border="1">';
-	foreach($requests as $request){
-		echo '<tr>';
-			echo '<td>'.$request->id.'</td>';
-			echo '<td>';
-			echo $request->requestRefNum;
-			echo '</td>';
-					$sampleCount = count($request->samps);
-					$s = 1;
-					foreach($request->samps as $sample){
-						echo ($s == 1) ? '<td>' : '<td></td><td></td><td>';
-						echo $sample->sampleCode;
-						echo '</td>';
-						
-						$analysisCount = count($sample->analyses);
-						$a = 1;
-						foreach($sample->analyses as $analysis){
-							//echo '<td>';
-							echo ($a == 1) ? '<td>' : '<td></td><td></td><td></td><td>';
-							echo $analysis->testName;
-							echo '</td>';
-							$a += 1;
-							
-							echo '</tr>';
-						}
-						
-						
-						$s += 1;
-					}
-	}
-	echo '</table>';
-	*/
+<?php 
+/*$reqs = Request::model()->findAll(array(
+					'condition' => 'YEAR(requestDate) = "2015" AND cancelled = :cancelled',
+				    'params' => array(':cancelled' => 0),
+				));
+	
+	echo "<table>";
+		
+		echo "<th style='border: 1px solid #000;'>Request</th>";
+		echo "<th style='border: 1px solid #000;'>Customer</th>";
+		echo "<th style='border: 1px solid #000;'>Address</th>";
+		echo "<th style='border: 1px solid #000;'>Province</th>";
+		//echo "<th style='border: 1px solid #000;'>Province ID</th>";
+		echo "<th style='border: 1px solid #000;'>Municipality / City</th>";
+		echo "<th style='border: 1px solid #000;'>District</th>";
+		echo "<th style='border: 1px solid #000;'>District</th>";
+		echo "<th style='border: 1px solid #000;'>Samples</th>";
+		echo "<th style='border: 1px solid #000;'>Parameters</th>";
+		foreach($reqs as $request){
+			echo "<tr style='border: 1px solid #000;'>";
+				echo "<td style='border: 1px solid #000;'>".$request->requestRefNum."</td>";
+				echo "<td style='border: 1px solid #000;'>".$request->customer->customerName."</td>";
+				echo "<td style='border: 1px solid #000;'>".$request->customer->completeAddress."</td>";
+				echo "<td style='border: 1px solid #000;'>".$request->customer->municipality->province->name."</td>";
+				echo "<td style='border: 1px solid #000;'>".$request->customer->municipality->name."</td>";
+//				echo "<td style='border: 1px solid #000;'>".$request->customer->municipality->provinceId."</td>";
+				echo "<td style='border: 1px solid #000;'>".$request->customer->municipality->district."</td>";
+				echo "<td style='border: 1px solid #000;'>".Barangay::model()->findByPk($request->customer->barangay_id)->district."</td>";
+				echo "<td style='border: 1px solid #000;'>".$request->sampleCount."</td>";
+				echo "<td style='border: 1px solid #000;'>".count($request->anals)."</td>";
+			echo "</tr>";
+		}
+	
+	echo "</table>";
+			
+*/
 ?>

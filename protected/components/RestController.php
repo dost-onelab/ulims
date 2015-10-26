@@ -68,14 +68,28 @@ class RestController extends CApplicationComponent {
 		$url = Yii::app()->Controller->getServer().'/'.$custom_resource_url.$resource_id;
 		
 		$accesstoken = Yii::app()->user->accessToken;
-		$auth = array('token: '.$accesstoken->token);
-		//$response = Yii::app()->curl->get($url);
+		$auth = array('token: '.$accesstoken->token, 'sender: '.Users::model()->findByPk(Yii::app()->user->id)->fullname);
 		$response = Yii::app()->curl->setOptions(array(CURLOPT_HTTPHEADER => $auth))->get($url);
 		
 		$arrayResponse = json_decode($response, true);
 	 
-	    //return $arrayResponse;
-	    return count($arrayResponse[0]) ? $arrayResponse : array();
+	    return $arrayResponse;
+	    //return count($arrayResponse[0]) ? $arrayResponse : array();
+	}
+	
+	public static function postStatus($custom_resource_url, $resource_id)
+	{
+		//Resource Address
+		$url = Yii::app()->Controller->getServer().'/'.$custom_resource_url.$resource_id;
+		
+		$accesstoken = Yii::app()->user->accessToken;
+		$auth = array('token: '.$accesstoken->token);
+		$response = Yii::app()->curl->setOptions(array(CURLOPT_HTTPHEADER => $auth))->get($url);
+		
+		$arrayResponse = json_decode($response, true);
+	 
+	    return $arrayResponse;
+	    //return count($arrayResponse[0]) ? $arrayResponse : array();
 	}
 	
 	public static function searchResource($resource, $field, $fieldValue)
@@ -83,12 +97,16 @@ class RestController extends CApplicationComponent {
 		// Resource Address
 		$url = Yii::app()->Controller->getServer().'/'.$resource.'/search?'.$field.'='.$fieldValue;
 		
-		$response = Yii::app()->curl->get($url);
+		$accesstoken = Yii::app()->user->accessToken;
+		$auth = array('token: '.$accesstoken->token);
+		$response = Yii::app()->curl->setOptions(array(CURLOPT_HTTPHEADER => $auth))->get($url);
+		
+		//$response = Yii::app()->curl->get($url);
 		
 		$arrayResponse = json_decode($response, true);
 	 
-	    return $arrayResponse;
-	    //return count($arrayResponse[0]) ? $arrayResponse : array();
+	    //return $arrayResponse;
+	    return count($arrayResponse[0]) ? $arrayResponse : array();
 	}
 	
 	public static function searchResourceMultifields($resource, $params)
@@ -105,8 +123,8 @@ class RestController extends CApplicationComponent {
 		
 		$arrayResponse = json_decode($response, true);
 	 
-	    return $arrayResponse;
-	    //return count($arrayResponse[0]) ? $arrayResponse : array();
+	    //return $arrayResponse;
+	    return count($arrayResponse[0]) ? $arrayResponse : array();
 	}
 
 	public static function deleteData($resource, $resource_id)
@@ -125,13 +143,13 @@ class RestController extends CApplicationComponent {
 	
     public static function verifyAgencyKey($id)
     {
-		$url = Yii::app()->Controller->getServer().'/users/verifyagency?agency_id='.$id;
+		$url = Yii::app()->Controller->getServer()."/users/verifyagency?agency_id=".$id;
 		
 		if(file_exists(Yii::app()->params['keyPath']))
 		{
 			$agency_key = file_get_contents(Yii::app()->params['keyPath']);
 			$auth = array('agencykey:'.$agency_key);
-			$response = Yii::app()->curl->setOption(CURLOPT_HTTPHEADER, $auth)->get($url);
+			$response = Yii::app()->curl->setOptions(array(CURLOPT_HTTPHEADER => $auth))->get($url);
 			return json_decode($response);
 		}else{
 			return false;

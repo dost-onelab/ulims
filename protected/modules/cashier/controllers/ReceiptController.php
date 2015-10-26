@@ -143,7 +143,7 @@ class ReceiptController extends Controller
 					array_push($items, $row);
 				}
 				
-				$postFields = "agency_id=".Yii::app()->Controller->getRstlId()
+				/*$postFields = "agency_id=".Yii::app()->Controller->getRstlId()
 					."&receiptNumber=".$model->receiptId
 					."&receiptDate=".$model->receiptDate
 					."&paymentmode_id=".$model->paymentModeId
@@ -153,7 +153,7 @@ class ReceiptController extends Controller
 					."&orderofpayment_id=".$model->orderofpayment_id
 					."&transactionNum=".Rstl::model()->findByPk(Yii::app()->Controller->getRstlId())->code.'-'.$model->orderofpayment->transactionNum;
 				
-				$receipt = RestController::postData('receipts', $postFields);
+				$receipt = RestController::postData('receipts', $postFields);*/
 				
 				if (Yii::app()->request->isAjaxRequest)
                 {

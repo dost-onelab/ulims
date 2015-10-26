@@ -112,6 +112,31 @@ h1,h2,h3,h4, .portlet > .portlet-decoration, .sidebar-nav > ul > li > a, .navbar
 	padding:5px;
 }
 
+
+.portlet-decoration-notification{
+	background-color: #152A60;
+	background-image: -moz-linear-gradient(top, #152A60, #4394CF);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#152A60), to(#4394CF));
+	background-image: -webkit-linear-gradient(top, #152A60, #4394CF);
+	background-image: -o-linear-gradient(top, #152A60, #4394CF);
+	background-image: linear-gradient(to bottom, #152A60, #4394CF);
+	background-repeat: repeat-x;
+	filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffF1F1F1', endColorstr='#ffDBDBDB', GradientType=0);
+	padding:10px;
+}
+
+.portlet-title-notification{
+	font-weight: bold;
+	color: #fff;
+	font-size: medium;
+}
+
+.portlet-content-notification{
+	padding:5px;
+	color: #152A60;
+	border:1px solid #4394CF;
+}
+
 /* end Portlets*/
 .navbar {
   margin-bottom:0px;
@@ -580,6 +605,11 @@ footer {
 .btn-group.btn-group-yesno > .btn {
     min-width: 84px;
     padding: 2px 12px;
+}
+
+btn-group-offer > .btn {
+    min-width: 30px;
+    //padding: 2px 12px;
 }
 
 .loader{

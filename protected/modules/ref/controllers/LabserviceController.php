@@ -200,29 +200,26 @@ class LabserviceController extends Controller
 		if(isset($_GET['Labservice']))
 			$model->attributes=$_GET['Labservice'];
 		
-		//Resource Address
-		//$url = Yii::app()->Controller->getServer().'/labservices';
-			
-		//Send Request to Resource
-		/*$client = curl_init();
-	    curl_setopt($client, CURLOPT_URL, $url);
-		curl_setopt($client, CURLOPT_RETURNTRANSFER, 1);
-		$response = curl_exec($client);
-		*/
-			
-		//$labservices = json_decode($response, true);
+		//$labservices = RestController::searchResource('labservices', 'agency_id', Yii::app()->Controller->getRstlId());
 		
-		$labservices = RestController::getAdminData('testnamemethods');
-		
-		$processedServices = Labservice::processResult($labservices); 
+		$labservices = RestController::searchResource('services', 'agency_id', Yii::app()->Controller->getRstlId());
+		//$processedServices = Labservice::processResult($labservices); 
 		
 		$this->render('admin',array(
-			'model'=>$model,
-			'services'=>$newArray,
-			'labservices'=>$labservices,
-			'labservices'=>new CArrayDataProvider($processedServices, 
+			'model'=> $model,
+			//'services'=> $newArray,
+			'labs' => Lab::listData(),
+			'types' => Labsampletype::listData(),
+			//'labservicesAll' => RestController::getAdminData('labservices'),
+			'gridDataProvider'=> new CArrayDataProvider($gridDataProvider,
 						array('pagination'=>$pagination)
 					),
+			//'labservices'=>$labservices,
+			//'labservices'=>new CArrayDataProvider($processedServices, 
+			'labservices'=> new CArrayDataProvider((count($labservices) > 0) ? $labservices : array())
+			/*'labservices'=> new CArrayDataProvider($labservices,
+						array('pagination'=>$pagination)
+					),*/
 		));
 	}
 
@@ -258,48 +255,22 @@ class LabserviceController extends Controller
 	{
 		$agency_id = Yii::app()->Controller->getRstlId();
 		$methodReference_id = $id;
-		
-		//$ch = curl_init();
-		//$url = Yii::app()->Controller->getServer().'/services/search?agency_id='.$agency_id.'&method_ref_id='.$methodReference_id;
-		
-		/*curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		
-		$data = curl_exec($ch);
-		curl_close($ch);
-		
-		$service = json_decode($data, true);*/
-		//print_r($service);
-		
-		//$service = RestController::searchResourceMultifields('services', 'search?agency_id='.$agency_id.'&method_ref_id='.$methodReference_id);
+
 		$service = RestController::searchResourceMultifields('services', array(
 				'0'=>array('field'=>'agency_id', 'value'=>$agency_id),
 				'1'=>array('field'=>'method_ref_id', 'value'=>$methodReference_id) 
 			));
-		//print_r($service);
+			
 		if($service['status'] == 404)
 		{
-			//print_r($service['status']);
-			$ch = curl_init();
-
-			$url = Yii::app()->Controller->getServer().'/services';
-			
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_HEADER, 0);
-			
-			//Add data
-			curl_setopt($ch, CURLOPT_POST, 1);
-			curl_setopt($ch, CURLOPT_POSTFIELDS,
-				"agency_id=".$agency_id
-				."&method_ref_id=".$methodReference_id
+			$postFields = array(
+				"agency_id" => $agency_id,
+				"method_ref_id" => $methodReference_id
 			);
 			
-			$data = curl_exec($ch);
-			curl_close($ch);
+			$service_array = RestController::postData('services', $postFields);
 			
-			$referral_array = json_decode($data, true);	
+			$this->updateServices();
 		}
 	}
 	
@@ -308,7 +279,7 @@ class LabserviceController extends Controller
 		$agency_id = Yii::app()->Controller->getRstlId();
 		$methodReference_id = $id;
 		
-		$ch = curl_init();
+		/*$ch = curl_init();
 		$url = Yii::app()->Controller->getServer().'/services/search?agency_id='.$agency_id.'&method_ref_id='.$methodReference_id;
 		
 		curl_setopt($ch, CURLOPT_URL, $url);
@@ -318,13 +289,16 @@ class LabserviceController extends Controller
 		$data = curl_exec($ch);
 		curl_close($ch);
 		
-		$service = json_decode($data, true);
+		$service = json_decode($data, true);*/
 		
-		//print_r($service);
+		$service = RestController::searchResourceMultifields('services', array(
+				'0'=>array('field'=>'agency_id', 'value'=>$agency_id),
+				'1'=>array('field'=>'method_ref_id', 'value'=>$methodReference_id) 
+			));
 		
 		if(isset($service[0]))
 		{
-			$ch = curl_init();
+			/*$ch = curl_init();
 					
 			$url = Yii::app()->Controller->getServer().'/services/'.$service[0]['id'];
 			
@@ -336,9 +310,11 @@ class LabserviceController extends Controller
 			$data = curl_exec($ch);
 			curl_close($ch);
 			
-			$json = json_decode($data, true);
-			//print_r($json);
-			//print_r($service);
+			$json = json_decode($data, true);*/
+			
+			$service_array = RestController::deleteData('services', $service[0]['id']);
+			
+			$this->updateServices();
 		}
 	}
 	
@@ -377,6 +353,45 @@ class LabserviceController extends Controller
 		
 		$gridDataProvider = new CArrayDataProvider($methodrefs, array('pagination'=>false));
 		
+		$this->renderPartial('_methodReferences', array('gridDataProvider'=>$gridDataProvider), false, true);
+	}
+	
+	public function actionUpdateAmount()
+	{
+		$es = new EditableSaver('Methodreference');
+		$pk = yii::app()->request->getParam('pk');
+		try {
+			/*$es->onBeforeUpdate = function($event) {
+				$event->sender->setAttribute('amount', Yii::app()->format->unformatNumber($es->amount));
+			};*/
+			/*$es->onBeforeUpdate = function($event) {
+				if(Yii::app()->user->isGuest) {
+					$event->sender->error('You are not allowed to update data');
+				}
+			};*/
+			//$es->update();
+			$es->updateMethodreference();
+		} catch(CException $e) {
+			echo CJSON::encode(array('success' => false, 'msg' => $e->getMessage()));
+			return;
+		}
+		
+		$orderofpaymentId=Paymentitem::model()->findByPk($pk)->orderofpayment_id;
+		$total=$this->loadModel($orderofpaymentId)->totalPayment;
+		echo CJSON::encode(array('success' => true,'total'=>$total));
+	}
+	
+	function updateServices()
+	{
+		$methodrefs = RestController::searchResource('testnamemethods', 'testname_id', $_POST['Labservice']['testName_id']);
+		$gridDataProvider = new CArrayDataProvider($methodrefs, array('pagination'=>false));
+		$this->renderPartial('_methodReferences', array('gridDataProvider'=>$gridDataProvider));
+	}
+	
+	function updateOfferedServices()
+	{
+		$methodrefs = RestController::searchResource('testnamemethods', 'testname_id', $_POST['Labservice']['testName_id']);
+		$gridDataProvider = new CArrayDataProvider($methodrefs, array('pagination'=>false));
 		$this->renderPartial('_methodReferences', array('gridDataProvider'=>$gridDataProvider));
 	}
 }

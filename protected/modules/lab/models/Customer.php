@@ -158,7 +158,7 @@ class Customer extends CActiveRecord
 	   }
 	   return false;
 	}
-	
+
 	//address, region_id, province_id, municipalitycity_id, barangay_id, completeAddress,
 	public function getCompleteAddress()
 	{

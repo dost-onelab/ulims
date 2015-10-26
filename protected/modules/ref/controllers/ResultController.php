@@ -63,15 +63,15 @@ class ResultController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Result;
+		$model = new Result;
 
-		if(isset($_POST['referralId']))
+		/*if(isset($_POST['referralId']))
 		{
 			$referralId = $_POST['referralId'];
 		}else{
 			$referralId = $_POST['Result']['referralId'];
 			//$_POST['Result']['filename'] = $_POST['Result']['uploadFile'];		
-		}
+		}*/
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 		
@@ -80,31 +80,42 @@ class ResultController extends Controller
 			$model->attributes=$_POST['Result'];
 			
 			
-			if($model->validate()){
-				
+			//if($model->validate()){
+				//print_r($_FILES["Result"]);
 				$uploadFile = CUploadedFile::getInstance($model,'uploadFile');
 				
-				$cfile = new CURLFile($uploadFile->tempName, $uploadFile->type, $uploadFile->name);
+				//$file = CUploadedFile::getInstance($model,'uploadFile');
+				//$uploadFile = CUploadedFile::getInstance($model,'uploadFile');
+				//$file = CUploadedFile::getInstanceByName('uploadFile');
 				
-				$postFields = array('referral_id' => $_POST['Result']['referral_id'],
-					'filename' => $uploadFile->name, 
+				$cfile = new CURLFile($uploadFile->tempName, $uploadFile->type, $uploadFile->name);
+				//$cfile = new CURLFile($uploadFile->tempName, $uploadFile->type, $uploadFile->name);
+				
+				
+				$postFields = array(
+					'referral_id' => $_POST['Result']['referral_id'],
+					//'filename' => $uploadFile->name, 
+					'filename' => $uploadFile,
 					'file' => $cfile
 				);
 					
-				$referral = RestController::postData('results', $postFields);
-				/*		
-				if($response == true)
+				//$response = RestController::postData('results', $postFields);
+				$response = RestController::postData('results', $postFields);
+				
+					
+				/*if($response == true)
 					echo "File uploaded";
 				else 	
-					echo "Error: ".curl_error($ch); 
+					echo "Error: ".curl_error($response); 
 				*/
 				
 				if (Yii::app()->request->isAjaxRequest)
                 {
                     echo CJSON::encode(array(
                         'status'=>'success', 
-                        'div'=>"Result successfully added"
-                        //'div'=>$referral
+                        //'div'=>"Result successfully added"
+                        //'div'=>CJSON::decode($response)
+                        'div'=>$uploadFile
                         ));
                     exit;               
                 }
@@ -115,14 +126,15 @@ class ResultController extends Controller
                 	//print_r($referral);
                     //$this->redirect(array('view','id'=>$model->id));
                 }
-			}
+			//}
 		}
 		
 		if (Yii::app()->request->isAjaxRequest)
         {
             echo CJSON::encode(array(
                 'status'=>'failure',
-                'div'=>$this->renderPartial('_form', array('model'=>$model, 'referralId' => $referralId) ,true , true)));
+                'div'=>$this->renderPartial('_form', array('model'=>$model, 'referralId' => $_POST['referralId']) ,true , true)));
+                
             exit;               
         }else{
             $this->render('create',array('model'=>$model));

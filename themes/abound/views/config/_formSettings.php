@@ -32,14 +32,23 @@ $noImage='<span class="no-image">NO LOGO</span>';
         	</div>
         </td>
     </tr>
-     <tr>
+    <tr>
         <td>
             <div class="row">
             <label style="width:180px; line-height:35px;">Form Revision Date:</label>
             <input type="text" name="FormRequest[revDate]" value="<?php echo Yii::app()->params['FormRequest']['revDate'];?>" style="width:70%;"/>
         	</div>
         </td>
-    </tr>    
+    </tr>
+    <tr>
+        <td>
+            <div class="row">
+            <label style="width:180px; line-height:35px;">Print Format:</label>
+            <?php echo CHtml::dropDownList("FormRequest[printFormat]", Yii::app()->params['FormRequest']['printFormat'], array('1'=>'Excel', '2'=>'PDF'));?>
+            <!-- input type="select" name="FormRequest[printFormat]" value="<?php echo Yii::app()->params['FormRequest']['printFormat'];?>" style="width:70%;"/-->
+        	</div>
+        </td>
+    </tr>
     <tr>
         <td>
             <div class="row">            
@@ -111,14 +120,23 @@ $noImage='<span class="no-image">NO LOGO</span>';
         	</div>
         </td>
     </tr>
-     <tr>
+    <tr>
         <td>
             <div class="row">
             <label style="width:180px; line-height:35px;">Form Revision Date:</label>
             <input type="text" name="FormOrderofpayment[revDate]" value="<?php echo Yii::app()->params['FormOrderofpayment']['revDate'];?>" style="width:70%;"/>
         	</div>
         </td>
-    </tr>    
+    </tr>
+    <tr>
+        <td>
+            <div class="row">
+            <label style="width:180px; line-height:35px;">Print Format:</label>
+            <?php echo CHtml::dropDownList("FormOrderofpayment[printFormat]", Yii::app()->params['FormOrderofpayment']['printFormat'], array('1'=>'Excel', '2'=>'PDF'));?>
+            <!-- input type="select" name="FormRequest[printFormat]" value="<?php echo Yii::app()->params['FormRequest']['printFormat'];?>" style="width:70%;"/-->
+        	</div>
+        </td>
+    </tr>   
      <tr>
         <td>
             <div class="row">            

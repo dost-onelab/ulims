@@ -77,7 +77,8 @@ class RightsModule extends CWebModule
 	/**
 	* @property string the path to the application layout file.
 	*/
-	public $appLayout = 'application.views.layouts.main';
+	//public $appLayout = 'application.views.layouts.main';
+	public $appLayout = '//layouts/main';
 	/**
 	* @property string the style sheet file to use for Rights.
 	*/
@@ -112,6 +113,7 @@ class RightsModule extends CWebModule
 			'generator'=>array(
 				'class'=>'RGenerator',
 			),
+			'controller'=> new Controller
 		));
 
 		// Normally the default controller is Assignment.

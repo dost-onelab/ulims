@@ -81,8 +81,7 @@ class CustomerController extends Controller
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-		//$rstl_id=Yii::app()->getModule('user')->user()->profile->getAttribute('pstc');
-		//$rstl_id = Yii::app()->Controller->getRstlId();	
+		$rstl_id=Yii::app()->getModule('user')->user()->profile->getAttribute('pstc');	
 		$model->region_id=Rstl::model()->findByPk($rstl_id)->region->id;
 		
 		if(isset($_POST['Customer']))
@@ -136,14 +135,14 @@ class CustomerController extends Controller
                 'div'=>$this->renderPartial('_form', 
             		array(
             			'model'=>$model,
-            			//'rstl_id'=>$rstl_id
+            			'rstl_id'=>Yii::app()->getModule('user')->user()->profile->getAttribute('pstc')
             		) ,true , true)));
             exit;               
         }else{
             $this->render('create',
             		array(
             			'model'=>$model,
-            			//'rstl_id'=>$rstl_id
+            			'rstl_id'=>Yii::app()->getModule('user')->user()->profile->getAttribute('pstc')
             		));
         }
 		//$this->render('create',array('model'=>$model,));

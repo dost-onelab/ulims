@@ -16,9 +16,6 @@
 class Orderofpayment extends CActiveRecord
 {
 	public $natureOfCollection;
-	
-	public $region_id;
-	public $province_id;	
 	/**
 	 * @return string the associated database table name
 	 */

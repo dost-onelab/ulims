@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title><?php echo Yii::app()->Controller->module->name?Yii::app()->Controller->appTitle(Yii::app()->Controller->module->name):Yii::app()->name;?></title>
+    <title><?php //echo Yii::app()->Controller->module->name?Yii::app()->Controller->appTitle(Yii::app()->Controller->module->name):Yii::app()->name;?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Free yii themes, free web application theme">
     <meta name="author" content="Webapplicationthemes.com">

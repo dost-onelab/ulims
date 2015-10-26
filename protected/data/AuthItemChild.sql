@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 11, 2015 at 08:24 AM
+-- Generation Time: Aug 21, 2015 at 11:56 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -186,6 +186,7 @@ INSERT INTO `AuthItemChild` (`parent`, `child`) VALUES
 ('Lab - System Manager', 'Lab.Request.Index'),
 ('Lab - System Manager', 'Lab.Request.LoadFile'),
 ('Lab - System Manager', 'Lab.Request.PaymentDetail'),
+('Lab - System Manager', 'Lab.Request.Print'),
 ('Lab - System Manager', 'Lab.Request.searchCustomer'),
 ('Lab - System Manager', 'Lab.Request.SearchRequests'),
 ('Lab - System Manager', 'Lab.Request.searchSample'),
@@ -258,6 +259,7 @@ INSERT INTO `AuthItemChild` (`parent`, `child`) VALUES
 ('Lab - System Manager', 'Ref.Labservice.GetSampleType'),
 ('Lab - System Manager', 'Ref.Labservice.GetTestName'),
 ('Lab - System Manager', 'Ref.Labservice.Update'),
+('Lab - System Manager', 'Ref.Labservice.UpdateAmount'),
 ('Lab - System Manager', 'Ref.Orderofpayment.Admin'),
 ('Lab - System Manager', 'Ref.Orderofpayment.Create'),
 ('Lab - System Manager', 'Ref.Orderofpayment.SearchReferrals'),
@@ -269,6 +271,8 @@ INSERT INTO `AuthItemChild` (`parent`, `child`) VALUES
 ('Lab - System Manager', 'Ref.Referral.Create'),
 ('Lab - System Manager', 'Ref.Referral.Markread'),
 ('Lab - System Manager', 'Ref.Referral.NotifyAgency'),
+('Lab - System Manager', 'Ref.Referral.Preview'),
+('Lab - System Manager', 'Ref.Referral.Print'),
 ('Lab - System Manager', 'Ref.Referral.Read'),
 ('Lab - System Manager', 'Ref.Referral.ReadNotice'),
 ('Lab - System Manager', 'Ref.Referral.SearchAgency'),
@@ -360,6 +364,7 @@ INSERT INTO `AuthItemChild` (`parent`, `child`) VALUES
 ('Lab - User', 'Lab.Request.Index'),
 ('Lab - User', 'Lab.Request.LoadFile'),
 ('Lab - User', 'Lab.Request.PaymentDetail'),
+('Lab - User', 'Lab.Request.Print'),
 ('Lab - User', 'Lab.Request.searchCustomer'),
 ('Lab - User', 'Lab.Request.SearchRequests'),
 ('Lab - User', 'Lab.Request.searchSample'),
@@ -421,6 +426,7 @@ INSERT INTO `AuthItemChild` (`parent`, `child`) VALUES
 ('Lab - User', 'Ref.Labservice.GetSampleType'),
 ('Lab - User', 'Ref.Labservice.GetTestName'),
 ('Lab - User', 'Ref.Labservice.Update'),
+('Lab - User', 'Ref.Labservice.UpdateAmount'),
 ('Lab - User', 'Ref.Orderofpayment.Admin'),
 ('Lab - User', 'Ref.Orderofpayment.Create'),
 ('Lab - User', 'Ref.Orderofpayment.SearchReferrals'),
@@ -432,6 +438,8 @@ INSERT INTO `AuthItemChild` (`parent`, `child`) VALUES
 ('Lab - User', 'Ref.Referral.Create'),
 ('Lab - User', 'Ref.Referral.Markread'),
 ('Lab - User', 'Ref.Referral.NotifyAgency'),
+('Lab - User', 'Ref.Referral.Preview'),
+('Lab - User', 'Ref.Referral.Print'),
 ('Lab - User', 'Ref.Referral.Read'),
 ('Lab - User', 'Ref.Referral.ReadNotice'),
 ('Lab - User', 'Ref.Referral.SearchAgency'),

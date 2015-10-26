@@ -70,13 +70,15 @@ class OrderofpaymentController extends Controller
 	 */
 	public function actionCreate()
 	{
+		RestController::checkApiAccess();
+		
 		$model=new Orderofpayment;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		$customers = RestController::searchResource('customers', 'created_by', Yii::app()->Controller->getRstlId());
-		
+		//$customers = RestController::getAdminData('customers');
 		if(isset($_POST['Orderofpayment']['customer_id']))
 			$customer_id=$_POST['Orderofpayment']['customer_id'];
 
@@ -130,7 +132,8 @@ class OrderofpaymentController extends Controller
 		$this->render('create',array(
 			'model'=>$model,
 			'customertypes'=>$customertypes,
-			'customers'=>CHtml::listData($customers, 'id', 'customerName'),
+			//'customers' => CHtml::listData($customers, 'id', 'customerName'),
+			'customers' => CHtml::listData($customers, 'id', 'customerName'),
 			'gridDataProvider'=>$gridDataProvider
 		));
 	}
@@ -142,6 +145,8 @@ class OrderofpaymentController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
+		RestController::checkApiAccess();
+		
 		$model=$this->loadModel($id);
 
 		// Uncomment the following line if AJAX validation is needed
@@ -189,6 +194,8 @@ class OrderofpaymentController extends Controller
 	 */
 	public function actionAdmin()
 	{
+		RestController::checkApiAccess();
+		
 		$model=new Orderofpayment('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Orderofpayment']))
@@ -295,6 +302,7 @@ class OrderofpaymentController extends Controller
 	{
 		$customer_id = $_POST['Orderofpayment']['customer_id'];
 		$list=$this->listReferral($customer_id);
+		
 		$gridDataProvider = new CArrayDataProvider($list, array('pagination'=>false));
 		echo $this->renderPartial('_referrals', array('gridDataProvider'=>$gridDataProvider),true);
 	}
@@ -305,6 +313,7 @@ class OrderofpaymentController extends Controller
 		
 		$list=array();
 		if($referrals){
+			
 			foreach ($referrals as $referral){
 				//order of payments
 				// continue here
@@ -317,6 +326,7 @@ class OrderofpaymentController extends Controller
 								'0'=> array('field'=>'id', 'value'=>$paymentItem['orderofpayment_id']),
 								'1'=> array('field'=>'createdReceipt', 'value'=>0)
 							));
+						
 						$orderOfPaymentsLink=CHtml::link($paymentItem['orderofpayment'], 
 						$this->createUrl('view',array('id'=>$paymentItem['orderofpayment_id'])),
 							array('title'=>'Click to view PENDING O.P. for payment.')

@@ -138,10 +138,6 @@ class SiteController extends Controller
 		{
 			$new = count($notifications);
 			if($new == 0){
-				/*$notice = '
-					<div class="alert alert-info" style="width:375px; margin: 10px 5px 10px 65px">
-			        <strong>'.$new.'</strong> 
-					</div>';*/
 				echo CJSON::encode(array(
 					'status'=>'failure', 
 					'referralUpdates'=>($notifications['name'] == 'Not Found') ? 0 : count($notifications),
@@ -154,7 +150,6 @@ class SiteController extends Controller
 					'systemUpdates'=>0,
 				));
 			}
-			
 			exit;               
 		}
 	}

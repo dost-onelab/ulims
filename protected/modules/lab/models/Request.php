@@ -74,6 +74,7 @@ class Request extends CActiveRecord
 			'collection' => array(self::STAT, 'Collection', 'request_id', 'select'=> 'SUM(amount)', 'condition' => 'cancelled=0'),
 			'receipts' => array(self::HAS_MANY, 'Collection', 'request_id', 'condition' => 'cancelled=0'),
 		
+			'otherfees' => array(self::HAS_MANY, 'Fee', 'request_id'),
 			'samps' => array(self::HAS_MANY, 'Sample', 'request_id'),
 			'sampleCount' => array(self::STAT, 'Sample', 'request_id', 'condition' => 'cancelled=0'),
         	'anals' => array(self::HAS_MANY, 'Analysis', array('id'=>'sample_id'), 'through'=>'samps', 'order'=>'sample_id ASC, package DESC'),

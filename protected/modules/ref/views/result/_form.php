@@ -24,7 +24,7 @@
 
 	<div class="row">
 		<?php //echo $form->labelEx($model,'referral_id'); ?>
-		<?php echo $form->hiddenField($model,'referral_id', array('value'=>$referralId)); ?>
+		<?php echo $form->textField($model,'referral_id', array('value'=>1234)); ?>
 		<?php //echo $form->error($model,'referral_id'); ?>
 	</div>
 
@@ -36,19 +36,33 @@
 	
 	<div class="row">
 		<?php echo $form->labelEx($model,'uploadFile'); ?>
-		<?php //echo $form->fileField($model,'uploadFile'); ?>
+		<?php //echo CHtml::activeFileField($model, 'uploadFile'); ?>
+		<?php echo $form->fileField($model,'uploadFile'); ?>
 		<?php
-                  $this->widget('CMultiFileUpload', array(
+                  /*$this->widget('CMultiFileUpload', array(
                      'model'=>$model,
                      'name'=>'uploadFile',
                      'accept'=>'jpg|gif|png|pdf|txt',
-                  ));
+                  ));*/
                 ?>
 		<?php echo $form->error($model,'uploadFile'); ?>
 	</div>
 
+	<div class="row">
+		<?php //echo $form->labelEx($model,'test'); ?>
+		<?php //echo $form->fileField($model,'test'); ?>
+		<?php
+                  /*$this->widget('CFileUpload', array(
+                     'model'=>$model,
+                     'name'=>'test',
+                     'accept'=>'jpg|gif|png|pdf|txt',
+                  ));*/
+		?>
+		<?php //echo $form->error($model,'test'); ?>
+	</div>
+
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php echo CHtml::submitButton(!isset($model->id) ? 'Create' : 'Save'); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

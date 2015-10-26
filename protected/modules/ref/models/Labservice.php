@@ -20,6 +20,7 @@
 class Labservice extends CFormModel
 {
 	public $offered;
+	public $offeredBy;
 	public $method;
 	public $reference;
 	public $fee;
@@ -62,7 +63,7 @@ class Labservice extends CFormModel
 			array('testName, method, reference', 'length', 'max'=>200),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('lab_id, labName, sampleType_id, type, testName_id, testName, methodreference_id, method, reference, fee, agency_id, offered', 'safe', 'on'=>'search'),
+			array('lab_id, labName, sampleType_id, type, testName_id, testName, methodreference_id, method, reference, fee, agency_id, offered, offeredBy', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -157,6 +158,7 @@ class Labservice extends CFormModel
 		//$agency_id = $this->agency_id;
 		//echo $agency_id;
 		//Resource Address
+		
 		//$url = 'http://'.Yii::app()->Controller->getServer().'/labservices/search?agency_id=11';
 		$url = 'http://'.Yii::app()->Controller->getServer().'/labservices';	
 		//Send Request to Resource

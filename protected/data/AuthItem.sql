@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 11, 2015 at 08:24 AM
+-- Generation Time: Aug 21, 2015 at 11:56 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -383,7 +383,11 @@ INSERT INTO `AuthItem` (`name`, `type`, `description`, `bizrule`, `data`) VALUES
 ('Ref.Labservice.GetSampleType', 0, NULL, NULL, 'N;'),
 ('Ref.Labservice.GetTestName', 0, NULL, NULL, 'N;'),
 ('Ref.Referral.Authenticate', 0, NULL, NULL, 'N;'),
-('Ref.Labservice.GetMethodReference', 0, NULL, NULL, 'N;');
+('Ref.Labservice.GetMethodReference', 0, NULL, NULL, 'N;'),
+('Lab.Request.Print', 0, NULL, NULL, 'N;'),
+('Ref.Referral.Print', 0, NULL, NULL, 'N;'),
+('Ref.Labservice.UpdateAmount', 0, NULL, NULL, 'N;'),
+('Ref.Referral.Preview', 0, NULL, NULL, 'N;');
 
 --
 -- Indexes for dumped tables

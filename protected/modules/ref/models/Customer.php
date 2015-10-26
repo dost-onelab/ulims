@@ -174,7 +174,6 @@ class Customer extends CFormModel
 		$labs = json_decode($response, true);*/
 		
 		$customers = RestController::getAdminData('customers');
-		
 		return CHtml::listData($customers, 'id', 'customerName');
 	}
 }

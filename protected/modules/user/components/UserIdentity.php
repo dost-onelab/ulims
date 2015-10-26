@@ -9,6 +9,9 @@ class UserIdentity extends CUserIdentity
 {
 	private $_id;
 	private $access;
+	private $apiLoggedIn;
+	private $accessToken;
+	
 	//private $rstlId;
 	const ERROR_EMAIL_INVALID=3;
 	const ERROR_STATUS_NOTACTIV=4;
@@ -45,13 +48,23 @@ class UserIdentity extends CUserIdentity
 			$this->username=$user->username;
 			$this->errorCode=self::ERROR_NONE;
 			
-			
 			$this->access = Profile::model()->findByPk($user->id)->accesslist2;
-			//$this->rstlId = Yii::app()->getModule('user')->user()->profile->getAttribute('pstc');
+			
+			//$apiLogin = RestController::verifyAgencyKey(Profile::model()->findByPk($user->id)->pstc);
+				//$this->apiLoggedIn = ($apiLogin == 1) ? true : false;
+			//$this->apiLoggedIn = $apiLogin;
+				//$this->accessToken = RestController::verifyAgencyKey();
+				//$this->rstlId = Yii::app()->getModule('user')->user()->profile->getAttribute('pstc');
 			
 			$this->setState('access', $this->access);
-			//$this->setState('rstlId', $this->rstlId);
+			//$this->setState('apiLoggedIn', $this->apiLoggedIn);
 			
+			/*if($this->apiLoggedIn){
+				$this->accessToken = RestController::requestForAccessToken2();
+				$this->setState('accessToken', $this->accessToken);	
+			}*/
+			
+			//$this->setState('rstlId', $this->rstlId);
 		}
 		return !$this->errorCode;
 	}

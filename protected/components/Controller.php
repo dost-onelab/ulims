@@ -11,7 +11,7 @@ class Controller extends RController
 	 */
 	public $layout='//layouts/column1';
 	/**
-	 * @var array context menu items. This property will be assigned to {@link CMenu::items}.
+	 * @var array context menu items. This propeqrty will be assigned to {@link CMenu::items}.
 	 */
 	public $menu=array();
 	/**
@@ -120,9 +120,9 @@ class Controller extends RController
 			case 'ref':
 				$appTitle='Referral System';
 			break;
-									
+			
 			default:
-				$appTitle='';
+				$appTitle='Admin Module';
 			break;
 		}
 		return $appTitle;
@@ -281,22 +281,13 @@ class Controller extends RController
 	
 	function getNotifications($agency_id)
 	{	
-		//$notifications = RestController::getCustomData('notifications/search?recipient_id=', 11);
 		$notifications = RestController::searchResource('notifications', 'recipient_id', 11);
-        
         if(isset($notifications)){
-        	//print_r($notifications);
-        	//header('Content-Type: text/event-stream');
-	        //header('Cache-Control: no-cache');
-    	    //echo "retry: 10000\n"; // Optional. We tell the browser to retry after 10 seconds
-    	    //flush();
         }
 	}
 	
     function generateAgencySecret($countLetters = NULL, $countNumbers = NULL)
     {
-        //$referral = Referral::find($referral_id)->one();
-        //$lab = Lab::find($referral->id)->one();
         if(is_null($countLetters))
         	$countNumbers = 16;
     	

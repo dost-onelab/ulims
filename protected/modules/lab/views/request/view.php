@@ -291,7 +291,87 @@ $this->menu=array(
         ),
     ));
     ?>
+    
+    <?php
+    //$this->widget('zii.widgets.grid.CGridView', array(
+    $this->widget('ext.groupgridview.GroupGridView', array(
+    	'id'=>'additionalservice-grid',
+	    'summaryText'=>false,
+		'emptyText'=>'No samples.',
+		'htmlOptions'=>array('class'=>'grid-view padding0 paddingLeftRight10'),
+        'rowCssClassExpression'=>'$data->status',
+		'itemsCssClass'=>'table table-hover table-striped table-bordered table-condensed',
+		
+		'rowHtmlOptionsExpression' => 'array("title" => "Click to update", "class"=>"link-hand")',
+		'extraRowPos' => 'below',
+			'extraRowTotals' => function($data) {
+          	echo '1000';
+      		},
+      	'extraRowExpression' => '"<i class=\"total\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Total Amount Paid</i><td class=\"payment-detail amount subtotal\">".Yii::app()->format->formatNumber(1000)."</td>"',
+        
+      		//It is important to note, that if the Table/Model Primary Key is not "id" you have to
+        //define the CArrayDataProvider's "keyField" with the Primary Key label of that Table/Model.
+        'dataProvider' => $sampleDataProvider,
+        'columns' => array(
+    		array(
+				'name'=>'SAMPLE CODE',
+				'value'=>'$data->sampleCode',
+				'type'=>'raw',
+    			'htmlOptions' => array('style' => 'width: 125px; padding-left: 10px; text-align: center;'),
+			),
+			array(
+			'header'=>'Cancel',
+			'class'=>'bootstrap.widgets.TbButtonColumn',
+						'deleteConfirmation'=>"js:'Do you really want to delete sample: '+$.trim($(this).parent().parent().children(':nth-child(2)').text())+'?'",
+						'template'=>($generated >= 1) ? '{delete}' : (Yii::app()->getModule('lab')->isLabAdmin() ? '{cancel}' : ''),
+						'buttons'=>array
+						(
+							'delete' => array(
+								'label'=>'Delete Sample',
+								'url'=>'Yii::app()->createUrl("lab/sample/delete/id/$data->id")',
+								),
+							'cancel' => array(
+								'label'=>'Cancel',
+								'url'=>'Yii::app()->createUrl("lab/sample/cancel/id/$data->id")',
+								'options' => array(
+									'confirm'=>'Are you want to cancel Sample?',
+									'ajax' => array(
+										'type' => 'get', 
+										'url'=>'js:$(this).attr("href")', 
+										'success' => 'js:function(data) { $.fn.yiiGridView.update("sample-grid")}')
+									),
+								),
+						),
+			),
+        ),
+    ));
+    ?>
+<?php $this->endWidget(); //End Portlet ?>
+    
+<?php
+	$this->beginWidget('zii.widgets.CPortlet', array(
+		'title'=>"<b>Additional Fees</b>",
+	));
+?>
+
+<h4 class="paddingLeftRight10">
+<small>
+<?php
+	$linkSample = Chtml::link('<span class="icon-white icon-plus-sign"></span> Add', '', array( 
+			'style'=>'cursor:pointer;',
+			'class'=>'btn btn-info btn-small',
+			'onClick'=>$model->cancelled ? 'return false' : 'js:{addFee(); $("#dialogFee").dialog("open");}',
+			'disabled'=>$model->cancelled
+			));
+	echo $linkSample;
+?>
+</small>
+</h4>
+
+
+
 <?php $this->endWidget(); //End Portlet ?>    
+
 <div class="generated">
 <?php /*echo $generated ? 'Print' : CHtml::ajaxLink(
 		Yii::t('default','Generate Sample Code'),
@@ -302,16 +382,34 @@ $this->menu=array(
 			}') 
 		);*/
 $image = CHtml::Image(Yii::app()->theme->baseUrl . '/img/page_white_excel.png', 'Print');
-
 switch ($generated) {
 	case 0:
-		echo CHtml::link('<span class="icon-white icon-print"></span> Print Request', $this->createUrl('request/genRequestExcel',array('id'=>$model->id)), array('class'=>'btn btn-success'));
+		$this->widget('bootstrap.widgets.TbButtonGroup', array(
+	        'type'=>'success', // '', 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+	        'buttons'=>array(
+	            array('label'=>'Print Request', 'url'=>$this->createUrl('request/print',array('id'=>$model->id)), 'htmlOptions'=>array('target'=>(Yii::app()->params['FormRequest']['printFormat'] == 1) ? '' : '_blank')),
+	            array('items'=>array(
+	                array(	'label'=>'Excel', 'url'=>'#', 'active'=>Yii::app()->params['FormRequest']['printFormat'] == 1 ? true : false, 'linkOptions'=>array('onclick'=>'setPrintFormat("FormRequest", 1)')),
+	                array(	'label'=>'PDF', 'url'=>'#', 'active'=>Yii::app()->params['FormRequest']['printFormat'] == 2 ? true : false, 'linkOptions'=>array('onclick'=>'setPrintFormat("FormRequest", 2)')),
+	            )),
+	        ),
+	    ));
+		//echo CHtml::link('<span class="icon-white icon-print"></span> Print Request', $this->createUrl('request/genRequestExcel',array('id'=>$model->id)), array('class'=>'btn btn-success'));
 		/*echo '&nbsp;';
 		echo CHtml::link('<span class="icon-white icon-print"></span> Print Sample Tags', $this->createUrl('request/genSampleTags',array('id'=>$model->id)), array('class'=>'btn btn-warning', 'disabled'=>'disabled'));*/
         break;
     case ($generated < 1):
-		//$image = CHtml::Image(Yii::app()->theme->baseUrl . '/img/page_white_excel.png', 'Print');
-		echo CHtml::link('<span class="icon-white icon-print"></span> Print Request', $this->createUrl('request/genRequestExcel',array('id'=>$model->id)), array('class'=>'btn btn-success'));
+		$this->widget('bootstrap.widgets.TbButtonGroup', array(
+	        'type'=>'success', // '', 'primary', 'info', 'success', 'warning', 'danger' or 'inverse'
+	        'buttons'=>array(
+	            array('label'=>'Print Request', 'url'=>$this->createUrl('request/print',array('id'=>$model->id)), 'htmlOptions'=>array('target'=>(Yii::app()->params['FormRequest']['printFormat'] == 1) ? '' : '_blank')),
+	            array('items'=>array(
+	                array(	'label'=>'Excel', 'url'=>'#', 'active'=>Yii::app()->params['FormRequest']['printFormat'] == 1 ? true : false, 'linkOptions'=>array('onclick'=>'setPrintFormat("FormRequest", 1)')),
+	                array(	'label'=>'PDF', 'url'=>'#', 'active'=>Yii::app()->params['FormRequest']['printFormat'] == 2 ? true : false, 'linkOptions'=>array('onclick'=>'setPrintFormat("FormRequest", 2)')),
+	            )),
+	        ),
+	    ));
+    	//echo CHtml::link('<span class="icon-white icon-print"></span> Print Request', $this->createUrl('request/genRequestExcel',array('id'=>$model->id)), array('class'=>'btn btn-success'));
 		/*echo '&nbsp;';
 		echo CHtml::link('<span class="icon-white icon-print"></span> Print Sample Tags', $this->createUrl('request/genSampleTags',array('id'=>$model->id)), array('class'=>'btn btn-success', 'disabled'=>'disabled'));*/
     	break;
@@ -330,6 +428,7 @@ switch ($generated) {
         break;
 }		
 ?>
+<br/><br/><br/>
 </div>
 
 <!-- Cancel Dialog : Start -->
@@ -411,6 +510,26 @@ switch ($generated) {
 	$this->endWidget('zii.widgets.jui.CJuiDialog');
 ?>
 <!-- Package Dialog : End -->
+
+<!-- Other Services Dialog : Start -->
+<?php
+	$this->beginWidget('zii.widgets.jui.CJuiDialog', array(
+		    'id'=>'dialogAdditionalFees',
+		    // additional javascript options for the dialog plugin
+		    'options'=>array(
+		        'title'=>'Additional Fees',
+				'show'=>'scale',
+				'hide'=>'scale',				
+				'width'=>400,
+				'modal'=>true,
+				'resizable'=>false,
+				'autoOpen'=>false,
+			    ),
+		));
+
+	$this->endWidget('zii.widgets.jui.CJuiDialog');
+?>
+<!-- Other Services Dialog : End -->
 
 <!-- SampleCode Dialog : Start -->
 <?php
@@ -817,5 +936,23 @@ function confirmGenerateSampleCode()
 							}",
 		            ))?>;
 		    return false; 
+}
+
+function setPrintFormat(form, format)
+{
+	
+	<?php
+			echo CHtml::ajax(array(
+					'url'=>$this->createUrl('/config/setPrintFormat'),
+					'data'=> "js:$(this).serialize()+ '&form='+form+ '&format='+format",
+					'type'=>'post',
+		            'dataType'=>'json',
+		            'success'=>"function(data)
+		            	{
+		            		location.reload();
+		            	}"
+		            ))?>;
+			return false;
+		    
 }
 </script>

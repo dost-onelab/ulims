@@ -243,6 +243,11 @@ class User extends CActiveRecord
     	return Yii::app()->getModule('user')->user()->profile()->firstname." ".Yii::app()->getModule('user')->user()->profile()->mi.". ".Yii::app()->getModule('user')->user()->profile()->lastname;
     }
     
+    public function apiLogin()
+    {
+    	
+    }
+    
 	public static function listData()
 	{
 		/*return CHtml::listData(User::model()->findAll(array(

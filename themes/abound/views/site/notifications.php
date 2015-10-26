@@ -12,7 +12,7 @@
 				'name'=>'referralCode',
 				'header'=>'Referral',
 				'type'=>'raw',
-				'value'=>'Chtml::link($data["referralCode"],Yii::app()->Controller->createUrl("/ref/referral/view",array("id"=>$data["resource_id"])))',
+				//'value'=>'Chtml::link($data["referralCode"],Yii::app()->Controller->createUrl("/ref/referral/preview",array("id"=>$data["resource_id"])))',
 				'htmlOptions'=>array('style'=>'text-align: left; padding-left: 10px;'),
 				//'headerHtmlOptions' => array('style' => 'display:none'),
 			),
@@ -28,20 +28,20 @@
 				'htmlOptions'=>array('style'=>'text-align: center;'),
 				//'headerHtmlOptions' => array('style' => 'display:none'),
 			),
-			array(
+			/*array(
 				'name'=>'remarks',
 				'header'=>'Remarks',
 				'htmlOptions'=>array('style'=>'text-align: center;'),
 				//'headerHtmlOptions' => array('style' => 'display:none'),
 				'value'=>'($data["type_id"] == 1) ? "Candidate for Referral" : "Referral Sent"'
-			),
+			),*/
 			array(
 				'name'=>'',
 				'header'=>'Action',
 				'htmlOptions'=>array('style'=>'text-align: center;'),
 				//'headerHtmlOptions' => array('style' => 'display:none'),
 				'type'=>'raw',
-				'value'=>function($data){
+				/*'value'=>function($data){
 							
 							if($data["read"] == 0){
 								echo Chtml::link("Confirm", "", array("onClick"=>"js:{readNotice(".$data['id'].");}"));
@@ -49,7 +49,8 @@
 								echo Chtml::link("Done", "");
 								
 							}
-						}
+						}*/
+				'value'=>'Chtml::link(Preview,Yii::app()->Controller->createUrl("/ref/referral/view",array("id"=>$data["resource_id"])))',
 			),
 		),
 		'selectableRows'=>1,

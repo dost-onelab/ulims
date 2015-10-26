@@ -123,6 +123,32 @@ class EditableSaver extends CComponent
 		$referralstatus = RestController::putData('paymentitems', $postFields, $this->primaryKey);
     }
     
+	public function updateMethodreference()
+    {
+    	//get params from request
+        $this->primaryKey = yii::app()->request->getParam('pk');
+        $this->attribute = yii::app()->request->getParam('name');
+        $this->value = yii::app()->request->getParam('value');
+        $this->scenario = yii::app()->request->getParam('scenario');
+        
+        $postFields = $this->attribute.'='.Yii::app()->format->unformatNumber($this->value);
+        
+		$methodreference = RestController::putData('methodreferences', $postFields, $this->primaryKey);
+    }
+    
+	public function updateBarcode()
+    {
+    	//get params from request
+        $this->primaryKey = yii::app()->request->getParam('pk');
+        $this->attribute = yii::app()->request->getParam('name');
+        $this->value = yii::app()->request->getParam('value');
+        $this->scenario = yii::app()->request->getParam('scenario');
+        
+        $postFields = $this->attribute.'='.Yii::app()->format->unformatNumber($this->value);
+        
+		$methodreference = RestController::putData('samples', $postFields, $this->primaryKey);
+    }
+    
     /**
      * main function called to update column in database
      *

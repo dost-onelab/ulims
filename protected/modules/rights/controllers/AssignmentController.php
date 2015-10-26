@@ -8,6 +8,7 @@
 */
 class AssignmentController extends RController
 {
+	public $layout='//layouts/main';
 	/**
 	* @property RAuthorizer
 	*/

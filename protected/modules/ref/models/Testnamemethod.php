@@ -119,6 +119,6 @@ class Testnamemethod extends CActiveRecord
 	{
 		$testNames = RestController::searchResource('testnamemethods', 'testname_id', $testname_id);
 		
-		return CHtml::listData($testNames, 'id', 'method');
+		return CHtml::listData($testNames, 'method_id', 'method');
 	}	
 }

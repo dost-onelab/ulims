@@ -271,7 +271,9 @@ class AnalysisController extends Controller
 	public function actionGetAnalysisDetails(){
 		$id = $_POST['Analysis']['methodReference_id'];
 		
-		$analysis = RestController::getViewData('testnamemethods', $id);
+		$analysis = RestController::getViewData('methodreferences', $id);
+		//$analysis = RestController::getViewData('testnamemethods', $id);
+		//$analysis = RestController::searchResource('testnamemethods', 'testname_id', $id);
 			
 		echo CJSON::encode($analysis); 
 		exit;
