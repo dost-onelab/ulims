@@ -261,35 +261,21 @@ class LabserviceController extends Controller
 				'1'=>array('field'=>'method_ref_id', 'value'=>$methodReference_id) 
 			));
 			
-		if($service['status'] == 404)
+		if(count($service) == 0)
 		{
 			$postFields = array(
 				"agency_id" => $agency_id,
 				"method_ref_id" => $methodReference_id
 			);
-			
 			$service_array = RestController::postData('services', $postFields);
-			
-			$this->updateServices();
 		}
+		$this->updateServices();
 	}
 	
 	public function actionDeactivateService($id)
 	{
 		$agency_id = Yii::app()->Controller->getRstlId();
 		$methodReference_id = $id;
-		
-		/*$ch = curl_init();
-		$url = Yii::app()->Controller->getServer().'/services/search?agency_id='.$agency_id.'&method_ref_id='.$methodReference_id;
-		
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_HEADER, 0);
-		
-		$data = curl_exec($ch);
-		curl_close($ch);
-		
-		$service = json_decode($data, true);*/
 		
 		$service = RestController::searchResourceMultifields('services', array(
 				'0'=>array('field'=>'agency_id', 'value'=>$agency_id),
@@ -298,24 +284,9 @@ class LabserviceController extends Controller
 		
 		if(isset($service[0]))
 		{
-			/*$ch = curl_init();
-					
-			$url = Yii::app()->Controller->getServer().'/services/'.$service[0]['id'];
-			
-			curl_setopt($ch, CURLOPT_URL, $url);
-			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-			curl_setopt($ch, CURLOPT_HEADER, 0);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			
-			$data = curl_exec($ch);
-			curl_close($ch);
-			
-			$json = json_decode($data, true);*/
-			
 			$service_array = RestController::deleteData('services', $service[0]['id']);
-			
-			$this->updateServices();
 		}
+		$this->updateServices();
 	}
 	
 	public function actionGetSampleType(){
@@ -361,15 +332,6 @@ class LabserviceController extends Controller
 		$es = new EditableSaver('Methodreference');
 		$pk = yii::app()->request->getParam('pk');
 		try {
-			/*$es->onBeforeUpdate = function($event) {
-				$event->sender->setAttribute('amount', Yii::app()->format->unformatNumber($es->amount));
-			};*/
-			/*$es->onBeforeUpdate = function($event) {
-				if(Yii::app()->user->isGuest) {
-					$event->sender->error('You are not allowed to update data');
-				}
-			};*/
-			//$es->update();
 			$es->updateMethodreference();
 		} catch(CException $e) {
 			echo CJSON::encode(array('success' => false, 'msg' => $e->getMessage()));
