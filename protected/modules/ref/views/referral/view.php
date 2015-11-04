@@ -303,8 +303,8 @@ $this->menu=array(
 							}else{
 								$fields = array(
 									'1'=>array('field'=>'type_id', 'value'=>2),
-									'2'=>array('field'=>'resource_id', 'value'=>1),
-									'3'=>array('field'=>'sender_id', 'value'=>$_GET["id"]),
+									'2'=>array('field'=>'resource_id', 'value'=>$_GET["id"]),
+									'3'=>array('field'=>'sender_id', 'value'=>$data["id"]),
 								);
 								$notified = RestController::searchResourceMultifields('notifications', $fields);
 								if((count($notified) == 0) || $notified['status'] == '404'){
@@ -1128,7 +1128,8 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 
 <?php 
 $image = CHtml::image(Yii::app()->request->baseUrl . '/images/ajax-loader.gif');
-Yii::app()->clientScript->registerScript('clkrowgrid', "
+
+/*Yii::app()->clientScript->registerScript('clkrowgrid', "
 $('#sample-grid table tbody tr').live('click',function()
 {
 	    var id = $.fn.yiiGridView.getKey(
@@ -1149,7 +1150,8 @@ $('#sample-grid table tbody tr').live('click',function()
 			}
 		}
 });
-");
+");*/
+
 Yii::app()->clientScript->registerScript('clkrowgrid2', "
 $('#analysis-grid table tbody tr').live('click',function()
 {

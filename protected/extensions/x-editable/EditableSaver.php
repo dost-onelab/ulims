@@ -144,7 +144,7 @@ class EditableSaver extends CComponent
         $this->value = yii::app()->request->getParam('value');
         $this->scenario = yii::app()->request->getParam('scenario');
         
-        $postFields = $this->attribute.'='.Yii::app()->format->unformatNumber($this->value);
+        $postFields = $this->attribute.'='.$this->value;
         
 		$methodreference = RestController::putData('samples', $postFields, $this->primaryKey);
     }

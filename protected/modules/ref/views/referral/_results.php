@@ -27,7 +27,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 			    ),
 		));
 		
-		$modelResult = new Result;
+		/*$modelResult = new Result;
 		echo $this->renderPartial('/referral/_modal',
 							array(
 								'model'=>$modelResult, 
@@ -35,7 +35,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 								//'incoming'=>$model,
 								'id'=>$model->id,
 								)
-						);
+						);*/
 
 	$this->endWidget('zii.widgets.jui.CJuiDialog');	
 ?>
@@ -83,5 +83,5 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 								),
 					),
 		        ),
-		    ));
+		    ));s
 ?>

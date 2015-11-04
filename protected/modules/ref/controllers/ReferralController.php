@@ -356,6 +356,7 @@ class ReferralController extends Controller
 		$recipient_id = $_GET['recipient_id'];
 		
 		$referral = RestController::getCustomData('referrals/updatestatus?id=', $id);
+		
 		if($referral['code'] == 200)
 		{
 			$postFields = array( 
@@ -374,7 +375,6 @@ class ReferralController extends Controller
 		}else{
 			return $referral;
 		}
-
 	}
 	
 	public function actionValidateReferral()

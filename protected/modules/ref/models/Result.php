@@ -10,21 +10,21 @@
  */
 class Result extends CActiveRecord //CFormModel
 {
-	/*public $id;
+	public $id;
 	public $referral_id;
 	public $filename;
 	public $uploadFile;
-	public $test;*/
+	public $test;
 	public $uploadFile;
 	
 	//public $id, $referral_id, $filename, $uploadFile;
 	/**
 	 * @return string the associated database table name
 	 */
-	public function tableName()
+	/*public function tableName()
 	{
 		return 'result';
-	}
+	}*/
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -98,10 +98,10 @@ class Result extends CActiveRecord //CFormModel
 	/**
 	 * @return CDbConnection the database connection used for this class
 	 */
-	public function getDbConnection()
+	/*public function getDbConnection()
 	{
 		return Yii::app()->referralDb;
-	}
+	}*/
 
 	/**
 	 * Returns the static model of the specified AR class.

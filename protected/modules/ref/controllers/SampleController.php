@@ -178,6 +178,19 @@ class SampleController extends Controller
         }
 	}
 
+	public function actionUpdateBarcode()
+	{
+		$es = new EditableSaver('Sample');
+		$pk = yii::app()->request->getParam('pk');
+		try {
+			$es->updateBarcode();
+		} catch(CException $e) {
+			echo CJSON::encode(array('success' => false, 'msg' => $e->getMessage()));
+			return;
+		}
+		
+		echo CJSON::encode(array('success' => true));
+	}
 	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.

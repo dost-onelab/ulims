@@ -1,7 +1,6 @@
 <?php
 //Yii::app()->clientscript->scriptMap['jquery.js'] = false;
 //Yii::app()->clientScript->scriptMap['jquery.min.js'] = false;
-
 $this->widget('zii.widgets.grid.CGridView', array(
 //$this->widget('bootstrap.widgets.TbGridView', array(
 	'id'=>'methodReferences',
