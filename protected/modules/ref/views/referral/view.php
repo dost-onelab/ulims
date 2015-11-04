@@ -150,7 +150,7 @@ $this->menu=array(
 			   
 			   'editable' => array(    //editable section
 					  //'apply'      => '$data->user_status != 4', //can't edit deleted users
-					  'apply'      => $referral['validation_status'] != 1, 
+					  'apply'      => $referral['validation_status'] != 1 AND $referral["acceptingAgencyId"] == 0, 
 					  'url'        => $this->createUrl('sample/updateBarcode'),
 					  'placement'  => 'right',
 					  'htmlOptions' => array('style' => 'text-align: center;')
