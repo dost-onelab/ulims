@@ -594,8 +594,9 @@ $this->menu=array(
 }*/
 
 //Print Button
-if($referral['acceptingAgencyId'] != 0)
+if($referral['acceptingAgencyId'] != 0){
 	echo CHtml::link('<span class="icon-white icon-print"></span> Print Referral', $this->createUrl('referral/print', array('id'=>$model->id)), array('class'=>'btn btn-success', 'target'=>'_blank'));
+}
 	
 echo '<br/><br/><br/>';
 
@@ -1543,3 +1544,24 @@ function addResult(referralId)
     return false; 
 }
 </script>
+
+<?php 
+
+//$url = 'http://localhost/ulims/lab/sample/getSamplecode/lab_id/1/year/2014/sampleCount/4';
+//$url = 'http://www.kimonolabs.com/api/e45oypq8?apikey=YOUR_API_KEY';
+//$url = 'http://localhost/ulims/api/samplecode/getsamplecode/lab_id/2/year/2014/sampleCount/4';
+
+//$test = file_get_contents($url);
+//$test = Yii::app()->curl->get($url);
+//$arrayResponse = json_decode($test);
+
+//$parsed_arr = json_decode($test,true);
+
+//echo '<pre>';
+//echo $url;
+//print_r(unserialize($test));
+//echo file_get_contents($url);
+//print_r(Yii::app()->curl->get($url));
+//echo '</pre>';
+		
+?>

@@ -8,13 +8,11 @@
  * @property integer $referral_id
  * @property string $filename
  */
-class Result extends CActiveRecord //CFormModel
+class Result extends CFormModel
 {
 	public $id;
 	public $referral_id;
 	public $filename;
-	public $uploadFile;
-	public $test;
 	public $uploadFile;
 	
 	//public $id, $referral_id, $filename, $uploadFile;
