@@ -27,15 +27,13 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog', array(
 			    ),
 		));
 		
-		/*$modelResult = new Result;
+		$modelResult = new Result;
 		echo $this->renderPartial('/referral/_modal',
 							array(
 								'model'=>$modelResult, 
-								//'incomingActionFiles'=>$incomingActionFiles,
-								//'incoming'=>$model,
 								'id'=>$model->id,
 								)
-						);*/
+						);
 
 	$this->endWidget('zii.widgets.jui.CJuiDialog');	
 ?>

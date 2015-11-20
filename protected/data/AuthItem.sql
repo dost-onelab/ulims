@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `AuthItem` (
 -- Dumping data for table `AuthItem`
 --
 
-INSERT INTO `AuthItem` (`name`, `type`, `description`, `bizrule`, `data`) VALUES
+INSERT INTO `authitem` (`name`, `type`, `description`, `bizrule`, `data`) VALUES
 ('Admin', 2, 'Admin', NULL, 'N;'),
 ('Guest', 2, 'Guest', NULL, 'N;'),
 ('Agency Head', 2, 'Agency Head', NULL, 'N;'),
@@ -387,7 +387,15 @@ INSERT INTO `AuthItem` (`name`, `type`, `description`, `bizrule`, `data`) VALUES
 ('Lab.Request.Print', 0, NULL, NULL, 'N;'),
 ('Ref.Referral.Print', 0, NULL, NULL, 'N;'),
 ('Ref.Labservice.UpdateAmount', 0, NULL, NULL, 'N;'),
-('Ref.Referral.Preview', 0, NULL, NULL, 'N;');
+('Ref.Referral.Preview', 0, NULL, NULL, 'N;'),
+('Ref.Referral.Updatestatus', 0, NULL, NULL, 'N;'),
+('Lab.Request.PrintPDF', 0, NULL, NULL, 'N;'),
+('Config.SetPrintFormat', 0, NULL, NULL, 'N;'),
+('Lab.Request.SetPrintFormat', 0, NULL, NULL, 'N;'),
+('Ref.Referral.SendResult', 0, NULL, NULL, 'N;'),
+('Ref.Sample.UpdateBarcode', 0, NULL, NULL, 'N;'),
+('Lab.Sample.GetSamplecode', 0, NULL, NULL, 'N;'),
+('Ref.Sample.AssignSamplecode', 0, NULL, NULL, 'N;');
 
 --
 -- Indexes for dumped tables

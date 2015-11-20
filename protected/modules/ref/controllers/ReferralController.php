@@ -113,6 +113,8 @@ class ReferralController extends Controller
 		$modelStatus->id = $referral['referralstatus'][0]['id'];
 		
 		$logs = RestController::searchResource('notifications', 'resource_id', $id);
+
+		$generateSampleCode = $this->generateSampleCode($referral);
 		
 		$this->render('view',array(
 			'model'=>$model,
@@ -133,8 +135,24 @@ class ReferralController extends Controller
 					),
 			'acceptingAgencyLookup'=>$agencies,
 			'logs'=>$logs,
-			'uploadFiles'=>isset($uploadFiles) ? $uploadFiles : array()
+			'uploadFiles'=>isset($uploadFiles) ? $uploadFiles : array(),
+			'generateSampleCode'=>$generateSampleCode
 		));
+	}
+
+	function generateSampleCode($referral)
+	{
+		if(Referral::recipient($referral['acceptingAgencyId'])){
+			foreach($referral['samples'] as $sample)
+			{
+				if($sample['sampleCode'] == null)
+					return true;
+				else
+					return false;
+			}
+		}else{
+			return false;
+		}
 	}
 
 	

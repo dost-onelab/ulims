@@ -340,7 +340,7 @@ switch ($generated) {
 			'title'=>'Generate Sample Code',
 			'class'=>'btn btn-success',
 			//'onClick'=>'js:{ generateSampleCode(); $("#dialogCancel").dialog("open");}',
-			"onclick"=>$model->cancelled ? 'return false' : "if (!confirm('Do you really want to GENERATE Sample Codes with the current number of samples?')){return}else{ generateSampleCode(); $('#dialogSampleCode').dialog('open'); }",	
+			"onclick"=>$model->cancelled ? 'return false' : "if (!confirm('Do you really want to GENERATE Sample Codes with the current number of samples?')){return}else{ generateSampleCode(); $(this).prop('onclick',null); $('#dialogSampleCode').dialog('open'); }",	
 			));				
 				
         break;

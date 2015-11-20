@@ -263,4 +263,46 @@ class SampleController extends Controller
 			Yii::app()->end();
 		}
 	}
+
+	public function actionAssignSamplecode()
+	{
+		$referral = RestController::getViewData('referrals', $_POST['referral_id']);
+		$response = array();
+
+		$sampleCode = Samplecode::model()->find(array(
+	   			'select'=>'*',
+				'order'=>'number DESC, id DESC',
+	    		'condition'=>'rstl_id = :rstl_id AND labId = :labId AND year = :year AND cancelled = 0',
+	    		'params'=>array(':rstl_id' => Yii::app()->Controller->getRstlId(), ':labId' => $referral['lab_id'], ':year' => date('Y') )
+			));
+		//$count = 1;
+		foreach($referral['samples'] as $sample)
+		{
+
+			$lastSampleCode = Samplecode::model()->find(array(
+	   			'select'=>'*',
+				'order'=>'number DESC, id DESC',
+	    		'condition'=>'rstl_id = :rstl_id AND labId = :labId AND year = :year AND cancelled = 0',
+	    		'params'=>array(':rstl_id' => Yii::app()->Controller->getRstlId(), ':labId' => $referral['lab_id'], ':year' => date('Y') )
+			));
+
+			$samplecode = new Samplecode;
+			$samplecode->rstl_id = Yii::app()->Controller->getRstlId();
+			$samplecode->requestId = $referral['referralCode'];
+			$samplecode->labId = $referral['lab_id'];
+			$samplecode->number = $lastSampleCode->number + 1;
+			$samplecode->year = date('Y');
+			if($samplecode->save())
+			{
+				$postFields = 'sampleCode='.Samplecode::getLastSampleCode($referral['lab_id']);
+        
+				$samp = RestController::putData('samples', $postFields, $sample['id']);
+			}
+		}
+		echo CJSON::encode(array(
+                        'status'=>'success', 
+                        'div'=>'Update successful'
+                        ));
+        exit;  
+	}
 }

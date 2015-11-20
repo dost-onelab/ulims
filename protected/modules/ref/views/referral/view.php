@@ -146,6 +146,7 @@ $this->menu=array(
 			array(
 			   'class' => 'editable.EditableColumn',
 			   'name' => 'barcode',
+			   'header'=>'Barcode',
 			   'headerHtmlOptions' => array('style' => 'width: 110px; align: center;'),
 			   
 			   'editable' => array(    //editable section
@@ -192,7 +193,20 @@ $this->menu=array(
         )
     ));
 ?>
-<h4 style="margin-top: -20px; margin-bottom: -15px;">Analyses</h4>
+
+<?php 
+			$linkGenerateSampleCode = Chtml::link('<span class="icon-white icon-plus-sign"></span> Generate Sample Code', '', array( 
+							'style'=>'cursor:pointer;',
+							'class'=>'btn btn-info',
+							'onClick'=>'js:{assignSamplecode('.$_GET["id"].'); $(this).prop("onclick",null);}',
+							));
+			if($generateSampleCode)
+				echo '<div class="generateSampleCode" style="margin-top: -20px; margin-bottom: 30px;">'.$linkGenerateSampleCode.'</div>';
+
+			$imageLoading = CHtml::image(Yii::app()->request->baseUrl . "/images/loading.gif","alt", array("width"=>17,"height"=>17));
+			//echo $imageLoading;
+?>
+<h4 style="margin-bottom: -15px;">Analyses</h4>
 <?php 
     $this->widget('zii.widgets.grid.CGridView', array(
     	'id'=>'analysis-grid',
@@ -258,7 +272,6 @@ $this->menu=array(
 ?>
 <?php 
 	############## Update on 19 August 2015 ##############
-	
 	if($referral['acceptingAgencyId'] == 0 AND $referral['receivingAgencyId'] == Yii::app()->Controller->getRstlId()){
 			$linkSearchAgency = Chtml::link('<span class="icon-white icon-plus-sign"></span> Search Available Agencies', '', array( 
 				'style'=>'cursor:pointer;',
@@ -327,64 +340,6 @@ $this->menu=array(
 							}
 							
 						}
-						/*'value'=>function($data, $referral){
-							
-							$fields = array(
-								'1'=>array('field'=>'recipient_id', 'value'=>$data["id"]),
-								'2'=>array('field'=>'resource_id', 'value'=>$_GET["id"]),
-							);
-							$notification = RestController::searchResourceMultifields('notifications', $fields);
-							if($notification['status'] == '404'){
-								echo Chtml::link("Notify", "", array("onClick"=>"js:{notifyAgency(".$_GET["id"].",".$data["id"].");}"));
-							}else{
-								//switch($notification[0]['type_id']){
-								$fields = array(
-									'1'=>array('field'=>'type_id', 'value'=>2),
-									'2'=>array('field'=>'resource_id', 'value'=>$_GET["id"]),
-								);
-								$notified = RestController::searchResourceMultifields('notifications', $fields);
-								if($notified['status'] == '404'){
-									echo 'Notice Sent';
-								}else{
-									$ref = RestController::getViewData('referrals', $_GET['id']);
-										echo Chtml::link("Send Referal", "", 
-											array("onClick"=>"js:{
-														//sendReferral(agency_id, agencyName, referral_id, referralCode)
-														var id = $.fn.yiiGridView.getKey('agency-grid',	$(this).closest('tr').prevAll().length);
-														var agencyName = $(this).parent('td').parent('tr').children(':nth-child(1)').text();
-														var referral_id = '".$ref['id']."';
-														var referralCode = '".$ref['referralCode']."';
-														//alert(agencyName);
-														sendReferral(id, agencyName, referral_id, referralCode);
-														$('#dialogSendReferral').dialog('open');
-													}"));
-								}*/
-								
-								/*switch($notification[0]['type_id']){
-									case 0:
-										echo 'Notice Sent';
-										break;
-
-									case 1:
-										$ref = RestController::getViewData('referrals', $_GET['id']);
-										echo Chtml::link("Send Referal", "", 
-											array("onClick"=>"js:{
-														//sendReferral(agency_id, agencyName, referral_id, referralCode)
-														var id = $.fn.yiiGridView.getKey('agency-grid',	$(this).closest('tr').prevAll().length);
-														var agencyName = $(this).parent('td').parent('tr').children(':nth-child(1)').text();
-														var referral_id = '".$ref['id']."';
-														var referralCode = '".$ref['referralCode']."';
-														//alert(agencyName);
-														sendReferral(id, agencyName, referral_id, referralCode);
-														$('#dialogSendReferral').dialog('open');
-													}"));
-										break;
-										
-									default:
-										break;
-								}*/
-							//}
-						//}
 					),
 		        ),
 		    ));
@@ -394,205 +349,6 @@ $this->menu=array(
 
 
 <?php 
-/*switch($referral['validation_status'])
-{
-	case 0:
-		$linkValidate = Chtml::link('<span class="icon-white icon-plus-sign"></span> Validate Referral', '', array( 
-			'style'=>'cursor:pointer;',
-			'class'=>'btn btn-info',
-			'onClick'=>'js:{validateReferral('.$_GET["id"].'); $("#dialogValidate").dialog("open");}',
-			));
-		$display = Referral::owner($referral["receivingAgencyId"]) ? '' : 'display:none';	
-			
-		echo '<div style="text-align: left; '.$display.'">'.$linkValidate.'</div>';
-	
-        break;
-        
-	case 1:
-		
-		if($referral['acceptingAgencyId'] == 0){
-			$linkSearchAgency = Chtml::link('<span class="icon-white icon-plus-sign"></span> Search Available Agencies', '', array( 
-				'style'=>'cursor:pointer;',
-				'class'=>'btn btn-info',
-				'onClick'=>'js:{searchAgency('.$_GET["id"].');}',
-				));
-			echo '<div style="text-align: center">'.$linkSearchAgency.'</div>';
-			
-			$this->widget('zii.widgets.grid.CGridView', array(
-		    	'id'=>'agency-grid',
-			    'summaryText'=>false,
-				'emptyText'=>'No matching Agency',
-				//'htmlOptions'=>array('class'=>'grid-view padding0 paddingLeftRight10'),
-				'itemsCssClass'=>'table table-hover table-striped table-bordered table-condensed',
-				'rowHtmlOptionsExpression' => 'array("title" => "Click to update", "class"=>"link-hand")', 
-		        //It is important to note, that if the Table/Model Primary Key is not "id" you have to
-		        //define the CArrayDataProvider's "keyField" with the Primary Key label of that Table/Model.
-		        'dataProvider' => $matchingAgencies,
-		        'columns' => array(
-		    		array(
-						'name'=>'name',
-						'header'=>'Agency',
-		    			//'value'=>'$data["id"]'
-					),
-		    		array(
-						'name'=>'code',
-						'header'=>'Region',
-					),
-					array(
-						'name'=>'availableSlots',
-						'header'=>'Actions',
-						'type'=>'raw',
-						'value'=>function($data, $referral){
-							
-							$fields = array(
-								//'0'=>array('field'=>'type_id', 'value'=>2),
-								'1'=>array('field'=>'recipient_id', 'value'=>$data["id"]),
-								'2'=>array('field'=>'resource_id', 'value'=>$_GET["id"])
-							);
-							$notification = RestController::searchResourceMultifields('notifications', $fields);
-							if($notification['status'] == '404'){
-								echo Chtml::link("Notify", "", array("onClick"=>"js:{notifyAgency(".$_GET["id"].",".$data["id"].");}"));
-							}else{
-								switch($notification[0]['read']){
-									case 0:
-										echo 'Notice Sent';
-										break;
-										
-									case 1:
-										$ref = RestController::getViewData('referrals', $_GET['id']);
-										echo Chtml::link("Send Referal", "", 
-											array("onClick"=>"js:{
-											
-														//sendReferral(agency_id, agencyName, referral_id, referralCode)
-														var id = $.fn.yiiGridView.getKey('agency-grid',	$(this).closest('tr').prevAll().length);
-														var agencyName = $(this).parent('td').parent('tr').children(':nth-child(1)').text();
-														var referral_id = '".$ref['id']."';
-														var referralCode = '".$ref['referralCode']."';
-														//alert(agencyName);
-														sendReferral(id, agencyName, referral_id, referralCode);
-														$('#dialogSendReferral').dialog('open');
-													}"));
-										break;
-										
-									default:
-										break;
-								}
-							}
-						}
-					),
-		        ),
-		    ));
-		}else{
-			
-			echo '<h4 style="margin-top: -15px; margin-bottom: -15px;">Referral Status</h4>';	
-			echo '<hr>';
-			
-			$this->widget('editable.EditableDetailView', array(
-			    'data'       => $modelStatus,
-			    //you can define any default params for child EditableFields 
-			    
-			    'params'     => array('YII_CSRF_TOKEN' => Yii::app()->request->csrfToken), //params for all fields
-			    'emptytext'  => 'Not set', 
-			    'attributes' => array(
-					//'id',
-					array(
-						'name'=>'acceptingAgencyId',
-						'label'		=> 'Referred To',
-						//'value'		=> Referral::owner($referral["receivingAgencyId"]) ? '' : $referral["acceptingAgency"],
-						'value'		=> $referral["acceptingAgency"],
-						'rowHtmlOptions' => array('style' => 'width: 550px; text-align: center;'),
-						'editable' => array(
-			                'type'   	=> 'select',
-							'source'	=> Referral::agencyLookUp('matchingAgencies', $acceptingAgencyLookup),
-							'url'       => $this->createUrl('referralstatus/updateStatus'),
-							'pk'		=> $modelStatus->id,
-							'apply'		=> Referral::owner($referral["receivingAgencyId"]) ? true : false,
-			            )
-					),
-			    	array(
-						'name'=>'sampleArrivalDate',
-						'editable' => array(
-			                'type'			=> 'date',
-			                'viewformat'	=> 'yyyy-mm-dd',
-			    			'url'       => $this->createUrl('referralstatus/updateStatus'),
-							'pk'		 => $modelStatus->id,
-			    			'apply'		=> Referral::owner($referral["receivingAgencyId"]) ? true : false,
-			            )
-					),
-					array(
-						'name'=>'shipmentDetails',
-						'editable' => array(
-			                'type'       => 'text',
-							'url'       => $this->createUrl('referralstatus/updateStatus'),
-							'pk'		 => $modelStatus->id,
-			                'inputclass' => 'input-large',
-							'apply'		=> Referral::owner($referral["receivingAgencyId"]) ? true : false,
-			            )
-					),
-					array(
-						'name'=>'status_id',
-						'editable' => array(
-							'id'=>'select-status',
-			                'type'   => 'select',
-			                //'source' => Referral::itemAlias('StatusReceivingRelease'),
-			                'source' => Referral::itemAlias('StatusAll'),
-							'url'       => $this->createUrl('referralstatus/updateStatus'),
-							'pk'		 => $modelStatus->id,
-			            )
-					),
-			    )));
-			
-		$linkResult = Chtml::link('<span class="icon-white icon-plus-sign"></span> Upload Result', '', array( 
-			'style'=>'cursor:pointer;',
-			//'onClick'=>$model->cancelled ? 'return false' : 'js:{addResult('.$_GET["id"].'); $("#dialogResult").dialog("open");}',
-			'onClick'=>$model->cancelled ? 'return false' : 'js:{addResult('.$_GET["id"].'); $("#dialogResult").dialog("open");}',
-			//'onClick'=>$model->cancelled ? 'return false' : 'js:{$("#dialogResult").dialog("open");}',
-			//'class'=>'btn btn-info btn-small',
-			//'disabled'=>$model->cancelled
-			));
-
-		echo '<h4 style="margin-bottom: -15px;">Reports<small>'. Referral::recipient($referral["acceptingAgencyId"]) ? $linkResult : ''.'</small></h4>';	
-		echo '<hr style="margin-bottom: -5px;">';
-
- 
-    	$this->widget('zii.widgets.grid.CGridView', array(
-		    	'id'=>'result-grid',
-			    'summaryText'=>false,
-				'emptyText'=>'No result(s) uploaded',
-				
-				//'itemsCssClass'=>'table table-hover table-striped table-bordered table-condensed',
-				'itemsCssClass'=>'table table-hover table-striped table-bordered table-condensed',
-				'rowHtmlOptionsExpression' => 'array("class"=>"link-hand")', 
-		        //It is important to note, that if the Table/Model Primary Key is not "id" you have to
-		        //define the CArrayDataProvider's "keyField" with the Primary Key label of that Table/Model.
-		        'dataProvider' => $results,
-		        'columns' => array(
-		        	array(
-							'name'=>'filename',
-							'header'=>'Available Results',
-						),
-		    		array(
-						'class'=>'bootstrap.widgets.TbButtonColumn',
-						'template'=>'{download}',
-		    			'buttons'=>array
-								(
-									'download' => array(
-										'label'=>'Download',
-										//'url'=>'http://localhost/onelab/api/web/v1/results/download?id=65',
-										'url'=>'Yii::app()->createUrl(\'ref/result/download\', array(\'id\'=>$data["id"]))',
-										//'visible'=>'Referral::owner('.$referral["receivingAgencyId"].')',
-										),
-								),
-					),
-		        ),
-		    ));
-		}
-			break;
-		
-	default:
-		break;
-}*/
-
 //Print Button
 if($referral['acceptingAgencyId'] != 0){
 	echo CHtml::link('<span class="icon-white icon-print"></span> Print Referral', $this->createUrl('referral/print', array('id'=>$model->id)), array('class'=>'btn btn-success', 'target'=>'_blank'));
@@ -631,165 +387,6 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 ));
 
 ?>
-
-
-<!-- >h4 class='comments'>Activity Logs</h4>
-
-<!-- div id="notice-logs" class="alert alert-info">
-	
-	<br/-->
-		<?php 
-			/*foreach($logs as $log) 
-			{
-				switch($log["type_id"])
-				{
-					case 1: 
-						
-						$date = new DateTime($log["notificationDate"], new DateTimeZone('Asia/Manila'));
-						//echo $date->format('Y-m-d H:i:sP') . "\n";
-						$this->beginWidget('zii.widgets.CPortlet', 
-							array(	'title'=>'Referral Notice',
-									'decorationCssClass'=>'portlet-decoration-notification',
-									'titleCssClass'=>'portlet-title-notification',
-									'contentCssClass'=>'portlet-content-notification',
-									//'htmlOptions'=>array('style'=>'')			
-									)
-						);
-							echo 'Notice sent to '.$log['recipient'].'<br/><br/>';
-							echo $log['sender']."<br/>";
-							//echo '<i>'.$log["notificationDate"].'</i>';
-							echo '<i>'.$date->format('Y-m-d H:i:sP').'</i>';
-							
-		
-						$this->endWidget();
-						//print_r($logs);
-						break;
-						
-					case 2: 
-						$date = new DateTime($log["notificationDate"], new DateTimeZone('Asia/Manila'));
-						$this->beginWidget('zii.widgets.CPortlet', 
-							array(	'title'=>'Notice Confirmation',
-									'decorationCssClass'=>'portlet-decoration-notification',
-									'titleCssClass'=>'portlet-title-notification',
-									'contentCssClass'=>'portlet-content-notification',
-									//'htmlOptions'=>array('style'=>'')			
-									)
-						);
-							echo 'Confirmed for Referral.<br/><br/>';
-							
-							echo $log['sender']."<br/>";
-							//echo '<i>'.$log["notificationDate"].'</i>';
-							echo '<i>'.$date->format('Y-m-d H:i:sP').'</i>';
-		
-						$this->endWidget();
-						break;
-					
-					case 3: 
-						$this->beginWidget('zii.widgets.CPortlet', 
-							array(	'title'=>'Referral sent',
-									'decorationCssClass'=>'portlet-decoration-notification',
-									'titleCssClass'=>'portlet-title-notification',
-									'contentCssClass'=>'portlet-content-notification',
-									//'htmlOptions'=>array('style'=>'')			
-									)
-						);
-							echo $log['sender']."<br/>";
-							echo '<i>'.$log["notificationDate"].'</i>';
-		
-						$this->endWidget();
-						break;
-				}
-			}*/
-		?>
-		
-		<?php /*echo CHtml::ajaxSubmitButton('Submit Comment',CHtml::normalizeUrl(array('myController/MyAction','render'=>true)),
-                 array(
-                     'dataType'=>'json',
-                     'type'=>'post',
-                     'success'=>'function(data) {
-                         $("#AjaxLoader").hide();  
-                        if(data.status=="success"){
-                         $("#formResult").html("form submitted successfully.");
-                         $("#user-form")[0].reset();
-                        }
-                         else{
-                        $.each(data, function(key, val) {
-                        $("#user-form #"+key+"_em_").text(val);                                                    
-                        $("#user-form #"+key+"_em_").show();
-                        });
-                        }       
-                    }',                    
-                     'beforeSend'=>'function(){                        
-                           $("#AjaxLoader").show();
-                      }'
-                     ),array('id'=>'mybtn','class'=>'class1 class2'));*/ ?>
-                     
-	<?php /*$form=$this->beginWidget('CActiveForm', array(
-			'id'=>'reply-form',
-			'enableAjaxValidation'=>false,
-		));*/ ?> 
-		
-		<?php
-			/*$image = CHtml::image(Yii::app()->request->baseUrl . '/images/ajax-loader.gif');
-			if($referral['receivingAgencyId'] != Yii::app()->Controller->getRstlId()){
-				echo $referral['status'] ? '' : 
-					CHtml::ajaxSubmitButton('Confirm', $this->createUrl('referral/updateStatus', array('id'=>$_GET['id'], 'recipient_id'=>$referral['receivingAgencyId'])),
-						array(
-	                     'dataType'=>'json',
-	                     'type'=>'post',
-	                     'success'=>'function(data) {
-	                           location.reload();
-	                    }',                    
-	                     'beforeSend'=>'function(){                        
-	                           //$("#AjaxLoader").show();
-	                      }'
-	                     ), 
-						array(
-							'class'=>'btn btn-success', 
-							'style'=>'width: 150px;'
-						)
-						);
-			} */
-		?><a></a>
-		<br/><br/>	
-		<?php /*echo CHtml::textArea('Text', $content,
-		 array(	'id'=>'widget', 
-				'style'=>'width:100%; height:100px;'));*/ ?>
-		<?php //echo CHtml::submitButton('Submit Comment', array('class'=>'btn btn-success', 'style'=>'width: 150px;')); ?>
-		
-		<?php 
-				/*echo CHtml::ajaxSubmitButton('Submit Comment',CHtml::normalizeUrl(array('notifications/post','render'=>true)),
-		                 array(
-		                     'dataType'=>'json',
-		                     'type'=>'post',
-		                     'success'=>'function(data) {
-		                         $("#AjaxLoader").hide();  
-		                        if(data.status=="success"){
-		                         	alert("Message successfully posted!");
-		                         	location.reload();
-		                        }
-		                         else{
-		                        $.each(data, function(key, val) {
-		                        
-		                        });
-		                        }       
-		                    }',                    
-		                     'beforeSend'=>'function(){                        
-		                           $("#AjaxLoader").show();
-		                      }'
-		                     ),
-						array(
-							'id'=>'postNotification',
-							'class'=>'btn btn-success')); */
-						
-		?>
-		
-	<?php //$this->endWidget(); ?>
-<!-- >/div-->
-
-
-
-
 
 <?php 
 /*switch($referral['validation_status'])
@@ -1129,7 +726,6 @@ $this->widget('zii.widgets.jui.CJuiTabs', array(
 
 <?php 
 $image = CHtml::image(Yii::app()->request->baseUrl . '/images/ajax-loader.gif');
-
 /*Yii::app()->clientScript->registerScript('clkrowgrid', "
 $('#sample-grid table tbody tr').live('click',function()
 {
@@ -1543,25 +1139,30 @@ function addResult(referralId)
             ))?>;
     return false; 
 }
+
+function assignSamplecode(referral_id)
+{
+	<?php 
+	echo CHtml::ajax(array(
+			'url'=>$this->createUrl('sample/assignSamplecode'),
+			'data'=> "js:$(this).serialize()+ '&referral_id='+referral_id",
+            'type'=>'post',
+            'dataType'=>'json',
+            'success'=>"function(data)
+            {
+            	$.fn.yiiGridView.update('sample-grid');
+            	$('.generateSampleCode').html(data.div);
+            }",
+			'beforeSend'=>'function(jqXHR, settings){
+					$(".generateSampleCode").html(
+						"<img width=\'17\' height=\'17\' src=\'/ulims/images/loading.gif\' alt=\'alt\' /> Retrieving record... Please wait..."
+						
+					);
+            }',
+			 'error'=>"function(request, status, error){
+				 	$('#dialogSearchAgency').html(status+'('+error+')'+': '+ request.responseText+ ' {'+error.code+'}' );
+					}",
+            ))?>;
+    return false; 
+}
 </script>
-
-<?php 
-
-//$url = 'http://localhost/ulims/lab/sample/getSamplecode/lab_id/1/year/2014/sampleCount/4';
-//$url = 'http://www.kimonolabs.com/api/e45oypq8?apikey=YOUR_API_KEY';
-//$url = 'http://localhost/ulims/api/samplecode/getsamplecode/lab_id/2/year/2014/sampleCount/4';
-
-//$test = file_get_contents($url);
-//$test = Yii::app()->curl->get($url);
-//$arrayResponse = json_decode($test);
-
-//$parsed_arr = json_decode($test,true);
-
-//echo '<pre>';
-//echo $url;
-//print_r(unserialize($test));
-//echo file_get_contents($url);
-//print_r(Yii::app()->curl->get($url));
-//echo '</pre>';
-		
-?>
