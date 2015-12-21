@@ -312,7 +312,7 @@ $this->menu=array(
 							$notification = RestController::searchResourceMultifields('notifications', $fields);
 							
 							if((count($notification) == 0) || $notification['status'] == '404'){
-								echo Chtml::link("Notify", "", array("onClick"=>"js:{notifyAgency(".$_GET["id"].",".$data["id"].");}"));
+								echo Chtml::link("Notify", "", array("onClick"=>"js:{notifyAgency(".$_GET["id"].",".$data["id"]."); $(this)prop('onclick',null)}"));
 							}else{
 								$fields = array(
 									'1'=>array('field'=>'type_id', 'value'=>2),
@@ -1156,7 +1156,6 @@ function assignSamplecode(referral_id)
 			'beforeSend'=>'function(jqXHR, settings){
 					$(".generateSampleCode").html(
 						"<img width=\'17\' height=\'17\' src=\'/ulims/images/loading.gif\' alt=\'alt\' /> Retrieving record... Please wait..."
-						
 					);
             }',
 			 'error'=>"function(request, status, error){
