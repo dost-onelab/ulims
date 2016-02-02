@@ -10,6 +10,7 @@
 			'encodeLabel'=>false,
 			'items'=>array(
 				array('label'=>'<i class="icon icon-home"></i> Order of Payment', 'url'=>array('/accounting/orderofpayment/admin')	),
+                array('label'=>'<i class="icon icon-file"></i> Order of Payment for Lab', 'url'=>array('/accounting/orderofpaymentlab/admin')	),
 				//array('label'=>'<i class="icon icon-tasks"></i> Deposit', 'url'=>array('/cashier/deposit/admin')	),
 				//array('label'=>'<i class="icon icon-th-list"></i> Reports', 'url'=>array('/cashier/receipt/reports')	),
 				// Include the operations menu

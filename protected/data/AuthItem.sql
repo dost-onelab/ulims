@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `AuthItem` (
 -- Dumping data for table `AuthItem`
 --
 
-INSERT INTO `authitem` (`name`, `type`, `description`, `bizrule`, `data`) VALUES
+INSERT INTO `AuthItem` (`name`, `type`, `description`, `bizrule`, `data`) VALUES
 ('Admin', 2, 'Admin', NULL, 'N;'),
 ('Guest', 2, 'Guest', NULL, 'N;'),
 ('Agency Head', 2, 'Agency Head', NULL, 'N;'),
@@ -395,7 +395,15 @@ INSERT INTO `authitem` (`name`, `type`, `description`, `bizrule`, `data`) VALUES
 ('Ref.Referral.SendResult', 0, NULL, NULL, 'N;'),
 ('Ref.Sample.UpdateBarcode', 0, NULL, NULL, 'N;'),
 ('Lab.Sample.GetSamplecode', 0, NULL, NULL, 'N;'),
-('Ref.Sample.AssignSamplecode', 0, NULL, NULL, 'N;');
+('Ref.Sample.AssignSamplecode', 0, NULL, NULL, 'N;'),
+('Accounting.Orderofpaymentlab.View', 0, NULL, NULL, 'N;'),
+('Accounting.Orderofpaymentlab.Create', 0, NULL, NULL, 'N;'),
+('Accounting.Orderofpaymentlab.Update', 0, NULL, NULL, 'N;'),
+('Accounting.Orderofpaymentlab.Delete', 0, NULL, NULL, 'N;'),
+('Accounting.Orderofpaymentlab.Index', 0, NULL, NULL, 'N;'),
+('Accounting.Orderofpaymentlab.Admin', 0, NULL, NULL, 'N;'),
+('Accounting.Orderofpaymentlab.SearchRequests', 0, NULL, NULL, 'N;'),
+('Accounting.Orderofpaymentlab.UpdateAmount', 0, NULL, NULL, 'N;');
 
 --
 -- Indexes for dumped tables

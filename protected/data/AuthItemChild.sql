@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `AuthItemChild` (
 -- Dumping data for table `AuthItemChild`
 --
 
-INSERT INTO `authitemchild` (`parent`, `child`) VALUES
+INSERT INTO `AuthItemChild` (`parent`, `child`) VALUES
 ('Accounting - Manager', 'Accounting.Orderofpayment.Admin'),
 ('Accounting - Manager', 'Accounting.Orderofpayment.Create'),
 ('Accounting - Manager', 'Accounting.Orderofpayment.Index'),
@@ -43,6 +43,14 @@ INSERT INTO `authitemchild` (`parent`, `child`) VALUES
 ('Accounting - Manager', 'Accounting.Orderofpayment.searchPayor'),
 ('Accounting - Manager', 'Accounting.Orderofpayment.Update'),
 ('Accounting - Manager', 'Accounting.Orderofpayment.View'),
+('Accounting - Manager', 'Accounting.Orderofpaymentlab.Admin'),
+('Accounting - Manager', 'Accounting.Orderofpaymentlab.Create'),
+('Accounting - Manager', 'Accounting.Orderofpaymentlab.Delete'),
+('Accounting - Manager', 'Accounting.Orderofpaymentlab.Index'),
+('Accounting - Manager', 'Accounting.Orderofpaymentlab.SearchRequests'),
+('Accounting - Manager', 'Accounting.Orderofpaymentlab.Update'),
+('Accounting - Manager', 'Accounting.Orderofpaymentlab.UpdateAmount'),
+('Accounting - Manager', 'Accounting.Orderofpaymentlab.View'),
 ('Accounting - Manager', 'Accounting.Paymentitem.Create'),
 ('Accounting - Manager', 'Accounting.Paymentitem.SearchRequest'),
 ('Accounting - Manager', 'Accounting.Paymentitem.Update'),

@@ -474,8 +474,8 @@ class requestPdf extends TCPDF {
                     <td style="border-right: 0.5px solid #000;"></td>
                 </tr>
                 <tr>
-                    <td style="border-right: 0.5px solid #000;border-bottom: 0.5px solid #000; text-align: center;">'.$request->receivedBy.'</td>
                     <td style="border-right: 0.5px solid #000;border-bottom: 0.5px solid #000; text-align: center;">'.$request->conforme.'</td>
+                    <td style="border-right: 0.5px solid #000;border-bottom: 0.5px solid #000; text-align: center;">'.$request->receivedBy.'</td>
                     <td style="border-right: 0.5px solid #000;border-bottom: 0.5px solid #000; text-align: center;">'.$labManager.'</td>
                 </tr>
                 <tr>

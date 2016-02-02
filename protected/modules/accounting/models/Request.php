@@ -60,6 +60,8 @@ class Request extends CActiveRecord
 		return array(
 			'collection' => array(self::STAT, 'Collection', 'request_id', 'select'=> 'SUM(amount)', 'condition' => 'cancelled=0'),
 			'samps' => array(self::HAS_MANY, 'Sample', 'request_id', 'condition' => 'cancelled=0'),
+			
+			'paymentItem' => array(self::HAS_MANY, 'Paymentitem', '', 'on'=>'t.requestRefNum=details'),
 		);
 	}
 
@@ -152,6 +154,10 @@ class Request extends CActiveRecord
 	}
 	
 	public function getBalance(){
+		return $this->total - $this->collection;
+	}
+	
+	public function getBalance2(){
 		return $this->total - $this->collection;
 	}
 	

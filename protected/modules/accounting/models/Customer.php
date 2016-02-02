@@ -158,4 +158,51 @@ class Customer extends CActiveRecord
 	   }
 	   return false;
 	}
+	
+	public function getCompleteAddress()
+	{
+		$completeAddress = "";
+		$tailAddress = "";
+		
+		if($this->municipalitycity_id){
+				$municipalityCity=MunicipalityCity::model()->findByPk($this->municipalitycity_id);
+				$municipalityCityName=$municipalityCity->name;
+				$provinceName=Province::model()->findByPk($municipalityCity->provinceId)->name;								
+				
+				if($municipalityCityName==$provinceName){
+					$tailAddress .= $municipalityCityName;
+				}else{
+					$tailAddress .= $municipalityCityName.", ".$provinceName;
+				}
+			}
+
+		if ($this->address != "" || !isset($this->address)){
+
+			return $this->address.', '.$tailAddress;
+		}else{
+			if($this->address)
+				$completeAddress .= $this->address.", ";
+			
+			if($this->barangay_id){
+				$barangayName=Barangay::model()->findByPk($this->barangay_id)->name;
+				$completeAddress .= $barangayName. ", ";
+			}
+		
+			if($this->municipalitycity_id){
+				$municipalityCity=MunicipalityCity::model()->findByPk($this->municipalitycity_id);
+				$municipalityCityName=$municipalityCity->name;
+				$provinceName=Province::model()->findByPk($municipalityCity->provinceId)->name;								
+				
+				if($municipalityCityName==$provinceName){
+					$tailAddress .= $municipalityCityName;
+				}else{
+					$tailAddress .= $municipalityCityName.", ".$provinceName;
+				}
+			}						
+			$completeAddress .= $taildress;
+			return $completeAddress;
+		}
+		//return $this->address;
+		
+	}	
 }

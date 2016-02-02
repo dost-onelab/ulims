@@ -31,8 +31,10 @@ class Paymentitem extends CActiveRecord
 		return array(
 			array('orderofpayment_id, details, amount', 'required'),
 			array('request_id, rstl_id, orderofpayment_id, cancelled', 'numerical', 'integerOnly'=>true),
-			array('amount', 'numerical'),
-			array('amount', 'maxValueValidation', 'parameter'=>$this->maxValue()),
+			//array('amount', 'numerical'),
+			array('amount', 'match' ,'pattern' => '/^-?(?:\d+|\d{1,3}(?:,\d{3})+)?(?:\.\d+)?$/'),
+			array('amount', 'maxValueValidation', 'maxValue'=>$this->maxValue()),
+			array('amount', 'minValueValidation', 'minValue'=>1),
 			array('details', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -126,16 +128,25 @@ class Paymentitem extends CActiveRecord
 				$this->rstl_id = Yii::app()->Controller->getRstlId();
 		        return true;
 			}else{
+				$this->amount=Yii::app()->format->unformatNumber($this->amount);
 				return true;
 			}
 	   }
 	   return false;
 	}
-	
+
+	public function minValueValidation($attribute, $params)
+	{
+		if(Yii::app()->format->unformatNumber($this->amount) < 1)
+			$this->addError($attribute, $this->getAttributeLabel($attribute).
+				" is too small. Minimum value allowed is ". $params['minValue']);
+	}
+		
 	public function maxValueValidation($attribute, $params)
 	{
-		if($this->amount > $this->maxValue())
-			$this->addError($attribute, $this->getAttributeLabel($attribute)." is too big. Maximum value allowed is ".$this->maxValue());
+		if(Yii::app()->format->unformatNumber($this->amount) > $params['maxValue'])
+			$this->addError($attribute, $this->getAttributeLabel($attribute).
+				" is too big. Maximum value allowed is ".$params['maxValue']);
 	}
 	
 	public function maxValue()
@@ -151,17 +162,17 @@ class Paymentitem extends CActiveRecord
 								);
 			$request=Request::model()->find($criteria);
 			if($request){
-				$balance=$request->getBalance();
+				$balance=$request->getBalance2();
 				if($balance==0)//during update
 					$balance=$request->total;
 				
 				return $balance;
 			}else{
-				return '99999999999999.99';
+				return 99999999999999.99;
 			}
 			
 		}else{
 			return 0;
 		}
-	}
+	}	
 }

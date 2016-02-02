@@ -300,7 +300,7 @@ class RequestController extends Controller
 			));
 	
 			$this->render('admin',array(
-				'model'=>$model, 'customers'=>$dataProvider,
+				'model'=>$model, //'customers'=>$dataProvider,
 				//'requestcodeExist'=>$requestcodeExist
 			));
 		/*}else{
