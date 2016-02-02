@@ -83,7 +83,7 @@ Yii::app()->clientScript->registerScript('accomps', "
 <?php echo ' '.CHtml::link('Export',$this->createUrl('accomplishments/exportConso/',array('year'=>$year, 'rstlId'=>Yii::app()->Controller->getRstlId())), array('class'=>'export'));?>
 <?php $this->endWidget(); ?>
 </div>		 
-<h3 class="title" style="text-align: center; margin-top: -20px; margin-bottom: -20px;"><?php echo 'RSTL IX '.$year.' Summary of Accomplishment';?> </h3>
+<h3 class="title" style="text-align: center; margin-top: -20px; margin-bottom: -20px;"><?php echo Rstl::getRstlName(Yii::app()->Controller->getRstlId()).' '.$year.' Summary of Accomplishment';?> </h3>
 
 <?php 
 	 $this->widget('zii.widgets.grid.CGridView', array(

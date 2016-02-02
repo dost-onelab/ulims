@@ -111,4 +111,37 @@ class Rstl extends CActiveRecord
 		return CHtml::listData(Rstl::model()->findAll(), 
 							'id', 'name');
 	}
+
+	public static function getRstlName($rstl_id)
+	{
+		$rstlArray = array(
+				'1' => 'RSTL I',
+				'2' => 'RSTL II',
+				'3' => 'RSTL III',
+				'4' => 'RSTL IVA1',
+				'5' => 'RSTL IVA2',
+				'6' => 'RSTL IVB',
+				'7' => 'RSTL V',
+				'8' => 'RSTL VI',
+				'9' => 'RSTL VII',
+				'10' => 'RSTL VIII',
+				'11' => 'RSTL IX',
+				'12' => 'RSTL X',
+				'13' => 'RSTL XI',
+				'14' => 'RSTL XII1',
+				'15' => 'RSTL XII2',
+				'16' => 'RSTL CAR',
+				'17' => 'RSTL CARAGA',
+				'18' => 'RSTL ARMM',
+				'19' => 'FNRI',
+				'20' => 'FPRDI',
+				'21' => 'ITDI',
+				'22' => 'MIRDC',
+				'23' => 'PTRI',
+				'24' => 'PNRI',
+				'25' => 'IVA3'
+			);
+
+		return $rstlArray[$rstl_id];
+	}
 }
