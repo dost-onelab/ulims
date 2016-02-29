@@ -141,7 +141,7 @@ class Samplecode extends CActiveRecord
 	    		'condition'=>'rstl_id = :rstl_id AND labId = :labId AND year = :year AND cancelled = 0',
 	    		'params'=>array(':rstl_id' => Yii::app()->Controller->getRstlId(), ':labId' => $lab_id, ':year' => date('Y') )
 			));
-		$lablocal = lablocal::model()->findByPk($lab_id);	
+		$lablocal = Lablocal::model()->findByPk($lab_id);	
 		if(isset($sampleCode)){
 			return $lablocal->labCode.'-'.Yii::app()->Controller->addZeros($sampleCode->number);
 		}else{
@@ -153,11 +153,5 @@ class Samplecode extends CActiveRecord
 			$startCode = Yii::app()->Controller->addZeros($initializeCode->startCode + 1);
 			return $modelLab->labCode.'-'.$startCode;*/
 		}
-	}
-
-	function assignSampleCode()
-	{
-
-		
 	}
 }

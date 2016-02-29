@@ -1,4 +1,4 @@
-<?php
+	<?php
 /* @var $this ReferralController */
 /* @var $model Referral */
 $this->menu=array(
@@ -312,7 +312,7 @@ $this->menu=array(
 							$notification = RestController::searchResourceMultifields('notifications', $fields);
 							
 							if((count($notification) == 0) || $notification['status'] == '404'){
-								echo Chtml::link("Notify", "", array("onClick"=>"js:{notifyAgency(".$_GET["id"].",".$data["id"]."); $(this)prop('onclick',null)}"));
+								echo Chtml::link("Notify", "", array("onClick"=>"js:{notifyAgency(".$_GET["id"].",".$data["id"]."); $(this).prop('onclick',null)}"));
 							}else{
 								$fields = array(
 									'1'=>array('field'=>'type_id', 'value'=>2),
