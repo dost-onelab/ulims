@@ -444,10 +444,12 @@ class referralPdf extends TCPDF {
             </style>
         ';
 
-        $labManager=NULL;
-        //if(isset($request->laboratory->manager->user))
-            //$labManager=$request->laboratory->manager->user->getFullname();
+        $labManager = Lablocal::model()->findByPk($referral['lab_id']); 
+        
+        if($labManager)
             $labManager = Lablocal::model()->findByPk($referral['lab_id'])->manager->user->getFullname(); 
+        else
+            $labManager = Lablocal::model()->findByPk(1)->manager->user->getFullname();
 
         $signatories = '
             <table>
