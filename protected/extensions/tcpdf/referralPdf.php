@@ -444,13 +444,17 @@ class referralPdf extends TCPDF {
             </style>
         ';
 
-        $labManager = Lablocal::model()->findByPk($referral['lab_id']); 
-        
-        if($labManager)
-            $labManager = Lablocal::model()->findByPk($referral['lab_id'])->manager->user->getFullname(); 
-        else
-            $labManager = Lablocal::model()->findByPk(1)->manager->user->getFullname();
+        $lab = Lablocal::model()->findByPk($referral['lab_id']); 
 
+         if(!isset($lab->id)){
+            $activeLab = Initializecode::model()->find(array(
+              'condition' => 'active = :active',
+              'limit' => 1,
+              'params' => array(':active' => 1),
+            ));
+            $lab = Lablocal::model()->findByPk($activeLab->lab_id);
+        }
+        
         $signatories = '
             <table>
                 <tr>
@@ -469,7 +473,7 @@ class referralPdf extends TCPDF {
                 <tr>
                     <td style="border-right: 0.5px solid #000;border-bottom: 0.5px solid #000; text-align: center;">'.$referral["conforme"].'</td>
                     <td style="border-right: 0.5px solid #000;border-bottom: 0.5px solid #000; text-align: center;">'.$referral["receivedBy"].'</td>
-                    <td style="border-right: 0.5px solid #000;border-bottom: 0.5px solid #000; text-align: center;">'.$labManager.'</td>
+                    <td style="border-right: 0.5px solid #000;border-bottom: 0.5px solid #000; text-align: center;">'.$lab->manager->user->getFullname().'</td>
                 </tr>
                 <tr>
                     <td style="border-right: 0.5px solid #000;border-bottom: 0.5px solid #000; text-align: center;">Customer/Authorized Representative</td>
